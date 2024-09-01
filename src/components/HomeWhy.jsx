@@ -1,6 +1,10 @@
 import { Box, Container, GridItem, SimpleGrid, Text } from "@chakra-ui/react";
 import why from "/src/assets/images/vi_sao_nen_chon_chung_toi.webp";
 import { ReactSVG } from "react-svg";
+import congnghe from "/src/assets/images/cong-nghe-tien-tien.svg";
+import vatlieu from "/src/assets/images/vat-lieu-chat-luong.svg";
+import dichvu from "/src/assets/images/dich-vu-in-an-theo-yeu-cau.svg";
+import huongdan from "/src/assets/images/huong-dan-cua-chuyen-gia.svg";
 
 export default function HomeWhy() {
   return (
@@ -75,7 +79,7 @@ export default function HomeWhy() {
                     p="8px"
                   >
                     <ReactSVG
-                      src="/src/assets/images/cong-nghe-tien-tien.svg"
+                      src={congnghe}
                       beforeInjection={(svg) => {
                         svg.setAttribute(
                           "style",
@@ -101,7 +105,7 @@ export default function HomeWhy() {
                     p="8px"
                   >
                     <ReactSVG
-                      src="/src/assets/images/vat-lieu-chat-luong.svg"
+                      src={vatlieu}
                       beforeInjection={(svg) => {
                         svg.setAttribute(
                           "style",
@@ -128,7 +132,7 @@ export default function HomeWhy() {
                     p="8px"
                   >
                     <ReactSVG
-                      src="/src/assets/images/dich-vu-in-an-theo-yeu-cau.svg"
+                      src={dichvu}
                       beforeInjection={(svg) => {
                         svg.setAttribute(
                           "style",
@@ -155,7 +159,7 @@ export default function HomeWhy() {
                     p="8px"
                   >
                     <ReactSVG
-                      src="/src/assets/images/huong-dan-cua-chuyen-gia.svg"
+                      src={huongdan}
                       beforeInjection={(svg) => {
                         svg.setAttribute(
                           "style",
