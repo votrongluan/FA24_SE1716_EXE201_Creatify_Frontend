@@ -7,8 +7,8 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import chungtoilaai from "/public/assets/images/aboutus.webp";
-import nhiemvu from "/public/assets/images/nhiemvu.webp";
+import chungtoilaai from "/src/assets/images/aboutus.webp";
+import nhiemvu from "/src/assets/images/nhiemvu.webp";
 
 function AboutPage() {
   return (
@@ -80,10 +80,15 @@ function AboutPage() {
         position="relative"
         w="100%"
         bgImage={`url(${nhiemvu})`}
-        bgAttachment="scroll"
-        bgSize="cover"
-        bgPosition="center"
         pb="40px"
+        h="fit-content"
+        bgSize="cover"
+        bgAttachment="fixed"
+        bgPosition="center"
+        bgRepeat="no-repeat"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
       >
         {/* Overlay */}
         <Box
@@ -101,7 +106,6 @@ function AboutPage() {
         <Container
           w="90%"
           maxW="1400px"
-          pb="4 0px"
           as="main"
           position="relative"
           zIndex={2}
@@ -122,6 +126,7 @@ function AboutPage() {
           </Text>
           <Text
             py="200px"
+            textAlign="justify"
             letterSpacing="1px"
             lineHeight="2"
             fontSize="20px"
@@ -171,7 +176,7 @@ function AboutPage() {
                   Chất lượng và độ chính xác
                 </Text>
               </Box>
-              <Text fontSize="16px">
+              <Text textAlign="justify" fontSize="16px">
                 {" "}
                 Chúng tôi đặt tiêu chuẩn cao về chất lượng và độ chính xác trong
                 mọi sản phẩm và dịch vụ.
@@ -197,7 +202,7 @@ function AboutPage() {
                   Hợp tác và hỗ trợ
                 </Text>
               </Box>
-              <Text fontSize="16px">
+              <Text textAlign="justify" fontSize="16px">
                 Chúng tôi xây dựng mối quan hệ bền vững với khách hàng, dựa trên
                 sự hợp tác và hỗ trợ liên tục.
               </Text>
@@ -222,7 +227,7 @@ function AboutPage() {
                   Phát triển bền vững
                 </Text>
               </Box>
-              <Text fontSize="16px">
+              <Text textAlign="justify" fontSize="16px">
                 Chúng tôi cam kết phát triển công nghệ 3D một cách bền vững và
                 thân thiện với môi trường.
               </Text>

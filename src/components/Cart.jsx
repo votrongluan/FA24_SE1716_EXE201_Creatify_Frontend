@@ -49,7 +49,7 @@ export default function Cart() {
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay>
           <DrawerContent
-            fontFamily="Nunito Sans "
+            fontFamily="Nunito Sans"
             position="relative"
             bgColor="app_grey.0"
             color="app_white.0"

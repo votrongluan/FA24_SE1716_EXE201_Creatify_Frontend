@@ -7,8 +7,8 @@ import {
     SimpleGrid,
     Text,
 } from "@chakra-ui/react";
-import pla from "/public/assets/images/pla.webp";
-import resin from "/public/assets/images/resin.webp";
+import pla from "/src/assets/images/pla.webp";
+import resin from "/src/assets/images/resin.webp";
 
 function MaterialPage() {
     return (

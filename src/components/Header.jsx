@@ -27,7 +27,7 @@ import {
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { Link, NavLink as RouterNavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth.js";
-import logo from "/public/assets/images/logo.svg";
+import logo from "/src/assets/images/logo.svg";
 import { AccountCircleRounded, ShoppingCart } from "@mui/icons-material";
 import Cart from "./Cart.jsx";
 import BrandLogo from "./BrandLogo.jsx";
@@ -45,6 +45,11 @@ function Header() {
     { path: "/contact", label: "Liên hệ" },
     { path: "/about", label: "Về chúng tôi" },
   ];
+  const navLinkStyle = ({ isActive }) => {
+    return {
+      color: isActive ? "#3A6AFD" : null,
+    };
+  };
 
   const isDesktop = useBreakpointValue({
     base: false,
@@ -83,6 +88,7 @@ function Header() {
                   to={link.path}
                   _hover={{ color: "app_blue.0" }}
                   transition="color 0.3s ease"
+                  style={navLinkStyle}
                 >
                   {link.label}
                 </ChakraLink>
@@ -136,6 +142,7 @@ function Header() {
                     onClick={onClose}
                     py="12px"
                     pr="12px"
+                    style={navLinkStyle}
                   >
                     {link.label}
                   </ChakraLink>

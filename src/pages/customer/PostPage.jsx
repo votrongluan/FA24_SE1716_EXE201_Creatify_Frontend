@@ -4,58 +4,16 @@ import {
   Flex,
   GridItem,
   Heading,
-  IconButton,
   Image,
   SimpleGrid,
   Text,
-  useToast,
 } from "@chakra-ui/react";
-import pla from "/public/assets/images/pla.webp";
-import { Attachment, FacebookSharp, LinkedIn, X } from "@mui/icons-material";
+import pla from "/src/assets/images/pla.webp";
 import { Link as RouterLink } from "react-router-dom";
 import Post from "../../components/Post";
+import ShareBar from "../../components/ShareBar";
 
 export default function PostPage() {
-  const toast = useToast();
-
-  const shareToFacebook = () => {
-    const url = window.location.href;
-    window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-      "_blank"
-    );
-  };
-
-  const shareToTwitter = () => {
-    const url = window.location.href;
-    window.open(
-      `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`,
-      "_blank"
-    );
-  };
-
-  const shareToLinkedIn = () => {
-    const url = window.location.href;
-    window.open(
-      `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
-        url
-      )}`,
-      "_blank"
-    );
-  };
-
-  const copyToClipboard = () => {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-      toast({
-        title: "Đã sao chép vào bộ nhớ tạm",
-        status: "success",
-        colorScheme: "blue",
-        duration: 660,
-      });
-    });
-  };
-
   return (
     <>
       <Container w="90%" maxW="1400px" pb="100px">
@@ -112,79 +70,7 @@ export default function PostPage() {
               quasi aliquam quos repellat excepturi? Laudantium.
             </Text>
 
-            <Box
-              borderTop="1px solid"
-              borderTopColor="app_white.0"
-              borderBottom="1px solid"
-              borderBottomColor="app_white.0"
-              opacity=".5"
-              mt="40px"
-              pb="20px"
-              display="flex"
-              justifyContent="space-around"
-              pt="20px"
-            >
-              <IconButton
-                p={5}
-                color="app_white.0"
-                aria-label="Share on Facebook"
-                icon={
-                  <FacebookSharp
-                    sx={{
-                      fontSize: "30px",
-                    }}
-                  />
-                }
-                onClick={shareToFacebook}
-                bg="transparent"
-                _hover={{ color: "app_blue.0" }}
-              />
-              <IconButton
-                p={5}
-                color="app_white.0"
-                aria-label="Share on Twitter"
-                icon={
-                  <X
-                    sx={{
-                      fontSize: "30px",
-                    }}
-                  />
-                }
-                onClick={shareToTwitter}
-                bg="transparent"
-                _hover={{ color: "app_blue.0" }}
-              />
-              <IconButton
-                p={5}
-                color="app_white.0"
-                aria-label="Share on LinkedIn"
-                icon={
-                  <LinkedIn
-                    sx={{
-                      fontSize: "30px",
-                    }}
-                  />
-                }
-                onClick={shareToLinkedIn}
-                bg="transparent"
-                _hover={{ color: "app_blue.0" }}
-              />
-              <IconButton
-                p={5}
-                color="app_white.0"
-                aria-label="Copy URL"
-                icon={
-                  <Attachment
-                    sx={{
-                      fontSize: "30px",
-                    }}
-                  />
-                }
-                onClick={copyToClipboard}
-                bg="transparent"
-                _hover={{ color: "app_blue.0" }}
-              />
-            </Box>
+            <ShareBar />
           </Box>
 
           <Box px="15%" mt="80px">

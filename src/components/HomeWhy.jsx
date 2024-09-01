@@ -1,0 +1,183 @@
+import { Box, Container, GridItem, SimpleGrid, Text } from "@chakra-ui/react";
+import why from "/src/assets/images/vi_sao_nen_chon_chung_toi.webp";
+import { ReactSVG } from "react-svg";
+
+export default function HomeWhy() {
+  return (
+    <>
+      <Box
+        position="relative"
+        w="100%"
+        bgImage={{
+          xl: `url(${why})`,
+        }}
+        bgColor={{
+          base: "app_grey.1",
+          xl: "none",
+        }}
+        pb="80px"
+        h="fit-content"
+        bgSize="cover"
+        bgPosition="center"
+        bgRepeat="no-repeat"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        {/* Overlay */}
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          width="100%"
+          height="100%"
+          bgColor="black"
+          opacity={0.2}
+          zIndex={1}
+        />
+
+        <Container w="90%" maxW="1400px" position="relative" zIndex={2}>
+          <Box
+            w={{
+              base: "100%",
+              xl: "50%",
+            }}
+          >
+            <Text
+              pl="16px"
+              borderBottomLeftRadius="10px"
+              borderBottomRightRadius="10px"
+              py="12px"
+              fontWeight="bold"
+              fontSize="18px"
+              fontFamily="Montserrat"
+              width="340px"
+              bgColor="white"
+              color="app_black.0"
+            >
+              Vì sao nên chọn chúng tôi
+            </Text>
+
+            <Box py="80px">
+              <SimpleGrid
+                columns={{
+                  base: 1,
+                  xl: 2,
+                }}
+                columnGap="60px"
+                rowGap="60px"
+              >
+                <GridItem>
+                  <Box
+                    width="fit-content"
+                    border="1px solid white"
+                    borderRadius="10px"
+                    p="8px"
+                  >
+                    <ReactSVG
+                      src="/src/assets/images/cong-nghe-tien-tien.svg"
+                      beforeInjection={(svg) => {
+                        svg.setAttribute(
+                          "style",
+                          "width: 30px; height: 30px; fill: white"
+                        );
+                      }}
+                    />
+                  </Box>
+                  <Text mt="30px" fontFamily="Montserrat" fontSize="26px">
+                    Công nghệ in tiên tiến
+                  </Text>
+                  <Text mt="30px" fontSize="18px" textAlign="justify">
+                    Khám phá công nghệ in 3D mới nhất và thỏa sức sáng tạo với
+                    các giải pháp sáng tạo của chúng tôi.
+                  </Text>
+                </GridItem>
+
+                <GridItem>
+                  <Box
+                    width="fit-content"
+                    border="1px solid white"
+                    borderRadius="10px"
+                    p="8px"
+                  >
+                    <ReactSVG
+                      src="/src/assets/images/vat-lieu-chat-luong.svg"
+                      beforeInjection={(svg) => {
+                        svg.setAttribute(
+                          "style",
+                          "width: 30px; height: 30px; fill: white"
+                        );
+                      }}
+                    />
+                  </Box>
+                  <Text mt="30px" fontFamily="Montserrat" fontSize="26px">
+                    Vật liệu chất lượng
+                  </Text>
+                  <Text mt="30px" fontSize="18px" textAlign="justify">
+                    Chúng tôi tìm nguồn và sử dụng các vật liệu bền, chất lượng
+                    cao để biến thiết kế của bạn thành hiện thực với kết quả đặc
+                    biệt.
+                  </Text>
+                </GridItem>
+
+                <GridItem>
+                  <Box
+                    width="fit-content"
+                    border="1px solid white"
+                    borderRadius="10px"
+                    p="8px"
+                  >
+                    <ReactSVG
+                      src="/src/assets/images/dich-vu-in-an-theo-yeu-cau.svg"
+                      beforeInjection={(svg) => {
+                        svg.setAttribute(
+                          "style",
+                          "width: 30px; height: 30px; fill: white"
+                        );
+                      }}
+                    />
+                  </Box>
+                  <Text mt="30px" fontFamily="Montserrat" fontSize="26px">
+                    Dịch vụ in ấn theo yêu cầu{" "}
+                  </Text>
+                  <Text mt="30px" fontSize="18px" textAlign="justify">
+                    Chúng tôi hiểu rằng mỗi dự án là duy nhất. Phương pháp cá
+                    nhân hóa của chúng tôi đảm bảo rằng nhu cầu in 3D của bạn
+                    được đáp ứng một cách chính xác và cẩn thận.
+                  </Text>
+                </GridItem>
+
+                <GridItem>
+                  <Box
+                    width="fit-content"
+                    border="1px solid white"
+                    borderRadius="10px"
+                    p="8px"
+                  >
+                    <ReactSVG
+                      src="/src/assets/images/huong-dan-cua-chuyen-gia.svg"
+                      beforeInjection={(svg) => {
+                        svg.setAttribute(
+                          "style",
+                          "width: 30px; height: 30px; fill: white"
+                        );
+                      }}
+                    />
+                  </Box>
+                  <Text mt="30px" fontFamily="Montserrat" fontSize="26px">
+                    Hướng dẫn của chuyên gia{" "}
+                  </Text>
+                  <Text mt="30px" fontSize="18px" textAlign="justify">
+                    Các cố vấn giàu kinh nghiệm của chúng tôi sẵn sàng hướng dẫn
+                    bạn trong quá trình in 3D, cung cấp những hiểu biết sâu sắc
+                    và hỗ trợ có giá trị.
+                  </Text>
+                </GridItem>
+              </SimpleGrid>
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+    </>
+  );
+}

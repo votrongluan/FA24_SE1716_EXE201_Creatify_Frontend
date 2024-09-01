@@ -1,10 +1,23 @@
 import React, { useState } from "react";
-import { Button, HStack, Input, Stack, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Spacer,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 
-const Pagination = ({ data, itemsPerPage, DisplayData }) => {
-  if (data.length <= itemsPerPage) {
-    return <DisplayData currentData={data} />;
-  }
+const Pagination = ({ data, DisplayData }) => {
+  const [itemsPerPage, setItemsPerPage] = useState(4);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [customPage, setCustomPage] = useState(""); // State for the custom page input
@@ -38,6 +51,16 @@ const Pagination = ({ data, itemsPerPage, DisplayData }) => {
     setCustomPage(e.target.value);
   };
 
+  const handleItemsPerPageChange = (e) => {
+    if (+e.target.value < 1) {
+      setItemsPerPage(1);
+      setCustomPage(1);
+    } else {
+      setItemsPerPage(e.target.value);
+      setCustomPage(1);
+    }
+  };
+
   const goToCustomPage = () => {
     const parsedPage = parseInt(customPage, 10);
     if (!isNaN(parsedPage) && parsedPage >= 1 && parsedPage <= totalPages) {
@@ -69,36 +92,62 @@ const Pagination = ({ data, itemsPerPage, DisplayData }) => {
       <DisplayData currentData={currentData} />
 
       {/* Pagination buttons */}
-      <VStack direction="row" spacing={2} mt={5} justify="center">
-        <HStack>
-          {currentPage > 1 && (
-            <Button
-              variant="solid"
-              colorScheme="blue"
-              onClick={handleFirstPage}
-            >
-              Trang đầu: {1}
-            </Button>
-          )}
-          {renderPageButtons()}
-          {currentPage < totalPages && (
-            <Button variant="solid" colorScheme="blue" onClick={handleLastPage}>
-              Trang cuối: {Math.ceil(data.length / itemsPerPage)}
-            </Button>
-          )}
-        </HStack>
-        <Stack direction="row" spacing={2} mt={2} justify="center">
+      <Flex
+        alignItems="center"
+        direction="row"
+        mt="80px"
+        justify="space-between"
+      >
+        <Box>
+          <Flex columnGap="20px" alignItems="center">
+            <Text>Số lượng hàng mỗi trang</Text>
+            <NumberInput defaultValue={itemsPerPage} step={1} min={1}>
+              <NumberInputField
+                bgColor="app_black.0"
+                value={itemsPerPage}
+                onChange={handleItemsPerPageChange}
+                w="100px"
+              />
+            </NumberInput>
+          </Flex>
+        </Box>
+
+        <Box>
+          <HStack ml="100px">
+            {currentPage > 1 && (
+              <Button
+                variant="solid"
+                colorScheme="blue"
+                onClick={handleFirstPage}
+              >
+                Trang đầu: {1}
+              </Button>
+            )}
+            {renderPageButtons()}
+            {currentPage < totalPages && (
+              <Button
+                variant="solid"
+                colorScheme="blue"
+                onClick={handleLastPage}
+              >
+                Trang cuối: {Math.ceil(data.length / itemsPerPage)}
+              </Button>
+            )}
+          </HStack>
+        </Box>
+
+        <Stack direction="row" spacing={2} justify="center">
           <Input
-            bgColor={"white"}
+            bgColor="app_black.0"
             value={customPage}
             onChange={handleCustomPageChange}
-            placeholder="Đi tới trang"
+            placeholder="Nhập số trang"
           />
           <Button variant="solid" colorScheme="blue" onClick={goToCustomPage}>
             Đi
           </Button>
         </Stack>
-      </VStack>
+      </Flex>
     </>
   );
 };

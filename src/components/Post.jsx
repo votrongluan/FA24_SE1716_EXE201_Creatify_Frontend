@@ -1,6 +1,6 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { ChatBubble, Favorite, RemoveRedEyeRounded } from "@mui/icons-material";
-import pla from "/public/assets/images/pla.webp";
+import pla from "/src/assets/images/pla.webp";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function Post() {

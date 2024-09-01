@@ -8,6 +8,8 @@ export default function CartItem() {
           height="80px"
           width="80px"
           src="https://designshack.net/wp-content/uploads/placeholder-image.png"
+          objectFit="cover"
+          objectPosition="center"
         />
         <Box>
           <Text fontSize="16px">Bugati</Text>
