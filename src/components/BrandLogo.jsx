@@ -8,10 +8,9 @@ export default function BrandLogo() {
       <RouterNavLink to="/">
         <Flex alignItems="center" columnGap="16px">
           <Image
-            color="app_blue.0"
-            backgroundColor="app_blue.0"
+            backgroundColor="app_black.0"
             src={logo}
-            height="50px"
+            height="60px"
             borderRadius="50%"
           />
           <Box>
