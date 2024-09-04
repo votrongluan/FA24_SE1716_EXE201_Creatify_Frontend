@@ -1,13 +1,14 @@
 import { Box, Button, Container, Text } from "@chakra-ui/react";
 import about from "/src/assets/videos/ve_chung_toi.mp4";
 import { Link as RouterLink } from "react-router-dom";
+import SlideWrapper from "../components/SlideWrapper";
 
 export default function HomeAbout() {
   return (
     <>
       <Box>
         {/* Background Video */}
-        <Box position="relative" h="100vh" overflow="hidden" zIndex="1">
+        <Box position="relative" overflow="hidden" zIndex="1">
           <video
             autoPlay
             loop
@@ -32,6 +33,7 @@ export default function HomeAbout() {
             h="100%"
             bg="rgb(64,68,75,.77)" /* Optional: Add a dark overlay */
             color="white"
+            pb="200px"
           >
             <Container
               w="90%"
@@ -40,54 +42,61 @@ export default function HomeAbout() {
               position="relative"
               zIndex={2}
             >
-              <Text
-                pl="16px"
-                borderBottomLeftRadius="10px"
-                borderBottomRightRadius="10px"
-                py="12px"
-                fontWeight="bold"
-                fontSize="18px"
-                fontFamily="Montserrat"
-                width="340px"
-                bgColor="white"
-                color="app_black.0"
-              >
-                Nhiệm vụ của chúng tôi
-              </Text>
+              <SlideWrapper direction="top" speed=".6s">
+                <Text
+                  pl="16px"
+                  borderBottomLeftRadius="10px"
+                  borderBottomRightRadius="10px"
+                  py="12px"
+                  fontWeight="bold"
+                  fontSize="18px"
+                  fontFamily="Montserrat"
+                  width="340px"
+                  bgColor="white"
+                  color="app_black.0"
+                >
+                  Về chúng tôi
+                </Text>
+              </SlideWrapper>
 
-              <Text
-                pt="200px"
-                width={{
-                  base: "100%",
-                  xl: "50%",
-                }}
-                textAlign="justify"
-                lineHeight="2"
-                fontSize="20px"
-              >
-                Chúng tôi cam kết mang đến những giải pháp in 3D tiên tiến nhất,
-                từ phần mềm thiết kế đến dịch vụ in ấn chất lượng cao cùng với
-                sự phát triển công nghệ để đáp ứng mọi nhu cầu của khách hàng.
-                Sứ mệnh của chúng tôi là hỗ trợ khách hàng trong việc hiện thực
-                hóa những ý tưởng độc đáo và mang lại giá trị thực tế cao.
-              </Text>
+              <SlideWrapper speed="1.5s">
+                <Text
+                  pt="200px"
+                  width={{
+                    base: "100%",
+                    xl: "50%",
+                  }}
+                  textAlign="justify"
+                  lineHeight="2"
+                  fontSize="20px"
+                >
+                  Chúng tôi cam kết mang đến những giải pháp in 3D tiên tiến
+                  nhất, từ phần mềm thiết kế đến dịch vụ in ấn chất lượng cao
+                  cùng với sự phát triển công nghệ để đáp ứng mọi nhu cầu của
+                  khách hàng. Sứ mệnh của chúng tôi là hỗ trợ khách hàng trong
+                  việc hiện thực hóa những ý tưởng độc đáo và mang lại giá trị
+                  thực tế cao.
+                </Text>
+              </SlideWrapper>
 
-              <Button
-                _hover={{
-                  bgColor: "app_white.0",
-                  color: "app_black.0",
-                }}
-                bgColor="app_blue.0"
-                color="app_white.0"
-                borderRadius="40px"
-                mt="40px"
-                px="40px"
-                py="25px"
-                to="/about"
-                as={RouterLink}
-              >
-                Khám phá thêm
-              </Button>
+              <SlideWrapper speed="1.5s">
+                <Button
+                  _hover={{
+                    bgColor: "app_white.0",
+                    color: "app_black.0",
+                  }}
+                  bgColor="app_blue.0"
+                  color="app_white.0"
+                  borderRadius="40px"
+                  mt="40px"
+                  px="40px"
+                  py="25px"
+                  to="/about"
+                  as={RouterLink}
+                >
+                  Khám phá thêm
+                </Button>
+              </SlideWrapper>
             </Container>
           </Box>
         </Box>

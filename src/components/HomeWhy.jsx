@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { Box, Container, GridItem, SimpleGrid, Text } from "@chakra-ui/react";
 import why from "/src/assets/images/vi_sao_nen_chon_chung_toi.webp";
 import { ReactSVG } from "react-svg";
@@ -7,23 +8,34 @@ import dichvu from "/src/assets/images/dich-vu-in-an-theo-yeu-cau.svg";
 import huongdan from "/src/assets/images/huong-dan-cua-chuyen-gia.svg";
 
 export default function HomeWhy() {
+  const [bgPosition, setBgPosition] = useState("center");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setBgPosition(`-${scrollPosition * 0.2}px center`); // Adjust the multiplier as needed
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
       <Box
         position="relative"
         w="100%"
-        bgImage={{
-          xl: `url(${why})`,
-        }}
+        bgImage={`url(${why})`}
         bgColor={{
           base: "app_grey.1",
           xl: "none",
         }}
         pb="80px"
-        h="fit-content"
         bgSize="cover"
-        bgPosition="center"
-        bgRepeat="no-repeat"
+        bgPosition={bgPosition}
         display="flex"
         alignItems="center"
         justifyContent="center"

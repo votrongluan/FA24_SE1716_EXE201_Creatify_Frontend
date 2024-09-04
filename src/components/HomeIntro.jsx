@@ -47,7 +47,7 @@ export default function HomeIntro() {
               xl: "50%",
             }}
           >
-            <SlideWrapper speed="2s">
+            <SlideWrapper speed="1s">
               <Text fontSize="44px" fontFamily="Jockey One">
                 Creatify
               </Text>
@@ -68,7 +68,7 @@ export default function HomeIntro() {
                 chính xác và chi tiết cao nhất.
               </Text>
             </SlideWrapper>
-            <SlideWrapper speed="2s">
+            <SlideWrapper speed="1.8s">
               <HStack spacing={5}>
                 <Button
                   _hover={{
