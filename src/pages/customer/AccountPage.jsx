@@ -1,227 +1,180 @@
-import {
-    Box,
-    Button,
-    Container,
-    FormControl,
-    FormLabel,
-    Input,
-    Link as ChakraLink,
-    Tab,
-    TabList,
-    TabPanel,
-    TabPanels,
-    Tabs,
-    Text,
-    useToast,
-} from "@chakra-ui/react";
-import {Navigate, useParams} from "react-router-dom";
-import useAuth from "../../hooks/useAuth.js";
-import EditFieldBox from "../../components/EditFieldBox.jsx";
 import React from "react";
-import axios from "../../api/axios.js";
+import {
+  Box,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  Stack,
+  VStack,
+  HStack,
+  Divider,
+  Link as ChakraLink,
+  useColorModeValue,
+  Flex,
+  Button,
+} from "@chakra-ui/react";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
-function AccountPage() {
-    const {auth, setAuth} = useAuth();
-    const {id} = useParams();
+export default function AccountPage() {
+  const { auth, setAuth } = useAuth();
 
-    if (!auth) {
-        return <Navigate to="/auth"/>;
-    }
+  const navigate = useNavigate();
 
-    if (id.toString() !== auth?.id.toString()) {
-        return <Navigate to="/unauthorized"/>;
-    }
+  const handleLogout = () => {
+    // Clear auth and redirect to login page
+    setAuth(null);
+    navigate("/auth");
+  };
 
-    const toast = useToast();
+  const printOrders = [
+    {
+      id: 1,
+      file: "abc.x",
+      date: "20/06/2024",
+      email: "trongluan115@gmail.com",
+      phone: "0972831212",
+      price: "1.200.000đ",
+      status: true,
+    },
+    {
+      id: 2,
+      file: "abc.x",
+      date: "20/06/2024",
+      email: "trongluan115@gmail.com",
+      phone: "0972831212",
+      price: "1.200.000đ",
+      status: false,
+    },
+    {
+      id: 3,
+      file: "abc.x",
+      date: "20/06/2024",
+      email: "trongluan115@gmail.com",
+      phone: "0972831212",
+      price: "1.200.000đ",
+      status: false,
+    },
+  ];
 
-    return (
-        <Container maxW="1200px" as="main" py={10}>
-            <Tabs p="20px" variant="enclosed" colorScheme="purple">
-                <TabList>
-                    <Tab
-                        fontWeight="semibold"
-                        fontSize="20px"
-                        _selected={{bg: "gray.100"}}
-                    >
-                        Tài khoản của tôi
-                    </Tab>
-                    <Tab
-                        fontWeight="semibold"
-                        fontSize="20px"
-                        _selected={{bg: "gray.100"}}
-                    >
-                        Đổi mật khẩu
-                    </Tab>
-                </TabList>
+  const productOrders = [
+    {
+      id: 1,
+      products: [
+        { name: "Mô hình 1", quantity: 2 },
+        { name: "Mô hình 2", quantity: 4 },
+      ],
+      date: "20/06/2024",
+      email: "trongluan115@gmail.com",
+      phone: "0972831212",
+      price: "1.200.000đ",
+      status: true,
+    },
+    {
+      id: 2,
+      products: [
+        { name: "Mô hình 1", quantity: 2 },
+        { name: "Mô hình 2", quantity: 4 },
+      ],
+      date: "20/06/2024",
+      email: "trongluan115@gmail.com",
+      phone: "0972831212",
+      price: "1.200.000đ",
+      status: false,
+    },
+    {
+      id: 3,
+      products: [
+        { name: "Mô hình 1", quantity: 2 },
+        { name: "Mô hình 2", quantity: 4 },
+      ],
+      date: "20/06/2024",
+      email: "trongluan115@gmail.com",
+      phone: "0972831212",
+      price: "1.200.000đ",
+      status: false,
+    },
+  ];
 
-                <TabPanels py="10px">
-                    <TabPanel>
-                        <Box>
-                            <EditFieldBox
-                                title="Tên"
-                                value={
-                                    auth.firstName ? (
-                                        auth.firstName
-                                    ) : (
-                                        <Text color="gray.500">(Chưa có thông tin)</Text>
-                                    )
-                                }
-                                type="text"
-                                propertyName="firstName"
-                                url={`/v1/updateUser/${id}`}
-                                oldData={auth}
-                                setNewData={setAuth}
-                            />
-                            <EditFieldBox
-                                title="Họ, tên đệm"
-                                value={
-                                    auth.lastName ? (
-                                        auth.lastName
-                                    ) : (
-                                        <Text color="gray.500">(Chưa có thông tin)</Text>
-                                    )
-                                }
-                                type="text"
-                                propertyName="lastName"
-                                url={`/v1/updateUser/${id}`}
-                                oldData={auth}
-                                setNewData={setAuth}
-                            />
-                            <EditFieldBox
-                                title="Số điện thoại"
-                                value={
-                                    auth.phone ? (
-                                        auth.phone
-                                    ) : (
-                                        <Text color="gray.500">(Chưa có thông tin)</Text>
-                                    )
-                                }
-                                type="tel"
-                                propertyName="phone"
-                                url={`/v1/updateUser/${id}`}
-                                oldData={auth}
-                                setNewData={setAuth}
-                            />
-                            <EditFieldBox
-                                title="Email"
-                                value={
-                                    auth.email ? (
-                                        auth.email
-                                    ) : (
-                                        <Text color="gray.500">(Chưa có thông tin)</Text>
-                                    )
-                                }
-                                type="email"
-                                propertyName="email"
-                                url={`/v1/updateUser/${id}`}
-                                oldData={auth}
-                                setNewData={setAuth}
-                            />
-                            <EditFieldBox
-                                title="Ảnh đại diện"
-                                value={
-                                    auth.avatarLink ? (
-                                        <ChakraLink
-                                            color="blue.500"
-                                            href={auth.avatarLink}
-                                            isExternal
-                                        >
-                                            {auth.avatarLink}
-                                        </ChakraLink>
-                                    ) : (
-                                        <Text color="gray.500">(Chưa có thông tin)</Text>
-                                    )
-                                }
-                                type="text"
-                                propertyName="avatarLink"
-                                url={`/v1/updateUser/${id}`}
-                                oldData={auth}
-                                setNewData={setAuth}
-                            />
-                        </Box>
-                    </TabPanel>
-
-                    <TabPanel>
-                        <form
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                const formData = new FormData(e.target);
-                                const data = Object.fromEntries(formData);
-
-                                if (data.newPassword !== data.reNewPassword) {
-                                    toast({
-                                        title: "Cập nhật thất bại",
-                                        description: "Mật khẩu mới không khớp",
-                                        status: "error",
-                                        duration: 700,
-                                        isClosable: true,
-                                        position: "top-right",
-                                    });
-                                    return;
-                                }
-
-                                if (data.newPassword == data.password) {
-                                    toast({
-                                        title: "Cập nhật thất bại",
-                                        description:
-                                            "Mật khẩu mới không được trùng với mật khẩu cũ",
-                                        status: "error",
-                                        duration: 700,
-                                        isClosable: true,
-                                        position: "top-right",
-                                    });
-                                    return;
-                                }
-
-                                axios
-                                    .put(
-                                        `/v1/updatePassword/${id}`,
-                                        JSON.stringify({
-                                            oldPassword: data.password,
-                                            newPassword: data.newPassword,
-                                        }),
-                                        {
-                                            headers: {"Content-Type": "application/json"},
-                                        }
-                                    )
-                                    .then((res) => {
-                                        if (res.data.status == "Ok") {
-                                            toast({
-                                                title: "Cập nhật thành công",
-                                                description: "Mật khẩu đã được cập nhật",
-                                                status: "success",
-                                                duration: 3000,
-                                                isClosable: true,
-                                                position: "top-right",
-                                            });
-                                        }
-                                    });
-                            }}
-                        >
-                            <FormControl isRequired mb="20px">
-                                <FormLabel>Nhập mật khẩu</FormLabel>
-                                <Input bgColor="white" type="password" name="password"/>
-                            </FormControl>
-
-                            <FormControl isRequired mb="20px">
-                                <FormLabel>Nhập mật khẩu mới</FormLabel>
-                                <Input bgColor="white" type="password" name="newPassword"/>
-                            </FormControl>
-
-                            <FormControl isRequired mb="20px">
-                                <FormLabel>Nhập lại mật khẩu mới</FormLabel>
-                                <Input bgColor="white" type="password" name="reNewPassword"/>
-                            </FormControl>
-
-                            <Button width="100%" type="submit" colorScheme="telegram">
-                                Cập nhật
-                            </Button>
-                        </form>
-                    </TabPanel>
-                </TabPanels>
-            </Tabs>
-        </Container>
-    );
+  return (
+    <Box minHeight="100vh" p={6}>
+      <Box
+        bgColor="app_white.0"
+        color="app_black.0"
+        borderRadius="md"
+        p={4}
+        maxWidth="1000px"
+        mx="auto"
+      >
+        <Tabs variant="enclosed">
+          <Flex justify="space-between" align="center" mb={4}>
+            <TabList>
+              <Tab>Thông tin tài khoản</Tab>
+              <Tab>Lịch sử mua hàng</Tab>
+              <Tab>Đơn in</Tab>
+            </TabList>
+            <Button onClick={handleLogout} colorScheme="red" variant="outline">
+              Đăng xuất
+            </Button>
+          </Flex>
+          <TabPanels>
+            <TabPanel>
+              <VStack spacing={4} align="flex-start">
+                <Text fontSize="lg">Tên khách hàng: {auth?.EmployeeName}</Text>
+                <Text fontSize="lg">Email: {auth?.Email}</Text>
+              </VStack>
+            </TabPanel>
+            <TabPanel>
+              <VStack spacing={4} align="stretch">
+                {productOrders.map((order) => (
+                  <Box key={order.id} borderWidth="1px" borderRadius="md" p={4}>
+                    <HStack justify="space-between">
+                      <Text fontWeight="bold">Order #{order.id}</Text>
+                      <Text color={order.status ? "green.500" : "red.500"}>
+                        {order.status ? "Hoàn thành" : "Đang xử lý"}
+                      </Text>
+                    </HStack>
+                    <Text>Date: {order.date}</Text>
+                    <Text>Price: {order.price}</Text>
+                    <Divider my={2} />
+                    <Text fontWeight="bold">Sản phẩm:</Text>
+                    <Stack spacing={0}>
+                      {order.products.map((product, index) => (
+                        <Text key={index}>
+                          {product.name} - Số lượng: {product.quantity}
+                        </Text>
+                      ))}
+                    </Stack>
+                  </Box>
+                ))}
+              </VStack>
+            </TabPanel>
+            <TabPanel>
+              <VStack spacing={4} align="stretch">
+                {printOrders.map((order) => (
+                  <Box key={order.id} borderWidth="1px" borderRadius="md" p={4}>
+                    <HStack justify="space-between">
+                      <Text fontWeight="bold">Order #{order.id}</Text>
+                      <Text color={order.status ? "green.500" : "red.500"}>
+                        {order.status ? "Hoàn thành" : "Đang xử lý"}
+                      </Text>
+                    </HStack>
+                    <Text>Date: {order.date}</Text>
+                    <Text>Price: {order.price}</Text>
+                    <Divider my={2} />
+                    <Text fontWeight="bold">
+                      File: <ChakraLink color="app_blue.0">file.stl</ChakraLink>
+                    </Text>
+                  </Box>
+                ))}
+              </VStack>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Box>
+    </Box>
+  );
 }
-
-export default AccountPage;

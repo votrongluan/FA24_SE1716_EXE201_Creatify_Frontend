@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   FormControl,
   FormLabel,
@@ -28,17 +29,9 @@ export default function OrderUpdateButton() {
 
   return (
     <>
-      <Button
-        onClick={onOpen}
-        _hover={{
-          color: "app_black.0",
-          bgColor: "app_white.0",
-        }}
-        color="app_white.0"
-        bgColor="app_blue.0"
-      >
+      <Box p="8px" width="100%" onClick={onOpen}>
         Cập nhật
-      </Button>
+      </Box>
 
       <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

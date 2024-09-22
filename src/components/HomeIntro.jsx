@@ -110,7 +110,7 @@ export default function HomeIntro() {
             <SimpleGrid columns={{ base: 1, md: 2, xl: 4 }}>
               <Box height="160px" bgColor="app_grey.0" padding="50px">
                 <Box position="relative">
-                  <SlideWrapper direction="top" speed="1s">
+                  <SlideWrapper direction="top" speed="1.55s">
                     <Box
                       position="absolute"
                       height="80px"
@@ -129,7 +129,7 @@ export default function HomeIntro() {
 
               <Box height="160px" bgColor="app_grey.0" padding="50px">
                 <Box position="relative">
-                  <SlideWrapper direction="top" speed="1s">
+                  <SlideWrapper direction="top" speed="1.55s">
                     <Box
                       position="absolute"
                       height="80px"
@@ -147,7 +147,7 @@ export default function HomeIntro() {
               </Box>
               <Box height="160px" bgColor="app_grey.0" padding="50px">
                 <Box position="relative">
-                  <SlideWrapper direction="top" speed="1s">
+                  <SlideWrapper direction="top" speed="1.55s">
                     <Box
                       position="absolute"
                       height="80px"
@@ -165,7 +165,7 @@ export default function HomeIntro() {
               </Box>
               <Box height="160px" bgColor="app_grey.0" padding="50px">
                 <Box position="relative">
-                  <SlideWrapper direction="top" speed="1s">
+                  <SlideWrapper direction="top" speed="1.55s">
                     <Box
                       position="absolute"
                       height="80px"

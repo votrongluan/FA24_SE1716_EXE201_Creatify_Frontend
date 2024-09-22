@@ -1,21 +1,22 @@
 import { createContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  // const [auth, setAuth] = useState(() => {
-  //     const localAuth = JSON.parse(localStorage.getItem("auth"));
-  //     return localAuth || null;
-  // });
-
-  const [auth, setAuth] = useState({
-    role: "ADMIN",
+  const [auth, setAuth] = useState(() => {
+    const cookieAuth = Cookies.get("auth");
+    return cookieAuth ? JSON.parse(cookieAuth) : null;
   });
-  console.log(auth);
 
   useEffect(() => {
-    // Save 'auth' to localStorage whenever it changes
-    localStorage.setItem("auth", JSON.stringify(auth));
+    if (auth) {
+      // Set cookie with an expiration of 5 days
+      Cookies.set("auth", JSON.stringify(auth), { expires: 5 });
+    } else {
+      // Remove the cookie if auth is null
+      Cookies.remove("auth");
+    }
   }, [auth]);
 
   return (

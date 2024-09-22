@@ -4,7 +4,12 @@ import {
   Flex,
   Heading,
   HStack,
+  IconButton,
   Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Spacer,
   Table,
   TableContainer,
@@ -19,7 +24,7 @@ import {
 import SearchFilter from "../../components/SearchFilter.jsx";
 import axios from "../../api/axios.js";
 import ConfirmationDialog from "../../components/ConfirmationDialog.jsx";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, HamburgerIcon } from "@chakra-ui/icons";
 import Pagination from "../../components/Pagination.jsx";
 import ProductUpdateButton from "../../components/ProductUpdateButton.jsx";
 import ProductAddButton from "../../components/ProductAddButton.jsx";
@@ -145,42 +150,60 @@ export default function ProductManagePage() {
                         <Td>
                           <Flex alignItems="center" columnGap="20px">
                             <Spacer />
-                            <ProductUpdateButton />
+                            <Menu>
+                              <MenuButton
+                                as={IconButton}
+                                aria-label="Options"
+                                icon={<HamburgerIcon />}
+                                variant="outline"
+                                color="app_white.0"
+                              />
+                              <MenuList
+                                fontFamily="Nunito Sans"
+                                color="app_black.0"
+                                fontSize="16px"
+                              >
+                                <MenuItem p="0">
+                                  <ProductUpdateButton />
+                                </MenuItem>
+                                <MenuItem p="0">
+                                  <ConfirmationDialog
+                                    title="Xóa"
+                                    onConfirm={async () => {
+                                      const res = await axios.delete(
+                                        `/v1/deleteClub/${product.id}`
+                                      );
 
-                            <ConfirmationDialog
-                              title="Xóa"
-                              onConfirm={async () => {
-                                const res = await axios.delete(
-                                  `/v1/deleteClub/${product.id}`
-                                );
-
-                                if (res.data.status == "Ok") {
-                                  toast({
-                                    title: "Xóa thành công",
-                                    description:
-                                      "Club đã được xóa khỏi hệ thống",
-                                    status: "success",
-                                    duration: 700,
-                                    isClosable: true,
-                                    position: "top-right",
-                                  });
-                                  window.location.reload();
-                                } else {
-                                  toast({
-                                    title: "Xóa thất bại",
-                                    description:
-                                      "Club không được xóa khỏi hệ thống",
-                                    status: "error",
-                                    duration: 700,
-                                    isClosable: true,
-                                    position: "top-right",
-                                  });
-                                }
-                              }}
-                              colorScheme="red"
-                            >
-                              Xóa
-                            </ConfirmationDialog>
+                                      if (res.data.status == "Ok") {
+                                        toast({
+                                          title: "Xóa thành công",
+                                          description:
+                                            "Club đã được xóa khỏi hệ thống",
+                                          status: "success",
+                                          duration: 700,
+                                          isClosable: true,
+                                          position: "top-right",
+                                        });
+                                        window.location.reload();
+                                      } else {
+                                        toast({
+                                          title: "Xóa thất bại",
+                                          description:
+                                            "Club không được xóa khỏi hệ thống",
+                                          status: "error",
+                                          duration: 700,
+                                          isClosable: true,
+                                          position: "top-right",
+                                        });
+                                      }
+                                    }}
+                                    colorScheme="red"
+                                  >
+                                    Xóa
+                                  </ConfirmationDialog>
+                                </MenuItem>
+                              </MenuList>
+                            </Menu>
                           </Flex>
                         </Td>
                       </Tr>

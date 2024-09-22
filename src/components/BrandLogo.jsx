@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Image } from "@chakra-ui/react";
 import { Link, NavLink as RouterNavLink } from "react-router-dom";
-import logo from "/src/assets/images/logo.svg";
+import logo from "/src/assets/images/logo.jpg";
 
 export default function BrandLogo() {
   return (

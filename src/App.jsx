@@ -5,7 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout.jsx";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, useDisclosure } from "@chakra-ui/react";
 import NotFoundPage from "./pages/customer/NotFoundPage.jsx";
 import ErrorPage from "./pages/customer/ErrorPage.jsx";
 import { GlobalProvider } from "./context/GlobalContext.jsx";
@@ -14,7 +14,7 @@ import { AuthProvider } from "./context/AuthProvider.jsx";
 import AccountPage from "./pages/customer/AccountPage.jsx";
 import RequireAuth from "./components/RequireAuth.jsx";
 import UnauthorizedPage from "./pages/customer/UnauthorizedPage.jsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AboutPage from "./pages/customer/AboutPage.jsx";
 import ContactPage from "./pages/customer/ContactPage.jsx";
 import MaterialPage from "./pages/customer/MaterialPage.jsx";
@@ -31,11 +31,19 @@ import ProductManagePage from "./pages/admin/ProductManagePage.jsx";
 import OrderManagePage from "./pages/admin/OrderManagePage.jsx";
 import PrintManagePage from "./pages/admin/PrintManagePage.jsx";
 import DashboardPage from "./pages/admin/DashboardPage.jsx";
+import SplineModal from "./pages/customer/SplineModal.jsx";
+import MarketingDashboard from "./pages/admin/MarketingDashboard.jsx";
+import SupplierLayout from "./layouts/SupplierLayout.jsx";
+import AllOrderPage from "./pages/supplier/AllOrderPage.jsx";
+import OwnOrderPage from "./pages/supplier/OwnOrderPage.jsx";
+import VerifyPage from "./pages/customer/VerifyPage.jsx";
 
 function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const [splineIsOpen, setSplineIsOpen] = useState(false);
 
   const theme = extendTheme({
     colors: {
@@ -67,17 +75,40 @@ function App() {
           <Route path="print" element={<PrintManagePage />} />
         </Route>
 
+        {/* Supplier page route */}
+        <Route path="supplier" element={<SupplierLayout />}>
+          <Route index element={<NotFoundPage />} />
+          <Route path="task" element={<AllOrderPage />} />
+          <Route path="own" element={<OwnOrderPage />} />
+        </Route>
+
         <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
           {/* Index page route */}
           <Route index element={<HomePage />} />
+
+          {/* Auth route */}
+          <Route path="auth" element={<AuthPage />} />
+
           <Route path="about" element={<AboutPage />} />
+          <Route path="verify" element={<VerifyPage />} />
+          <Route path="account" element={<AccountPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="material" element={<MaterialPage />} />
           <Route path="forum">
             <Route index element={<ForumPage />} />
             <Route path=":id" element={<PostPage />} />
           </Route>
-          <Route path="personalized" element={<PersonalizedPage />} />
+          <Route
+            path="personalized"
+            element={
+              <PersonalizedPage
+                onOpen={() => {
+                  setSplineIsOpen(true);
+                  console.log("ol");
+                }}
+              />
+            }
+          />
           <Route path="print" element={<PrintOrderPage />} />
           <Route path="products">
             <Route index element={<ProductsPage />} />
@@ -91,9 +122,6 @@ function App() {
             <Route path=":id" element={<AccountPage />} />
           </Route>
         </Route>
-
-        {/* Auth route */}
-        <Route path="auth" element={<AuthPage />} />
 
         {/* Unauthorized route */}
         <Route path="unauthorized" element={<UnauthorizedPage />} />
@@ -109,6 +137,10 @@ function App() {
       <GlobalProvider>
         <ChakraProvider theme={theme}>
           <RouterProvider router={router} />
+          <SplineModal
+            splineIsOpen={splineIsOpen}
+            splineOnClose={() => setSplineIsOpen(false)}
+          />
         </ChakraProvider>
       </GlobalProvider>
     </AuthProvider>

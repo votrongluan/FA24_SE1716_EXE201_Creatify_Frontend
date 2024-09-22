@@ -3,7 +3,12 @@ import {
   Box,
   Flex,
   Heading,
+  IconButton,
   Link,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Spacer,
   Table,
   TableContainer,
@@ -21,6 +26,8 @@ import ProductAddButton from "../../components/ProductAddButton.jsx";
 import OrderDetailButton from "../../components/OrderDetailButton.jsx";
 import PrintOrderDetailButton from "../../components/PrintOrderDetailButton.jsx";
 import PrintOrderUpdateButton from "../../components/PrintOrderUpdateButton.jsx";
+import { HamburgerIcon } from "@chakra-ui/icons";
+import ConfirmationDialog from "../../components/ConfirmationDialog.jsx";
 
 export default function PrintManagePage() {
   const orders = [
@@ -81,6 +88,7 @@ export default function PrintManagePage() {
                       <Th>Email</Th>
                       <Th>SĐT</Th>
                       <Th>Giá</Th>
+                      <Th>Supplier</Th>
                       <Th>Trạng thái</Th>
                       <Th textAlign="center">Thao tác</Th>
                     </Tr>
@@ -113,6 +121,9 @@ export default function PrintManagePage() {
                           <Text>{order.price}</Text>
                         </Td>
                         <Td>
+                          <Text>Tân Bình 3D</Text>
+                        </Td>
+                        <Td>
                           <Text>
                             {order.status == true ? (
                               <Badge colorScheme="green" p="8px">
@@ -126,8 +137,34 @@ export default function PrintManagePage() {
                         <Td>
                           <Flex alignItems="center" columnGap="20px">
                             <Spacer />
-                            <PrintOrderDetailButton />
-                            <PrintOrderUpdateButton />
+                            <Menu>
+                              <MenuButton
+                                as={IconButton}
+                                aria-label="Options"
+                                icon={<HamburgerIcon />}
+                                variant="outline"
+                                color="app_white.0"
+                              />
+                              <MenuList
+                                fontFamily="Nunito Sans"
+                                color="app_black.0"
+                                fontSize="16px"
+                              >
+                                <MenuItem p="0">
+                                  <PrintOrderDetailButton />
+                                </MenuItem>
+                                <MenuItem p="0">
+                                  <PrintOrderUpdateButton />
+                                </MenuItem>
+                                <MenuItem p="0">
+                                  <ConfirmationDialog
+                                    title="Hủy"
+                                    onConfirm={async () => {}}
+                                    colorScheme="red"
+                                  />
+                                </MenuItem>
+                              </MenuList>
+                            </Menu>
                           </Flex>
                         </Td>
                       </Tr>

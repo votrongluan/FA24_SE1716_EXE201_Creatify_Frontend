@@ -34,17 +34,9 @@ export default function OrderDetailButton() {
 
   return (
     <>
-      <Button
-        onClick={onOpen}
-        _hover={{
-          color: "app_white.0",
-          bgColor: "app_black.0",
-        }}
-        color="app_black.0"
-        bgColor="app_white.0"
-      >
+      <Box p="8px" width="100%" onClick={onOpen}>
         Chi tiết
-      </Button>
+      </Box>
 
       <Modal
         initialFocusRef={initialRef}

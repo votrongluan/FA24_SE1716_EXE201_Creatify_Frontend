@@ -6,6 +6,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Box,
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -17,9 +18,9 @@ export default function ConfirmationDialog({ onConfirm, title, color }) {
 
   return (
     <>
-      <Button colorScheme={color ? color : "red"} onClick={onOpen}>
+      <Box p="8px" width="100%" onClick={onOpen}>
         {title}
-      </Button>
+      </Box>
       <AlertDialog
         motionPreset="slideInBottom"
         leastDestructiveRef={cancelRef}

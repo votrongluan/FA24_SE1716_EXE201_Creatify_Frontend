@@ -9,6 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import FadeWrapper from "./FadeWrapper";
 
 export default function HomeProduct() {
   return (
@@ -20,44 +21,46 @@ export default function HomeProduct() {
           </Text>
 
           <Box mt="60px">
-            <SimpleGrid
-              columnGap="40px"
-              rowGap="40px"
-              columns={{ base: 2, xl: 4 }}
-            >
-              <GridItem to="/products/1" as={RouterLink}>
-                <Image
-                  w="100%"
-                  src="https://via.placeholder.com/150"
-                  objectFit="cover"
-                  objectPosition="center"
-                />
-              </GridItem>
-              <GridItem to="/products/1" as={RouterLink}>
-                <Image
-                  w="100%"
-                  src="https://via.placeholder.com/150"
-                  objectFit="cover"
-                  objectPosition="center"
-                />
-              </GridItem>
-              <GridItem to="/products/1" as={RouterLink}>
-                <Image
-                  w="100%"
-                  src="https://via.placeholder.com/150"
-                  objectFit="cover"
-                  objectPosition="center"
-                />
-              </GridItem>
-              <GridItem to="/products/1" as={RouterLink}>
-                <Image
-                  w="100%"
-                  src="https://via.placeholder.com/150"
-                  objectFit="cover"
-                  objectPosition="center"
-                />
-              </GridItem>
-            </SimpleGrid>
+            <FadeWrapper>
+              <SimpleGrid
+                columnGap="40px"
+                rowGap="40px"
+                columns={{ base: 2, xl: 4 }}
+              >
+                <GridItem to="/products/1" as={RouterLink}>
+                  <Image
+                    w="100%"
+                    src="https://via.placeholder.com/150"
+                    objectFit="cover"
+                    objectPosition="center"
+                  />
+                </GridItem>
+                <GridItem to="/products/1" as={RouterLink}>
+                  <Image
+                    w="100%"
+                    src="https://via.placeholder.com/150"
+                    objectFit="cover"
+                    objectPosition="center"
+                  />
+                </GridItem>
+                <GridItem to="/products/1" as={RouterLink}>
+                  <Image
+                    w="100%"
+                    src="https://via.placeholder.com/150"
+                    objectFit="cover"
+                    objectPosition="center"
+                  />
+                </GridItem>
+                <GridItem to="/products/1" as={RouterLink}>
+                  <Image
+                    w="100%"
+                    src="https://via.placeholder.com/150"
+                    objectFit="cover"
+                    objectPosition="center"
+                  />
+                </GridItem>
+              </SimpleGrid>
+            </FadeWrapper>
 
             <Flex justifyContent="center">
               <Button

@@ -27,7 +27,7 @@ import {
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { Link, NavLink as RouterNavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth.js";
-import logo from "/src/assets/images/logo.svg";
+import logo from "/src/assets/images/logo.jpg";
 import { AccountCircleRounded, ShoppingCart } from "@mui/icons-material";
 import Cart from "./Cart.jsx";
 import BrandLogo from "./BrandLogo.jsx";
@@ -40,7 +40,7 @@ function Header() {
     { path: "/products", label: "Sản phẩm" },
     { path: "/print", label: "Đặt in" },
     { path: "/personalized", label: "Cá nhân hóa" },
-    { path: "/forum", label: "Diễn đàn" },
+    // { path: "/forum", label: "Diễn đàn" },
     { path: "/material", label: "Vật liệu" },
     { path: "/contact", label: "Liên hệ" },
     { path: "/about", label: "Về chúng tôi" },

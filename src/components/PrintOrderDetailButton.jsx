@@ -29,17 +29,9 @@ export default function PrintOrderDetailButton() {
 
   return (
     <>
-      <Button
-        onClick={onOpen}
-        _hover={{
-          color: "app_white.0",
-          bgColor: "app_black.0",
-        }}
-        color="app_black.0"
-        bgColor="app_white.0"
-      >
+      <Box p="8px" onClick={onOpen} width="100%">
         Chi tiết
-      </Button>
+      </Box>
 
       <Modal
         initialFocusRef={initialRef}

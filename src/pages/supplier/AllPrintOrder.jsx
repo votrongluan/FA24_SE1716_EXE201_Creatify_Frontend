@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -28,21 +29,14 @@ import OrderUpdateButton from "../../components/OrderUpdateButton.jsx";
 import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import ConfirmationDialog from "../../components/ConfirmationDialog.jsx";
 import axios from "../../api/axios.js";
+import PrintOrderDetailButton from "../../components/PrintOrderDetailButton.jsx";
+import PrintOrderUpdateButton from "../../components/PrintOrderUpdateButton.jsx";
 
-export default function OrderManagePage() {
+export default function AllPrintOrder() {
   const orders = [
     {
       id: 1,
-      products: [
-        {
-          name: "Mô hình 1",
-          quantity: 2,
-        },
-        {
-          name: "Mô hình 2",
-          quantity: 4,
-        },
-      ],
+      file: "abc.x",
       date: "20/06/2024",
       email: "trongluan115@gmail.com",
       phone: "0972831212",
@@ -51,16 +45,7 @@ export default function OrderManagePage() {
     },
     {
       id: 2,
-      products: [
-        {
-          name: "Mô hình 1",
-          quantity: 2,
-        },
-        {
-          name: "Mô hình 2",
-          quantity: 4,
-        },
-      ],
+      file: "abc.x",
       date: "20/06/2024",
       email: "trongluan115@gmail.com",
       phone: "0972831212",
@@ -69,16 +54,7 @@ export default function OrderManagePage() {
     },
     {
       id: 3,
-      products: [
-        {
-          name: "Mô hình 1",
-          quantity: 2,
-        },
-        {
-          name: "Mô hình 2",
-          quantity: 4,
-        },
-      ],
+      file: "abc.x",
       date: "20/06/2024",
       email: "trongluan115@gmail.com",
       phone: "0972831212",
@@ -89,12 +65,6 @@ export default function OrderManagePage() {
 
   return (
     <>
-      <Heading as="h2" size="lg" textAlign="center">
-        Quản lý đơn hàng
-      </Heading>
-
-      <Box mt="5" h="40px"></Box>
-
       <SearchFilter
         searchPlaceholder="Tìm theo tên, số điện thoại, địa chỉ"
         data={orders}
@@ -110,12 +80,11 @@ export default function OrderManagePage() {
                   <Thead>
                     <Tr>
                       <Th>Mã</Th>
-                      <Th>Sản phẩm</Th>
+                      <Th>File</Th>
                       <Th>Ngày đặt</Th>
                       <Th>Email</Th>
                       <Th>SĐT</Th>
                       <Th>Giá</Th>
-                      <Th>Supplier</Th>
                       <Th>Trạng thái</Th>
                       <Th textAlign="center">Thao tác</Th>
                     </Tr>
@@ -127,21 +96,13 @@ export default function OrderManagePage() {
                           <Text>{order.id}</Text>
                         </Td>
                         <Td>
-                          {order.products.map((e) => {
-                            return (
-                              <Text key={e.name}>
-                                {e.name}
-                                <span
-                                  style={{
-                                    fontWeight: "bold",
-                                    marginLeft: "20px",
-                                  }}
-                                >
-                                  x{e.quantity}
-                                </span>
-                              </Text>
-                            );
-                          })}
+                          <Link
+                            color="app_blue.0"
+                            target="_blank"
+                            href="order.file"
+                          >
+                            {order.file}
+                          </Link>
                         </Td>
                         <Td>
                           <Text>{order.date}</Text>
@@ -154,9 +115,6 @@ export default function OrderManagePage() {
                         </Td>
                         <Td>
                           <Text>{order.price}</Text>
-                        </Td>
-                        <Td>
-                          <Text>Tân Bình 3D</Text>
                         </Td>
                         <Td>
                           <Text>
@@ -186,14 +144,11 @@ export default function OrderManagePage() {
                                 fontSize="16px"
                               >
                                 <MenuItem p="0">
-                                  <OrderDetailButton />
-                                </MenuItem>
-                                <MenuItem p="0">
-                                  <OrderUpdateButton />
+                                  <PrintOrderDetailButton />
                                 </MenuItem>
                                 <MenuItem p="0">
                                   <ConfirmationDialog
-                                    title="Hủy"
+                                    title="Nhận đơn"
                                     onConfirm={async () => {}}
                                     colorScheme="red"
                                   />

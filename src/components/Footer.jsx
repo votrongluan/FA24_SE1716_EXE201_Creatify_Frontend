@@ -21,7 +21,7 @@ function Footer() {
             Đại học FPT
           </Text>
           <Text mt="10px" fontSize="14px" color="app_grey.1">
-            creatify@gmail.com
+            3d.creatifyteam6@gmail.com
           </Text>
           <Text mt="10px" fontSize="14px" color="app_grey.1">
             099.9999.999
@@ -106,13 +106,22 @@ function Footer() {
             Theo dõi chúng tôi
           </Text>
           <Text mt="20px" fontSize="14px" color="app_grey.1">
-            Facebook
+            <a
+              rel="noreferrer"
+              target="_blank"
+              href="https://www.facebook.com/profile.php?id=61566307373631&locale=vi_VN"
+            >
+              Facebook
+            </a>
           </Text>
           <Text mt="10px" fontSize="14px" color="app_grey.1">
-            LinkedIn
-          </Text>
-          <Text mt="10px" fontSize="14px" color="app_grey.1">
-            X
+            <a
+              rel="noreferrer"
+              target="_blank"
+              href="https://www.instagram.com/3d_creatify?igsh=Z255bXFnaXllNnJp"
+            >
+              Instagram
+            </a>
           </Text>
         </Box>
       </Flex>

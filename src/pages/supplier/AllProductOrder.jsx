@@ -29,7 +29,7 @@ import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import ConfirmationDialog from "../../components/ConfirmationDialog.jsx";
 import axios from "../../api/axios.js";
 
-export default function OrderManagePage() {
+export default function AllProductOrder() {
   const orders = [
     {
       id: 1,
@@ -89,12 +89,6 @@ export default function OrderManagePage() {
 
   return (
     <>
-      <Heading as="h2" size="lg" textAlign="center">
-        Quản lý đơn hàng
-      </Heading>
-
-      <Box mt="5" h="40px"></Box>
-
       <SearchFilter
         searchPlaceholder="Tìm theo tên, số điện thoại, địa chỉ"
         data={orders}
@@ -115,7 +109,6 @@ export default function OrderManagePage() {
                       <Th>Email</Th>
                       <Th>SĐT</Th>
                       <Th>Giá</Th>
-                      <Th>Supplier</Th>
                       <Th>Trạng thái</Th>
                       <Th textAlign="center">Thao tác</Th>
                     </Tr>
@@ -156,9 +149,6 @@ export default function OrderManagePage() {
                           <Text>{order.price}</Text>
                         </Td>
                         <Td>
-                          <Text>Tân Bình 3D</Text>
-                        </Td>
-                        <Td>
                           <Text>
                             {order.status == true ? (
                               <Badge colorScheme="green" p="8px">
@@ -189,11 +179,8 @@ export default function OrderManagePage() {
                                   <OrderDetailButton />
                                 </MenuItem>
                                 <MenuItem p="0">
-                                  <OrderUpdateButton />
-                                </MenuItem>
-                                <MenuItem p="0">
                                   <ConfirmationDialog
-                                    title="Hủy"
+                                    title="Nhận đơn"
                                     onConfirm={async () => {}}
                                     colorScheme="red"
                                   />
