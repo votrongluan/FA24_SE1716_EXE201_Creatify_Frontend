@@ -43,7 +43,7 @@ const DashboardPage = () => {
 
       <Tabs colorScheme="black">
         <TabList>
-          <Tab>Tiếp thị</Tab>
+          <Tab>Marketing</Tab>
           <Tab>Doanh thu</Tab>
         </TabList>
 

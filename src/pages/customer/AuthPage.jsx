@@ -1,25 +1,10 @@
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Input,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-  useToast,
-} from "@chakra-ui/react";
-import { Form, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Box, Button, Container, Text, useToast } from "@chakra-ui/react";
+import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
-import axios from "../../api/axios.js";
 import Login from "../../components/Login.jsx";
 import Register from "../../components/Register.jsx";
 import ForgetPassword from "../../components/ForgetPassword.jsx";
+import { useState } from "react";
 
 function AuthPage() {
   const toast = useToast();
@@ -27,9 +12,18 @@ function AuthPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Define state to control which component to show
+  const [currentTab, setCurrentTab] = useState("login");
+
   const from = location.state?.from?.pathname || "/";
 
+  // Redirect if already authenticated
   if (auth) return <Navigate to="/" />;
+
+  // Function to change the current tab
+  const changeTab = (tab) => {
+    setCurrentTab(tab);
+  };
 
   return (
     <Container maxW="1200px" as="main">
@@ -38,53 +32,18 @@ function AuthPage() {
         bgColor="app_white.0"
         color="app_black.0"
         margin="0 auto"
+        p="40px"
         width={{
           base: "calc(100% - 40px)",
-          xl: "55%",
+          xl: "60%",
         }}
       >
-        <Tabs minH="60vh" p="20px" variant="enclosed" colorScheme="purple">
-          <TabList>
-            <Tab
-              fontWeight="semibold"
-              fontSize="20px"
-              _selected={{ bg: "gray.100" }}
-              fontFamily="Montserrat"
-            >
-              Đăng nhập
-            </Tab>
-            <Tab
-              fontWeight="semibold"
-              fontSize="20px"
-              _selected={{ bg: "gray.100" }}
-              fontFamily="Montserrat"
-            >
-              Tạo tài khoản
-            </Tab>
-            <Tab
-              fontWeight="semibold"
-              fontSize="20px"
-              _selected={{ bg: "gray.100" }}
-              fontFamily="Montserrat"
-            >
-              Quên mật khẩu
-            </Tab>
-          </TabList>
-
-          <TabPanels py="10px">
-            <TabPanel>
-              <Login />
-            </TabPanel>
-
-            <TabPanel>
-              <Register />
-            </TabPanel>
-
-            <TabPanel>
-              <ForgetPassword />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        {/* Conditional rendering based on currentTab state */}
+        {currentTab === "login" && <Login changeTab={changeTab} />}
+        {currentTab === "register" && <Register changeTab={changeTab} />}
+        {currentTab === "forgetPassword" && (
+          <ForgetPassword changeTab={changeTab} />
+        )}
       </Box>
 
       <Box

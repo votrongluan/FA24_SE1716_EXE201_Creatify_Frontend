@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
   Input,
@@ -11,7 +12,7 @@ import { Form, Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 
-export default function Register() {
+export default function Register({ changeTab }) {
   const toast = useToast();
   const { setAuth, auth } = useAuth();
   const navigate = useNavigate();
@@ -40,8 +41,9 @@ export default function Register() {
       }
 
       // Check if phone number is valid
-      const phoneRegex = /^[0-9]{9,11}$/;
+      const phoneRegex = /^0[0-9]{9}$/;
       if (!phoneRegex.test(data.phone)) {
+        console.log(data.phone);
         toast({
           title: "Đăng ký thất bại",
           description: "Số điện thoại không hợp lệ",
@@ -90,6 +92,18 @@ export default function Register() {
 
   return (
     <>
+      <Box
+        fontWeight="semibold"
+        fontSize="20px"
+        _selected={{ bg: "gray.100" }}
+        fontFamily="Montserrat"
+        mb="20px"
+        pb="8px"
+        borderBottom="1px solid black"
+      >
+        Đăng ký
+      </Box>
+
       <Form onSubmit={handleRegister}>
         <FormControl isRequired mb="20px">
           <FormLabel>Tên của bạn</FormLabel>
@@ -116,28 +130,38 @@ export default function Register() {
           <Input bgColor="white" type="tel" name="phone" />
         </FormControl>
 
+        <FormControl isRequired mb="20px">
+          <FormLabel>Nhập địa chỉ</FormLabel>
+          <Input bgColor="white" type="tel" name="address" />
+        </FormControl>
+
         <Button
           color="app_white.0"
           bgColor="app_blue.0"
           width="100%"
           type="submit"
+          mt="30px"
         >
           Đăng ký
         </Button>
       </Form>
 
-      <Box>
-        <Text textAlign="right" p="16px">
-          <Link
-            style={{
-              textDecoration: "underline",
-            }}
-            to="/verify"
-          >
-            Kích hoạt tài khoản
-          </Link>
-        </Text>
-      </Box>
+      <Flex mt="20px" justifyContent="space-between">
+        <Box
+          onClick={() => changeTab("login")}
+          cursor="pointer"
+          color="app_blue.0"
+        >
+          Đăng nhập
+        </Box>
+        <Box>
+          <Text textAlign="right">
+            <Link to="/verify">
+              <Text color="app_blue.0">Kích hoạt tài khoản</Text>
+            </Link>
+          </Text>
+        </Box>
+      </Flex>
     </>
   );
 }

@@ -112,6 +112,7 @@ export default function ProductManagePage() {
                       <Th>Loại</Th>
                       <Th>Mô tả</Th>
                       <Th>Ảnh</Th>
+                      <Th>Supplier</Th>
                       <Th textAlign="center">Thao tác</Th>
                     </Tr>
                   </Thead>
@@ -146,6 +147,9 @@ export default function ProductManagePage() {
                             objectPosition="center"
                             h="50px"
                           />
+                        </Td>
+                        <Td maxW="150px" whiteSpace="normal">
+                          <Text>Tân Bình 3D</Text>
                         </Td>
                         <Td>
                           <Flex alignItems="center" columnGap="20px">

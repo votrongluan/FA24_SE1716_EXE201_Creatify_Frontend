@@ -63,14 +63,14 @@ export default function MarketingDashboard() {
   return (
     <>
       <SimpleGrid columns={2} gap="8px">
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           <Flex mb="8px" alignItems="center" justifyContent="space-between">
-            <Heading fontSize="18px" color="white">
-              SESSIONS
+            <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
+              LƯỢT TRUY CẬP
             </Heading>
             <Select
-              bg="black"
-              color="white"
+              bgColor="app_white.0"
+              color="app_black.0"
               cursor="pointer"
               width="fit-content"
               fontSize="12px"
@@ -78,28 +78,28 @@ export default function MarketingDashboard() {
               border="none"
               outline="none"
             >
-              <option style={optionStyle}>Last 30 days</option>
+              <option style={optionStyle}>30 ngày qua</option>
             </Select>
           </Flex>
 
-          <Stat my="16px">
+          <Stat color="app_black.0" my="16px">
             <StatNumber>12411</StatNumber>
             <StatHelpText>
-              <Text color="red.500">▼ 9% (Comparison period: 13564)</Text>
+              <Text color="red.500">▼ 9% (Kỳ trước: 13564)</Text>
             </StatHelpText>
           </Stat>
 
           <Line data={sessionsData} />
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           <Flex mb="8px" alignItems="center" justifyContent="space-between">
-            <Heading fontSize="18px" color="white">
-              NEW CONTACTS (W/O OFFLINE SOURCES)
+            <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
+              LIÊN HỆ MỚI (KHÔNG TÍNH NGUỒN NGOẠI TUYẾN)
             </Heading>
             <Select
-              bg="black"
-              color="white"
+              bgColor="app_white.0"
+              color="app_black.0"
               cursor="pointer"
               width="fit-content"
               fontSize="12px"
@@ -107,14 +107,14 @@ export default function MarketingDashboard() {
               border="none"
               outline="none"
             >
-              <option style={optionStyle}>Last 30 days</option>
+              <option style={optionStyle}>30 ngày qua</option>
             </Select>
           </Flex>
 
-          <Stat my="16px">
+          <Stat color="app_black.0" my="16px">
             <StatNumber>44</StatNumber>
             <StatHelpText>
-              <Text color="red.500">▼ 17% (Comparison period: 53)</Text>
+              <Text color="red.500">▼ 17% (Kỳ so sánh: 53)</Text>
             </StatHelpText>
           </Stat>
 
@@ -123,14 +123,13 @@ export default function MarketingDashboard() {
       </SimpleGrid>
 
       <SimpleGrid mt="8px" columns={3} gap="8px">
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
-          <Stat m="0 auto">
+        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
+          <Stat color="app_black.0" m="0 auto">
             <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">Lead Gen Goals</StatLabel>
+              <StatLabel fontSize="18px">Mục tiêu thu hút khách hàng</StatLabel>
               <Select
-                bg="app_black.0"
-                bgColor="app_black.0"
-                color="app_white.0"
+                bgColor="app_white.0"
+                color="app_black.0"
                 cursor="pointer"
                 width="fit-content"
                 fontSize="12px"
@@ -138,25 +137,24 @@ export default function MarketingDashboard() {
                 border="none"
                 outline="none"
               >
-                <option style={optionStyle}>Last 30 days</option>
+                <option style={optionStyle}>30 ngày qua</option>
               </Select>
             </Flex>
 
             <StatNumber>44</StatNumber>
             <StatHelpText>
-              <Text color="green.500">▲ 47% (Comparison period: 32)</Text>
+              <Text color="green.500">▲ 47% (Kỳ so sánh: 32)</Text>
             </StatHelpText>
           </Stat>
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
-          <Stat m="0 auto">
+        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
+          <Stat color="app_black.0" m="0 auto">
             <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">New Users</StatLabel>
+              <StatLabel fontSize="18px">Người dùng mới</StatLabel>
               <Select
-                bg="app_black.0"
-                bgColor="app_black.0"
-                color="app_white.0"
+                bgColor="app_white.0"
+                color="app_black.0"
                 cursor="pointer"
                 width="fit-content"
                 fontSize="12px"
@@ -164,25 +162,24 @@ export default function MarketingDashboard() {
                 border="none"
                 outline="none"
               >
-                <option style={optionStyle}>Last 30 days</option>
+                <option style={optionStyle}>30 ngày qua</option>
               </Select>
             </Flex>
 
             <StatNumber>1360</StatNumber>
             <StatHelpText>
-              <Text color="red.500">▼ 47% (Comparison period: 2,587)</Text>
+              <Text color="red.500">▼ 47% (Kỳ so sánh: 2,587)</Text>
             </StatHelpText>
           </Stat>
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
-          <Stat m="0 auto">
+        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
+          <Stat color="app_black.0" m="0 auto">
             <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">Email Opened</StatLabel>
+              <StatLabel fontSize="18px">Email đã mở</StatLabel>
               <Select
-                bg="app_black.0"
-                bgColor="app_black.0"
-                color="app_white.0"
+                bgColor="app_white.0"
+                color="app_black.0"
                 cursor="pointer"
                 width="fit-content"
                 fontSize="12px"
@@ -190,13 +187,13 @@ export default function MarketingDashboard() {
                 border="none"
                 outline="none"
               >
-                <option style={optionStyle}>Last 30 days</option>
+                <option style={optionStyle}>30 ngày qua</option>
               </Select>
             </Flex>
 
             <StatNumber>4171</StatNumber>
             <StatHelpText>
-              <Text color="red.500">▼ 38% (Comparison period: 6775)</Text>
+              <Text color="red.500">▼ 38% (Kỳ so sánh: 6775)</Text>
             </StatHelpText>
           </Stat>
         </GridItem>
@@ -204,15 +201,20 @@ export default function MarketingDashboard() {
 
       <SimpleGrid mt="8px" columns={3} gap="8px">
         {/* Marketing Performance */}
-        <GridItem bgColor="black" border="1px solid black" p="12px">
+        <GridItem
+          color="app_black.0"
+          bgColor="app_white.0"
+          border="1px solid black"
+          p="12px"
+        >
           <Box w="100%">
             <Flex alignItems="center" justifyContent="space-between">
-              <Heading fontSize="18px" color="white">
-                Marketing Performance
+              <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
+                Hiệu suất tiếp thị
               </Heading>
               <Select
-                bg="black"
-                color="white"
+                bgColor="app_white.0"
+                color="app_black.0"
                 cursor="pointer"
                 width="fit-content"
                 fontSize="12px"
@@ -224,37 +226,37 @@ export default function MarketingDashboard() {
               </Select>
             </Flex>
 
-            <Table mt="20px" variant="simple" color="white">
+            <Table mt="20px" variant="simple" color="app_black.0">
               <Thead>
                 <Tr>
-                  <Th color="gray.400">Metric</Th>
-                  <Th color="gray.400">Last 30 Days</Th>
+                  <Th color="gray.400">Chỉ số</Th>
+                  <Th color="gray.400">30 Ngày qua</Th>
                   <Th color="gray.400">▲</Th>
                 </Tr>
               </Thead>
               <Tbody>
                 <Tr>
-                  <Td>Sessions</Td>
+                  <Td>Lượt truy cập</Td>
                   <Td>12,411</Td>
                   <Td color="red.500">▼ 9%</Td>
                 </Tr>
                 <Tr>
-                  <Td>Contacts</Td>
+                  <Td>Liên hệ</Td>
                   <Td>44</Td>
                   <Td color="red.500">▼ 17%</Td>
                 </Tr>
                 <Tr>
-                  <Td>Leads</Td>
+                  <Td>Khách hàng tiềm năng</Td>
                   <Td>24</Td>
                   <Td color="red.500">▼ 25%</Td>
                 </Tr>
                 <Tr>
-                  <Td>Customers</Td>
+                  <Td>Khách hàng</Td>
                   <Td>0</Td>
                   <Td color="red.500">▼ 100%</Td>
                 </Tr>
                 <Tr>
-                  <Td>Bounce rate</Td>
+                  <Td>Tỷ lệ thoát</Td>
                   <Td>1.34%</Td>
                   <Td color="red.500">▲ 425.72%</Td>
                 </Tr>
@@ -264,7 +266,7 @@ export default function MarketingDashboard() {
                   <Td color="red.500">▼ 32%</Td>
                 </Tr>
                 <Tr>
-                  <Td>Pages / Session</Td>
+                  <Td>Phiên trung bình</Td>
                   <Td>4.61</Td>
                   <Td color="red.500">▼ 20%</Td>
                 </Tr>
@@ -279,15 +281,20 @@ export default function MarketingDashboard() {
         </GridItem>
 
         {/* New Contacts by Source */}
-        <GridItem bgColor="black" border="1px solid black" p="12px">
+        <GridItem
+          color="app_black.0"
+          bgColor="app_white.0"
+          border="1px solid black"
+          p="12px"
+        >
           <Box w="100%">
             <Flex alignItems="center" justifyContent="space-between">
-              <Heading fontSize="18px" color="white">
-                New Contacts by Source
+              <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
+                Liên hệ mới theo nguồn
               </Heading>
               <Select
-                bg="black"
-                color="white"
+                bgColor="app_white.0"
+                color="app_black.0"
                 cursor="pointer"
                 width="fit-content"
                 fontSize="12px"
@@ -295,15 +302,15 @@ export default function MarketingDashboard() {
                 border="none"
                 outline="none"
               >
-                <option style={optionStyle}>Last 30 days</option>
+                <option style={optionStyle}>30 ngày qua</option>
               </Select>
             </Flex>
 
-            <Table mt="20px" variant="simple" color="white">
+            <Table mt="20px" variant="simple">
               <Thead>
                 <Tr>
-                  <Th color="gray.400">Source</Th>
-                  <Th color="gray.400">Last 30 Days</Th>
+                  <Th color="gray.400">Nguồn</Th>
+                  <Th color="gray.400">30 ngày qua</Th>
                   <Th color="gray.400">▲</Th>
                 </Tr>
               </Thead>
@@ -339,15 +346,20 @@ export default function MarketingDashboard() {
         </GridItem>
 
         {/* Contacts / Visits by Source */}
-        <GridItem bgColor="black" border="1px solid black" p="12px">
+        <GridItem
+          color="app_black.0"
+          bgColor="app_white.0"
+          border="1px solid black"
+          p="12px"
+        >
           <Box w="100%">
             <Flex alignItems="center" justifyContent="space-between">
-              <Heading fontSize="18px" color="white">
-                Contacts / Visits by Source
+              <Heading fontWeight="normal" fontSize="18px">
+                Liên hệ / Truy cập theo Nguồn
               </Heading>
               <Select
-                bg="black"
-                color="white"
+                bgColor="app_white.0"
+                color="app_black.0"
                 cursor="pointer"
                 width="fit-content"
                 fontSize="12px"
@@ -359,7 +371,7 @@ export default function MarketingDashboard() {
               </Select>
             </Flex>
 
-            <Table mt="20px" variant="simple" color="white">
+            <Table mt="20px" variant="simple">
               <Thead>
                 <Tr>
                   <Th color="gray.400">#</Th>

@@ -64,7 +64,7 @@ export default function VerifyPage() {
   };
 
   return (
-    <>
+    <Box pb="100px">
       <Box height="100px">
         <Heading
           fontWeight="normal"
@@ -119,6 +119,6 @@ export default function VerifyPage() {
           </Text>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }

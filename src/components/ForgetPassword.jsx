@@ -1,9 +1,12 @@
 import {
+  Box,
   Button,
+  Flex,
   FormControl,
   FormHelperText,
   FormLabel,
   Input,
+  Spacer,
   useToast,
 } from "@chakra-ui/react";
 import { Form, useLocation, useNavigate } from "react-router-dom";
@@ -11,7 +14,7 @@ import { useState } from "react";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 
-export default function ForgetPassword() {
+export default function ForgetPassword({ changeTab }) {
   const toast = useToast();
   const { setAuth, auth } = useAuth();
   const navigate = useNavigate();
@@ -79,6 +82,18 @@ export default function ForgetPassword() {
 
   return (
     <>
+      <Box
+        fontWeight="semibold"
+        fontSize="20px"
+        _selected={{ bg: "gray.100" }}
+        fontFamily="Montserrat"
+        mb="20px"
+        pb="8px"
+        borderBottom="1px solid black"
+      >
+        Quên mật khẩu
+      </Box>
+
       <Form onSubmit={handleChangePassword}>
         <FormControl isRequired mb="20px">
           <FormLabel>Email</FormLabel>
@@ -92,17 +107,20 @@ export default function ForgetPassword() {
           <FormHelperText>
             Hệ thống sẽ gửi mã OTP về mail của bạn
           </FormHelperText>
-          <Button
-            mt={2}
-            color="app_white.0"
-            bgColor="app_blue.0"
-            width="100%"
-            onClick={handleSendOTP}
-            isLoading={isSending} // Show loading spinner if sending
-            isDisabled={isSending} // Disable button if sending
-          >
-            Gửi mã xác nhận
-          </Button>
+          <Flex>
+            <Spacer />
+            <Button
+              mt={2}
+              color="app_white.0"
+              bgColor="app_blue.0"
+              width="50%"
+              onClick={handleSendOTP}
+              isLoading={isSending} // Show loading spinner if sending
+              isDisabled={isSending} // Disable button if sending
+            >
+              Gửi mã xác nhận
+            </Button>
+          </Flex>
         </FormControl>
 
         <FormControl isRequired mb="20px">
@@ -143,9 +161,22 @@ export default function ForgetPassword() {
           bgColor="app_blue.0"
           width="100%"
           type="submit"
+          mt="30px"
         >
           Xác nhận
         </Button>
+
+        <Flex mt="20px" justifyContent="space-between">
+          <Spacer />
+
+          <Box
+            onClick={() => changeTab("login")}
+            cursor="pointer"
+            color="app_blue.0"
+          >
+            Đăng nhập
+          </Box>
+        </Flex>
       </Form>
     </>
   );
