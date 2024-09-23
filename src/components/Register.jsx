@@ -8,20 +8,17 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Form, Link, useLocation, useNavigate } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import axios from "../api/axios";
-import useAuth from "../hooks/useAuth";
+import { useState } from "react";
 
 export default function Register({ changeTab }) {
   const toast = useToast();
-  const { setAuth, auth } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const from = location.state?.from?.pathname || "/";
+  const [isSending, setIsSending] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setIsSending(true);
 
     try {
       const formData = new FormData(e.target);
@@ -35,7 +32,6 @@ export default function Register({ changeTab }) {
           status: "error",
           duration: 700,
           isClosable: true,
-          position: "top-right",
         });
         return;
       }
@@ -50,7 +46,6 @@ export default function Register({ changeTab }) {
           status: "error",
           duration: 700,
           isClosable: true,
-          position: "top-right",
         });
         return;
       }
@@ -72,21 +67,20 @@ export default function Register({ changeTab }) {
           status: "error",
           duration: 3000,
           isClosable: true,
-          position: "top-right",
         });
       } else {
         toast({
-          title: "Đăng ký thành công, vui lòng kích hoạt tài khoản",
-          description: "Tài khoản đã được tạo",
+          title: "Đăng ký thành công",
+          description: "Vui lòng kích hoạt tài khoản bằng OTP đã gửi về email",
           status: "success",
-          duration: 3000,
+          duration: 5000,
           isClosable: true,
-          position: "top-right",
         });
       }
-      console.log(user);
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -141,6 +135,7 @@ export default function Register({ changeTab }) {
           width="100%"
           type="submit"
           mt="30px"
+          isLoading={isSending}
         >
           Đăng ký
         </Button>
@@ -154,12 +149,12 @@ export default function Register({ changeTab }) {
         >
           Đăng nhập
         </Box>
-        <Box>
-          <Text textAlign="right">
-            <Link to="/verify">
-              <Text color="app_blue.0">Kích hoạt tài khoản</Text>
-            </Link>
-          </Text>
+        <Box
+          onClick={() => changeTab("verify")}
+          cursor="pointer"
+          color="app_blue.0"
+        >
+          Kích hoạt tài khoản
         </Box>
       </Flex>
     </>

@@ -1,6 +1,4 @@
-import React from "react";
 import {
-  Box,
   Flex,
   Stat,
   StatLabel,
@@ -8,19 +6,12 @@ import {
   StatHelpText,
   Heading,
   Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   SimpleGrid,
   GridItem,
   Select,
 } from "@chakra-ui/react";
-import { Line, Doughnut } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 
-// Mock data for charts and stats
 const revenueData = {
   labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5"],
   datasets: [
@@ -45,14 +36,98 @@ const profitData = {
   ],
 };
 
-const goalCompletionData = {
-  datasets: [
-    {
-      data: [70, 30],
-      backgroundColor: ["#FF6384", "#ccc"],
-    },
-  ],
+const statsData = {
+  totalOrders: {
+    label: "Tổng số đơn hàng",
+    value: "70%",
+    change: 20,
+    comparison: "50%",
+    direction: "up",
+  },
+  totalPrints: {
+    label: "Tổng số đơn in",
+    value: 136,
+    change: -5,
+    comparison: 143,
+    direction: "down",
+  },
+  totalRevenue: {
+    label: "Số sản phẩm bán được",
+    value: "41,710,000 VND",
+    change: -12,
+    comparison: "47,500,000 VND",
+    direction: "down",
+  },
+  targetCompletion: {
+    label: "Hoàn thành mục tiêu",
+    value: "70%",
+    change: 20,
+    comparison: "50%",
+    direction: "up",
+  },
+  newCustomers: {
+    label: "Khách hàng mới",
+    value: 136,
+    change: -5,
+    comparison: 143,
+    direction: "down",
+  },
+  emailRevenue: {
+    label: "Doanh thu qua email",
+    value: "41,710,000 VND",
+    change: -12,
+    comparison: "47,500,000 VND",
+    direction: "down",
+  },
+  revenue: {
+    label: "DOANH THU",
+    value: "124,110,000 VND",
+    change: 15,
+    comparison: "107,000,000 VND",
+    direction: "up",
+  },
+  profit: {
+    label: "LỢI NHUẬN",
+    value: "30,550,000 VND",
+    change: -8,
+    comparison: "33,000,000 VND",
+    direction: "down",
+  },
 };
+
+function renderStat(stat) {
+  return (
+    <>
+      <Flex mb="8px" alignItems="center" justifyContent="space-between">
+        <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
+          {stat.label}
+        </Heading>
+        <Select
+          bgColor="app_white.0"
+          color="app_black.0"
+          cursor="pointer"
+          width="fit-content"
+          fontSize="12px"
+          ml="8px"
+          border="none"
+          outline="none"
+        >
+          <option style={optionStyle}>30 ngày gần nhất</option>
+        </Select>
+      </Flex>
+
+      <Stat color="app_black.0" my="16px">
+        <StatNumber>{stat.value}</StatNumber>
+        <StatHelpText>
+          <Text color={stat.direction === "down" ? "red.500" : "green.500"}>
+            {stat.direction === "down" ? "▼" : "▲"} {Math.abs(stat.change)}% (
+            Kỳ trước: {stat.comparison})
+          </Text>
+        </StatHelpText>
+      </Stat>
+    </>
+  );
+}
 
 const optionStyle = {
   backgroundColor: "#00060F",
@@ -64,214 +139,40 @@ export default function RevenueDashboard() {
     <>
       <SimpleGrid mt="8px" columns={3} gap="8px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Stat color="app_black.0" m="0 auto">
-            <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">Tổng số đơn hàng</StatLabel>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>30 ngày gần nhất</option>
-              </Select>
-            </Flex>
-
-            <StatNumber>70%</StatNumber>
-            <StatHelpText>
-              <Text color="green.500">▲ 20% (Kỳ trước: 50%)</Text>
-            </StatHelpText>
-          </Stat>
+          {renderStat(statsData.totalOrders)}
         </GridItem>
 
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Stat color="app_black.0" m="0 auto">
-            <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">Tổng số đơn in</StatLabel>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>30 ngày gần nhất</option>
-              </Select>
-            </Flex>
-
-            <StatNumber>136</StatNumber>
-            <StatHelpText>
-              <Text color="red.500">▼ 5% (Kỳ trước: 143)</Text>
-            </StatHelpText>
-          </Stat>
+          {renderStat(statsData.totalPrints)}
         </GridItem>
 
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Stat color="app_black.0" m="0 auto">
-            <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">Số sản phẩm bán được</StatLabel>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>30 ngày gần nhất</option>
-              </Select>
-            </Flex>
-
-            <StatNumber>41,710,000 VND</StatNumber>
-            <StatHelpText>
-              <Text color="red.500">▼ 12% (Kỳ trước: 47,500,000 VND)</Text>
-            </StatHelpText>
-          </Stat>
+          {renderStat(statsData.totalRevenue)}
         </GridItem>
       </SimpleGrid>
 
       <SimpleGrid mt="8px" columns={3} gap="8px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Stat color="app_black.0" m="0 auto">
-            <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">Hoàn thành mục tiêu</StatLabel>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>30 ngày gần nhất</option>
-              </Select>
-            </Flex>
-
-            <StatNumber>70%</StatNumber>
-            <StatHelpText>
-              <Text color="green.500">▲ 20% (Kỳ trước: 50%)</Text>
-            </StatHelpText>
-          </Stat>
+          {renderStat(statsData.targetCompletion)}
         </GridItem>
 
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Stat color="app_black.0" m="0 auto">
-            <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">Khách hàng mới</StatLabel>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>30 ngày gần nhất</option>
-              </Select>
-            </Flex>
-
-            <StatNumber>136</StatNumber>
-            <StatHelpText>
-              <Text color="red.500">▼ 5% (Kỳ trước: 143)</Text>
-            </StatHelpText>
-          </Stat>
+          {renderStat(statsData.newCustomers)}
         </GridItem>
 
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Stat color="app_black.0" m="0 auto">
-            <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">Doanh thu qua email</StatLabel>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>30 ngày gần nhất</option>
-              </Select>
-            </Flex>
-
-            <StatNumber>41,710,000 VND</StatNumber>
-            <StatHelpText>
-              <Text color="red.500">▼ 12% (Kỳ trước: 47,500,000 VND)</Text>
-            </StatHelpText>
-          </Stat>
+          {renderStat(statsData.emailRevenue)}
         </GridItem>
       </SimpleGrid>
 
       <SimpleGrid mt="8px" columns={2} gap="8px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Flex mb="8px" alignItems="center" justifyContent="space-between">
-            <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
-              DOANH THU
-            </Heading>
-            <Select
-              bgColor="app_white.0"
-              color="app_black.0"
-              cursor="pointer"
-              width="fit-content"
-              fontSize="12px"
-              ml="8px"
-              border="none"
-              outline="none"
-            >
-              <option style={optionStyle}>30 ngày gần nhất</option>
-            </Select>
-          </Flex>
-
-          <Stat color="app_black.0" my="16px">
-            <StatNumber>124,110,000 VND</StatNumber>
-            <StatHelpText>
-              <Text color="green.500">▲ 15% (Kỳ trước: 107,000,000 VND)</Text>
-            </StatHelpText>
-          </Stat>
-
+          {renderStat(statsData.revenue)}
           <Line data={revenueData} />
         </GridItem>
 
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Flex mb="8px" alignItems="center" justifyContent="space-between">
-            <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
-              LỢI NHUẬN
-            </Heading>
-            <Select
-              bgColor="app_white.0"
-              color="app_black.0"
-              cursor="pointer"
-              width="fit-content"
-              fontSize="12px"
-              ml="8px"
-              border="none"
-              outline="none"
-            >
-              <option style={optionStyle}>30 ngày gần nhất</option>
-            </Select>
-          </Flex>
-
-          <Stat color="app_black.0" my="16px">
-            <StatNumber>30,550,000 VND</StatNumber>
-            <StatHelpText>
-              <Text color="red.500">▼ 8% (Kỳ trước: 33,000,000 VND)</Text>
-            </StatHelpText>
-          </Stat>
-
+          {renderStat(statsData.profit)}
           <Line data={profitData} />
         </GridItem>
       </SimpleGrid>

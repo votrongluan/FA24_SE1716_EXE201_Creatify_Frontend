@@ -51,7 +51,6 @@ export default function PrintOrderUpdateButton() {
                     status: "error",
                     duration: 700,
                     isClosable: true,
-                    position: "top-right",
                   });
                   return;
                 }
@@ -73,7 +72,6 @@ export default function PrintOrderUpdateButton() {
                     status: "success",
                     duration: 700,
                     isClosable: true,
-                    position: "top-right",
                   });
                   onClose();
                   window.location.reload();
@@ -84,7 +82,6 @@ export default function PrintOrderUpdateButton() {
                     status: "error",
                     duration: 700,
                     isClosable: true,
-                    position: "top-right",
                   });
                 }
               }}
@@ -92,6 +89,11 @@ export default function PrintOrderUpdateButton() {
               <FormControl isRequired>
                 <FormLabel>Giá</FormLabel>
                 <Input name="price" type="text" ref={initialRef} />
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel>Supplier</FormLabel>
+                <Input name="supplier" type="text" ref={initialRef} />
               </FormControl>
 
               <FormControl isRequired mt={4}>

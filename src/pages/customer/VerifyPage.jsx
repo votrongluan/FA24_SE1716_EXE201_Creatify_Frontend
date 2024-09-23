@@ -1,27 +1,24 @@
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
-  Heading,
   Input,
-  Text,
+  Spacer,
   useToast,
 } from "@chakra-ui/react";
-import { Form, Link, useLocation, useNavigate } from "react-router-dom";
+import { Form } from "react-router-dom";
 import axios from "../../api/axios";
-import useAuth from "../../hooks/useAuth";
+import { useState } from "react";
 
-export default function VerifyPage() {
+export default function VerifyPage({ changeTab }) {
   const toast = useToast();
-  const { setAuth, auth } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const from = location.state?.from?.pathname || "/";
+  const [isSending, setIsSending] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setIsSending(true);
 
     try {
       const formData = new FormData(e.target);
@@ -37,83 +34,76 @@ export default function VerifyPage() {
 
       const user = res.data;
 
-      console.log(user);
-
       if (!user) {
         toast({
           title: "Thao tác thất bại",
           status: "error",
           duration: 3000,
           isClosable: true,
-          position: "top-right",
         });
       } else {
         toast({
           title: "Kích hoạt thành công, bạn có thể đăng nhập",
-          description: "Tài khoản đã được tạo",
+          description: "Bạn có thể đăng nhập vào hệ thống bằng tài khoản này",
           status: "success",
-          duration: 3000,
+          duration: 5000,
           isClosable: true,
-          position: "top-right",
         });
       }
-      console.log(user);
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsSending(false);
     }
   };
 
   return (
-    <Box pb="100px">
-      <Box height="100px">
-        <Heading
-          fontWeight="normal"
-          as="h2"
-          fontSize="26px"
-          fontFamily="Montserrat"
-          textAlign="center"
-        >
-          Kích hoạt tài khoản
-        </Heading>
-      </Box>
-
+    <>
       <Box
-        p="40px"
-        bgColor="app_white.0"
-        color="app_black.0"
-        width="40%"
-        m="0 auto"
-        borderRadius="10px"
+        fontWeight="semibold"
+        fontSize="20px"
+        _selected={{ bg: "gray.100" }}
+        fontFamily="Montserrat"
+        mb="20px"
+        pb="8px"
+        borderBottom="1px solid black"
       >
-        <Form onSubmit={handleRegister}>
-          <FormControl isRequired mb="20px">
-            <FormLabel>Nhập email</FormLabel>
-            <Input bgColor="white" type="email" name="email" />
-          </FormControl>
-
-          <FormControl isRequired mb="20px">
-            <FormLabel>Nhập OTP</FormLabel>
-            <Input bgColor="white" type="text" name="otp" />
-          </FormControl>
-
-          <Button
-            color="app_white.0"
-            bgColor="app_blue.0"
-            width="100%"
-            type="submit"
-          >
-            Kích hoạt
-          </Button>
-        </Form>
-
-        <Box>
-          <Text textAlign="right" p="16px">
-            <Link to="/auth">
-              <Text color="app_blue.0">Quay về đăng nhập</Text>
-            </Link>
-          </Text>
-        </Box>
+        Kích hoạt tài khoản
       </Box>
-    </Box>
+
+      <Form onSubmit={handleRegister}>
+        <FormControl isRequired mb="20px">
+          <FormLabel>Nhập email</FormLabel>
+          <Input bgColor="white" type="email" name="email" />
+        </FormControl>
+
+        <FormControl isRequired mb="20px">
+          <FormLabel>Nhập OTP</FormLabel>
+          <Input bgColor="white" type="text" name="otp" />
+        </FormControl>
+
+        <Button
+          color="app_white.0"
+          bgColor="app_blue.0"
+          width="100%"
+          type="submit"
+          isLoading={isSending}
+        >
+          Kích hoạt
+        </Button>
+      </Form>
+
+      <Flex mt="20px" justifyContent="space-between">
+        <Spacer />
+
+        <Box
+          onClick={() => changeTab("login")}
+          cursor="pointer"
+          color="app_blue.0"
+        >
+          Đăng nhập
+        </Box>
+      </Flex>
+    </>
   );
 }

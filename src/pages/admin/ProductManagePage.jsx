@@ -186,7 +186,6 @@ export default function ProductManagePage() {
                                           status: "success",
                                           duration: 700,
                                           isClosable: true,
-                                          position: "top-right",
                                         });
                                         window.location.reload();
                                       } else {
@@ -197,7 +196,6 @@ export default function ProductManagePage() {
                                           status: "error",
                                           duration: 700,
                                           isClosable: true,
-                                          position: "top-right",
                                         });
                                       }
                                     }}

@@ -1,6 +1,4 @@
-import React from "react";
 import {
-  Box,
   Flex,
   Stat,
   StatLabel,
@@ -8,17 +6,14 @@ import {
   StatHelpText,
   Heading,
   Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   SimpleGrid,
   GridItem,
   Select,
 } from "@chakra-ui/react";
-import { Line, Doughnut } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
+import MarketingPerformance from "./MarketingPerformance";
+import NewContact from "./NewContact";
+import SourceContact from "./SourceContact";
 
 // Mock data for charts and stats
 const sessionsData = {
@@ -45,14 +40,77 @@ const contactsData = {
   ],
 };
 
-const leadGenGoalData = {
-  datasets: [
-    {
-      data: [44, 56],
-      backgroundColor: ["#FF6384", "#ccc"],
-    },
-  ],
+const statsData = {
+  visits: {
+    label: "LƯỢT TRUY CẬP",
+    value: 12411,
+    change: -9, // Negative for decrease, positive for increase
+    comparison: 13564,
+    direction: "down", // Use 'up' or 'down' to determine arrow direction
+  },
+  newContacts: {
+    label: "LIÊN HỆ MỚI (KHÔNG TÍNH NGUỒN NGOẠI TUYẾN)",
+    value: 44,
+    change: -17,
+    comparison: 53,
+    direction: "down",
+  },
+  customerAttractionGoal: {
+    label: "Mục tiêu thu hút khách hàng",
+    value: 44,
+    change: 47,
+    comparison: 32,
+    direction: "up",
+  },
+  newUsers: {
+    label: "Người dùng mới",
+    value: 1360,
+    change: -47,
+    comparison: 2587,
+    direction: "down",
+  },
+  emailsOpened: {
+    label: "Email đã mở",
+    value: 4171,
+    change: -38,
+    comparison: 6775,
+    direction: "down",
+  },
 };
+
+function renderStat(stat) {
+  return (
+    <>
+      <Flex mb="8px" alignItems="center" justifyContent="space-between">
+        <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
+          {stat.label}
+        </Heading>
+        <Select
+          bgColor="app_white.0"
+          color="app_black.0"
+          cursor="pointer"
+          width="fit-content"
+          fontSize="12px"
+          ml="8px"
+          border="none"
+          outline="none"
+        >
+          <option style={optionStyle}>30 ngày qua</option>
+        </Select>
+      </Flex>
+
+      <Stat color="app_black.0" my="16px">
+        <StatNumber>{stat.value}</StatNumber>
+        <StatHelpText>
+          <Text color={stat.direction === "down" ? "red.500" : "green.500"}>
+            {stat.direction === "down" ? "▼" : "▲"} {Math.abs(stat.change)}% (Kỳ
+            so sánh: {stat.comparison})
+          </Text>
+        </StatHelpText>
+      </Stat>
+    </>
+  );
+}
 
 const optionStyle = {
   backgroundColor: "#00060F",
@@ -64,375 +122,34 @@ export default function MarketingDashboard() {
     <>
       <SimpleGrid columns={2} gap="8px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Flex mb="8px" alignItems="center" justifyContent="space-between">
-            <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
-              LƯỢT TRUY CẬP
-            </Heading>
-            <Select
-              bgColor="app_white.0"
-              color="app_black.0"
-              cursor="pointer"
-              width="fit-content"
-              fontSize="12px"
-              ml="8px"
-              border="none"
-              outline="none"
-            >
-              <option style={optionStyle}>30 ngày qua</option>
-            </Select>
-          </Flex>
-
-          <Stat color="app_black.0" my="16px">
-            <StatNumber>12411</StatNumber>
-            <StatHelpText>
-              <Text color="red.500">▼ 9% (Kỳ trước: 13564)</Text>
-            </StatHelpText>
-          </Stat>
-
+          {renderStat(statsData.visits)}
           <Line data={sessionsData} />
         </GridItem>
 
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Flex mb="8px" alignItems="center" justifyContent="space-between">
-            <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
-              LIÊN HỆ MỚI (KHÔNG TÍNH NGUỒN NGOẠI TUYẾN)
-            </Heading>
-            <Select
-              bgColor="app_white.0"
-              color="app_black.0"
-              cursor="pointer"
-              width="fit-content"
-              fontSize="12px"
-              ml="8px"
-              border="none"
-              outline="none"
-            >
-              <option style={optionStyle}>30 ngày qua</option>
-            </Select>
-          </Flex>
-
-          <Stat color="app_black.0" my="16px">
-            <StatNumber>44</StatNumber>
-            <StatHelpText>
-              <Text color="red.500">▼ 17% (Kỳ so sánh: 53)</Text>
-            </StatHelpText>
-          </Stat>
-
+          {renderStat(statsData.newContacts)}
           <Line data={contactsData} />
         </GridItem>
       </SimpleGrid>
 
       <SimpleGrid mt="8px" columns={3} gap="8px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Stat color="app_black.0" m="0 auto">
-            <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">Mục tiêu thu hút khách hàng</StatLabel>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>30 ngày qua</option>
-              </Select>
-            </Flex>
-
-            <StatNumber>44</StatNumber>
-            <StatHelpText>
-              <Text color="green.500">▲ 47% (Kỳ so sánh: 32)</Text>
-            </StatHelpText>
-          </Stat>
+          {renderStat(statsData.customerAttractionGoal)}
         </GridItem>
 
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Stat color="app_black.0" m="0 auto">
-            <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">Người dùng mới</StatLabel>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>30 ngày qua</option>
-              </Select>
-            </Flex>
-
-            <StatNumber>1360</StatNumber>
-            <StatHelpText>
-              <Text color="red.500">▼ 47% (Kỳ so sánh: 2,587)</Text>
-            </StatHelpText>
-          </Stat>
+          {renderStat(statsData.newUsers)}
         </GridItem>
 
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          <Stat color="app_black.0" m="0 auto">
-            <Flex alignItems="center" justifyContent="space-between">
-              <StatLabel fontSize="18px">Email đã mở</StatLabel>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>30 ngày qua</option>
-              </Select>
-            </Flex>
-
-            <StatNumber>4171</StatNumber>
-            <StatHelpText>
-              <Text color="red.500">▼ 38% (Kỳ so sánh: 6775)</Text>
-            </StatHelpText>
-          </Stat>
+          {renderStat(statsData.emailsOpened)}
         </GridItem>
       </SimpleGrid>
 
       <SimpleGrid mt="8px" columns={3} gap="8px">
-        {/* Marketing Performance */}
-        <GridItem
-          color="app_black.0"
-          bgColor="app_white.0"
-          border="1px solid black"
-          p="12px"
-        >
-          <Box w="100%">
-            <Flex alignItems="center" justifyContent="space-between">
-              <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
-                Hiệu suất tiếp thị
-              </Heading>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>Last 30 days</option>
-              </Select>
-            </Flex>
-
-            <Table mt="20px" variant="simple" color="app_black.0">
-              <Thead>
-                <Tr>
-                  <Th color="gray.400">Chỉ số</Th>
-                  <Th color="gray.400">30 Ngày qua</Th>
-                  <Th color="gray.400">▲</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr>
-                  <Td>Lượt truy cập</Td>
-                  <Td>12,411</Td>
-                  <Td color="red.500">▼ 9%</Td>
-                </Tr>
-                <Tr>
-                  <Td>Liên hệ</Td>
-                  <Td>44</Td>
-                  <Td color="red.500">▼ 17%</Td>
-                </Tr>
-                <Tr>
-                  <Td>Khách hàng tiềm năng</Td>
-                  <Td>24</Td>
-                  <Td color="red.500">▼ 25%</Td>
-                </Tr>
-                <Tr>
-                  <Td>Khách hàng</Td>
-                  <Td>0</Td>
-                  <Td color="red.500">▼ 100%</Td>
-                </Tr>
-                <Tr>
-                  <Td>Tỷ lệ thoát</Td>
-                  <Td>1.34%</Td>
-                  <Td color="red.500">▲ 425.72%</Td>
-                </Tr>
-                <Tr>
-                  <Td>Avg. Session Duration</Td>
-                  <Td>0h 1m</Td>
-                  <Td color="red.500">▼ 32%</Td>
-                </Tr>
-                <Tr>
-                  <Td>Phiên trung bình</Td>
-                  <Td>4.61</Td>
-                  <Td color="red.500">▼ 20%</Td>
-                </Tr>
-                <Tr>
-                  <Td>Pageviews</Td>
-                  <Td>7,565</Td>
-                  <Td color="red.500">▼ 58%</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </Box>
-        </GridItem>
-
-        {/* New Contacts by Source */}
-        <GridItem
-          color="app_black.0"
-          bgColor="app_white.0"
-          border="1px solid black"
-          p="12px"
-        >
-          <Box w="100%">
-            <Flex alignItems="center" justifyContent="space-between">
-              <Heading fontWeight="normal" fontSize="18px" color="app_black.0">
-                Liên hệ mới theo nguồn
-              </Heading>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>30 ngày qua</option>
-              </Select>
-            </Flex>
-
-            <Table mt="20px" variant="simple">
-              <Thead>
-                <Tr>
-                  <Th color="gray.400">Nguồn</Th>
-                  <Th color="gray.400">30 ngày qua</Th>
-                  <Th color="gray.400">▲</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr>
-                  <Td>Offline Source</Td>
-                  <Td>1,506</Td>
-                  <Td color="green.500">▲ 241%</Td>
-                </Tr>
-                <Tr>
-                  <Td>Direct Traffic</Td>
-                  <Td>21</Td>
-                  <Td color="red.500">▼ 25%</Td>
-                </Tr>
-                <Tr>
-                  <Td>Organic Search</Td>
-                  <Td>9</Td>
-                  <Td color="red.500">▼ 31%</Td>
-                </Tr>
-                <Tr>
-                  <Td>Other Campaigns</Td>
-                  <Td>8</Td>
-                  <Td color="green.500">▲ 33%</Td>
-                </Tr>
-                <Tr>
-                  <Td>Referrals</Td>
-                  <Td>4</Td>
-                  <Td color="gray.400">0%</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </Box>
-        </GridItem>
-
-        {/* Contacts / Visits by Source */}
-        <GridItem
-          color="app_black.0"
-          bgColor="app_white.0"
-          border="1px solid black"
-          p="12px"
-        >
-          <Box w="100%">
-            <Flex alignItems="center" justifyContent="space-between">
-              <Heading fontWeight="normal" fontSize="18px">
-                Liên hệ / Truy cập theo Nguồn
-              </Heading>
-              <Select
-                bgColor="app_white.0"
-                color="app_black.0"
-                cursor="pointer"
-                width="fit-content"
-                fontSize="12px"
-                ml="8px"
-                border="none"
-                outline="none"
-              >
-                <option style={optionStyle}>Last 30 days</option>
-              </Select>
-            </Flex>
-
-            <Table mt="20px" variant="simple">
-              <Thead>
-                <Tr>
-                  <Th color="gray.400">#</Th>
-                  <Th color="gray.400">Name</Th>
-                  <Th color="gray.400">New Contacts</Th>
-                  <Th color="gray.400">Sessions</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr>
-                  <Td>1</Td>
-                  <Td>Organic Search</Td>
-                  <Td>9</Td>
-                  <Td>8,185</Td>
-                </Tr>
-                <Tr>
-                  <Td>2</Td>
-                  <Td>Direct Traffic</Td>
-                  <Td>21</Td>
-                  <Td>2,709</Td>
-                </Tr>
-                <Tr>
-                  <Td>3</Td>
-                  <Td>Referrals</Td>
-                  <Td>4</Td>
-                  <Td>447</Td>
-                </Tr>
-                <Tr>
-                  <Td>4</Td>
-                  <Td>Paid Search</Td>
-                  <Td>2</Td>
-                  <Td>344</Td>
-                </Tr>
-                <Tr>
-                  <Td>5</Td>
-                  <Td>Paid Social</Td>
-                  <Td>0</Td>
-                  <Td>314</Td>
-                </Tr>
-                <Tr>
-                  <Td>6</Td>
-                  <Td>Email Marketing</Td>
-                  <Td>0</Td>
-                  <Td>229</Td>
-                </Tr>
-                <Tr>
-                  <Td>7</Td>
-                  <Td>Social Media</Td>
-                  <Td>0</Td>
-                  <Td>105</Td>
-                </Tr>
-                <Tr>
-                  <Td>8</Td>
-                  <Td>Other</Td>
-                  <Td>0</Td>
-                  <Td>78</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </Box>
-        </GridItem>
+        <MarketingPerformance />
+        <NewContact />
+        <SourceContact />
       </SimpleGrid>
     </>
   );

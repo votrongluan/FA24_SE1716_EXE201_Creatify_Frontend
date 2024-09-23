@@ -52,7 +52,6 @@ export default function OrderUpdateButton() {
                     status: "error",
                     duration: 700,
                     isClosable: true,
-                    position: "top-right",
                   });
                   return;
                 }
@@ -74,7 +73,6 @@ export default function OrderUpdateButton() {
                     status: "success",
                     duration: 700,
                     isClosable: true,
-                    position: "top-right",
                   });
                   onClose();
                   window.location.reload();
@@ -85,7 +83,6 @@ export default function OrderUpdateButton() {
                     status: "error",
                     duration: 700,
                     isClosable: true,
-                    position: "top-right",
                   });
                 }
               }}

@@ -1,21 +1,17 @@
-import { Box, Button, Container, Text, useToast } from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Box, Container, Text, useToast } from "@chakra-ui/react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
 import Login from "../../components/Login.jsx";
 import Register from "../../components/Register.jsx";
 import ForgetPassword from "../../components/ForgetPassword.jsx";
 import { useState } from "react";
+import VerifyPage from "./VerifyPage.jsx";
 
 function AuthPage() {
-  const toast = useToast();
-  const { setAuth, auth } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { auth } = useAuth();
 
   // Define state to control which component to show
   const [currentTab, setCurrentTab] = useState("login");
-
-  const from = location.state?.from?.pathname || "/";
 
   // Redirect if already authenticated
   if (auth) return <Navigate to="/" />;
@@ -44,6 +40,7 @@ function AuthPage() {
         {currentTab === "forgetPassword" && (
           <ForgetPassword changeTab={changeTab} />
         )}
+        {currentTab === "verify" && <VerifyPage changeTab={changeTab} />}
       </Box>
 
       <Box

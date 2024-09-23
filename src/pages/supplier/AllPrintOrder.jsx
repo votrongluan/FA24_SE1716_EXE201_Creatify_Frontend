@@ -41,7 +41,7 @@ export default function AllPrintOrder() {
       email: "trongluan115@gmail.com",
       phone: "0972831212",
       price: "1.200.000đ",
-      status: true,
+      status: false,
     },
     {
       id: 2,

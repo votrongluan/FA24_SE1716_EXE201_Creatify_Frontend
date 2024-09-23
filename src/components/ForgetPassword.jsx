@@ -9,28 +9,22 @@ import {
   Spacer,
   useToast,
 } from "@chakra-ui/react";
-import { Form, useLocation, useNavigate } from "react-router-dom";
+import { Form } from "react-router-dom";
 import { useState } from "react";
 import axios from "../api/axios";
-import useAuth from "../hooks/useAuth";
 
 export default function ForgetPassword({ changeTab }) {
   const toast = useToast();
-  const { setAuth, auth } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isSending, setIsSending] = useState(false); // New state for button disabling
 
-  const from = location.state?.from?.pathname || "/";
-
   const handleSendOTP = async () => {
-    setIsSending(true); // Disable the button when clicked
+    setIsSending(true);
+
     try {
-      const res = await axios.post("/Employee/ForgotPassword", { email });
       toast({
         title: "Mã xác nhận đã được gửi!",
         status: "success",
@@ -115,8 +109,7 @@ export default function ForgetPassword({ changeTab }) {
               bgColor="app_blue.0"
               width="50%"
               onClick={handleSendOTP}
-              isLoading={isSending} // Show loading spinner if sending
-              isDisabled={isSending} // Disable button if sending
+              isDisabled={isSending}
             >
               Gửi mã xác nhận
             </Button>

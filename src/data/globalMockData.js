@@ -129,7 +129,7 @@ export const products = [
   },
   {
     id: 14,
-    name: "Kratos (2) - God of War",
+    name: "Kratos - God of War",
     description:
       "Kratos, vị thần chiến tranh từ loạt game God of War, mạnh mẽ và tàn nhẫn.",
     img: pic14,
@@ -137,7 +137,7 @@ export const products = [
   },
   {
     id: 15,
-    name: "Kratos (3) - God of War",
+    name: "Kratos - God of War",
     description:
       "Kratos, với hành trình đầy đau khổ và sự chuộc lỗi trong God of War.",
     img: pic15,
@@ -231,5 +231,5 @@ export const products = [
 ];
 
 export function getProductById(id) {
-  return products.find(product => product.id == id);
+  return products.find((product) => product.id == id);
 }

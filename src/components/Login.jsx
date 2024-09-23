@@ -5,24 +5,26 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Text,
   useToast,
 } from "@chakra-ui/react";
 import { Form, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
 import { jwtDecode } from "jwt-decode";
+import { useState } from "react";
 
 export default function Login({ changeTab }) {
   const toast = useToast();
-  const { setAuth, auth } = useAuth();
+  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isSending, setIsSending] = useState(false);
 
   const from = location.state?.from?.pathname || "/";
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsSending(true);
 
     try {
       const formData = new FormData(e.target);
@@ -61,6 +63,8 @@ export default function Login({ changeTab }) {
         colorScheme: "red",
         duration: 660,
       });
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -95,6 +99,7 @@ export default function Login({ changeTab }) {
           width="100%"
           type="submit"
           mt="30px"
+          isLoading={isSending}
         >
           Đăng nhập
         </Button>

@@ -1,17 +1,41 @@
-import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  GridItem,
-  Image,
-  SimpleGrid,
-  Text,
-} from "@chakra-ui/react";
+import React from "react";
+import { Box, Button, Container, Flex, Image, Text } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import FadeWrapper from "./FadeWrapper";
+import { products } from "../data/globalMockData";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export default function HomeProduct() {
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
   return (
     <>
       <Box w="100%" bgColor="app_black.0" pt="80px" pb="80px">
@@ -22,44 +46,18 @@ export default function HomeProduct() {
 
           <Box mt="60px">
             <FadeWrapper>
-              <SimpleGrid
-                columnGap="40px"
-                rowGap="40px"
-                columns={{ base: 2, xl: 4 }}
-              >
-                <GridItem to="/products/1" as={RouterLink}>
-                  <Image
-                    w="100%"
-                    src="https://via.placeholder.com/150"
-                    objectFit="cover"
-                    objectPosition="center"
-                  />
-                </GridItem>
-                <GridItem to="/products/1" as={RouterLink}>
-                  <Image
-                    w="100%"
-                    src="https://via.placeholder.com/150"
-                    objectFit="cover"
-                    objectPosition="center"
-                  />
-                </GridItem>
-                <GridItem to="/products/1" as={RouterLink}>
-                  <Image
-                    w="100%"
-                    src="https://via.placeholder.com/150"
-                    objectFit="cover"
-                    objectPosition="center"
-                  />
-                </GridItem>
-                <GridItem to="/products/1" as={RouterLink}>
-                  <Image
-                    w="100%"
-                    src="https://via.placeholder.com/150"
-                    objectFit="cover"
-                    objectPosition="center"
-                  />
-                </GridItem>
-              </SimpleGrid>
+              <Slider {...sliderSettings}>
+                {products.map((product) => (
+                  <Box key={product.id} px="10px" height="200px">
+                    <Image
+                      src={product.img}
+                      alt={product.name}
+                      objectFit="cover"
+                      objectPosition="center"
+                    />
+                  </Box>
+                ))}
+              </Slider>
             </FadeWrapper>
 
             <Flex justifyContent="center">

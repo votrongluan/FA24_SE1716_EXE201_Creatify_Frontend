@@ -90,7 +90,6 @@ function App() {
           <Route path="auth" element={<AuthPage />} />
 
           <Route path="about" element={<AboutPage />} />
-          <Route path="verify" element={<VerifyPage />} />
           <Route path="account" element={<AccountPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="material" element={<MaterialPage />} />

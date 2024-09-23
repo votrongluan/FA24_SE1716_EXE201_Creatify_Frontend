@@ -145,10 +145,8 @@ export default function ProductPage() {
               fontSize="16px"
             >
               Dùng mô hình này của chúng tôi để chỉnh sửa theo ý của bạn và đặt
-              in theo yêu cầu. Đây là tính năng mà chúng tôi đang phối hợp cùng
-              đội ngũ phát triển của công ty Google nhằm mang đến trải nghiệm
-              tốt nhất cho khách hàng. Hiện chức năng vẫn chưa hoàn thiện nhưng
-              khách hàng có thể xem một bản demo trên{" "}
+              in theo yêu cầu. Hiện chức năng vẫn chưa hoàn thiện nhưng khách
+              hàng có thể xem một bản demo trên{" "}
               <ChakraLink color="app_blue.0" href="https://youtube.com">
                 youtube
               </ChakraLink>
