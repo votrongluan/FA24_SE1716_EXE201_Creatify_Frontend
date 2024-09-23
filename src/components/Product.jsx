@@ -1,19 +1,21 @@
 import { Box, Button, Image, Text } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 
-export default function Product() {
+export default function Product({ product }) {
+  console.log(product);
+
   return (
     <>
-      <RouterLink to="/products/1">
+      <RouterLink to={`/products/${product.id}`}>
         <Image
-          src="https://designshack.net/wp-content/uploads/placeholder-image.png"
+          src={product.img}
           objectFit="cover"
           objectPosition="center"
           height="250px"
           w="100%"
         />
-        <Text mt="20px" mb="10px">
-          Black Goku
+        <Text noOfLines={1} mt="20px" mb="10px">
+          {product.name}
         </Text>
         <Box width="20px" height="1px" bgColor="app_white.0"></Box>
         <Text color="app_grey.1" mt="10px">

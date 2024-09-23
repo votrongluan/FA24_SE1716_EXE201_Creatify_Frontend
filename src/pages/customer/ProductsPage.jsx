@@ -24,6 +24,7 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import Product from "../../components/Product";
+import { products } from "../../data/globalMockData";
 
 export default function ProductsPage() {
   const [priceRange, setPriceRange] = useState([10, 30]);
@@ -180,42 +181,11 @@ export default function ProductsPage() {
                 xl: 4,
               }}
             >
-              <GridItem>
-                <Product />
-              </GridItem>
-              <GridItem>
-                <Product />
-              </GridItem>
-              <GridItem>
-                <Product />
-              </GridItem>
-              <GridItem>
-                <Product />
-              </GridItem>
-              <GridItem>
-                <Product />
-              </GridItem>
-              <GridItem>
-                <Product />
-              </GridItem>
-              <GridItem>
-                <Product />
-              </GridItem>
-              <GridItem>
-                <Product />
-              </GridItem>
-              <GridItem>
-                <Product />
-              </GridItem>
-              <GridItem>
-                <Product />
-              </GridItem>
-              <GridItem>
-                <Product />
-              </GridItem>
-              <GridItem>
-                <Product />
-              </GridItem>
+              {products.map((product) => (
+                <GridItem key={product.id}>
+                  <Product product={product} />
+                </GridItem>
+              ))}
             </SimpleGrid>
           </GridItem>
         </Grid>

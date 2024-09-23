@@ -18,12 +18,15 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import ShareBar from "../../components/ShareBar";
 import { Link as ChakraLink } from "@chakra-ui/react";
+import { getProductById } from "../../data/globalMockData";
 
 export default function ProductPage() {
+  const { id } = useParams();
   const { isOpen, onToggle } = useDisclosure();
+  const product = getProductById(id);
 
   return (
     <>
@@ -41,7 +44,7 @@ export default function ProductPage() {
           </BreadcrumbItem>
           <BreadcrumbItem>
             <RouterLink to="/products/1">
-              <BreadcrumbLink>Black goku</BreadcrumbLink>
+              <BreadcrumbLink>{product.id}</BreadcrumbLink>
             </RouterLink>
           </BreadcrumbItem>
         </Breadcrumb>
@@ -65,7 +68,7 @@ export default function ProductPage() {
               w="100%"
               objectFit="cover"
               objectPosition="center"
-              src="https://designshack.net/wp-content/uploads/placeholder-image.png"
+              src={product.img}
             />
           </GridItem>
 
@@ -87,10 +90,7 @@ export default function ProductPage() {
               mt="20px"
               color="app_grey.1"
             >
-              Mô tả: Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Minima architecto reiciendis consectetur mollitia nobis veniam,
-              error corporis recusandae illum nihil harum molestias iure odit
-              cupiditate beatae vel, dolore iste quaerat.
+              Mô tả: {product.description}
             </Text>
 
             <Box mt="20px">
@@ -101,9 +101,9 @@ export default function ProductPage() {
                 w="80px"
                 bgColor="app_white.0"
                 color="app_black.0"
-                defaultValue={15}
+                defaultValue={1}
                 min={1}
-                max={5}
+                max={2}
                 mt="5px"
               >
                 <NumberInputField />

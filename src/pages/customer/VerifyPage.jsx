@@ -108,13 +108,8 @@ export default function VerifyPage() {
 
         <Box>
           <Text textAlign="right" p="16px">
-            <Link
-              style={{
-                textDecoration: "underline",
-              }}
-              to="/auth"
-            >
-              Quay về đăng nhập
+            <Link to="/auth">
+              <Text color="app_blue.0">Quay về đăng nhập</Text>
             </Link>
           </Text>
         </Box>
