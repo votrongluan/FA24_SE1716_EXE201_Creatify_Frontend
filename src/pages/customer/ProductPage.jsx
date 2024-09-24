@@ -43,7 +43,7 @@ export default function ProductPage() {
             </RouterLink>
           </BreadcrumbItem>
           <BreadcrumbItem>
-            <RouterLink to="/products/1">
+            <RouterLink to={`/products/${id}`}>
               <BreadcrumbLink>{product.id}</BreadcrumbLink>
             </RouterLink>
           </BreadcrumbItem>
@@ -78,7 +78,7 @@ export default function ProductPage() {
               xl: 1,
             }}
           >
-            <Text fontSize="26px">Black goku</Text>
+            <Text fontSize="26px">{product.name}</Text>
 
             <Text fontSize="20px" mt="30px">
               2.200.000đ

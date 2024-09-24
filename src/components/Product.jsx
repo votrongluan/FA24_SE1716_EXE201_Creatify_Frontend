@@ -2,8 +2,6 @@ import { Box, Button, Image, Text } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function Product({ product }) {
-  console.log(product);
-
   return (
     <>
       <RouterLink to={`/products/${product.id}`}>

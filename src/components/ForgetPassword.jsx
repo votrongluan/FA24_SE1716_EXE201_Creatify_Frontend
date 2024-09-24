@@ -19,10 +19,12 @@ export default function ForgetPassword({ changeTab }) {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isSending, setIsSending] = useState(false); // New state for button disabling
+  const [isOtpSending, setIsOtpSending] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleSendOTP = async () => {
-    setIsSending(true);
+    setIsOtpSending(true);
+    const res = await axios.post("/Employee/ForgotPassword", { email });
 
     try {
       toast({
@@ -44,6 +46,7 @@ export default function ForgetPassword({ changeTab }) {
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
+    setIsSending(true);
 
     try {
       // First, verify the OTP
@@ -71,6 +74,8 @@ export default function ForgetPassword({ changeTab }) {
         duration: 3000,
         isClosable: true,
       });
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -109,7 +114,7 @@ export default function ForgetPassword({ changeTab }) {
               bgColor="app_blue.0"
               width="50%"
               onClick={handleSendOTP}
-              isDisabled={isSending}
+              isDisabled={isOtpSending}
             >
               Gửi mã xác nhận
             </Button>
@@ -155,6 +160,7 @@ export default function ForgetPassword({ changeTab }) {
           width="100%"
           type="submit"
           mt="30px"
+          isLoading={isSending}
         >
           Xác nhận
         </Button>

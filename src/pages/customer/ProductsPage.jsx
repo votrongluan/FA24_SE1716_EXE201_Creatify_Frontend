@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  Button,
   Container,
   Flex,
   Grid,
   GridItem,
   HStack,
-  Image,
   RangeSlider,
   RangeSliderFilledTrack,
   RangeSliderThumb,
@@ -20,17 +18,59 @@ import {
   Spacer,
   Stack,
   Text,
+  Button,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { Link as ChakraLink } from "@chakra-ui/react";
 import Product from "../../components/Product";
 import { products } from "../../data/globalMockData";
 
 export default function ProductsPage() {
-  const [priceRange, setPriceRange] = useState([10, 30]);
+  const minPrice = 0;
+  const maxPrice = 10000000;
+  const [priceRange, setPriceRange] = useState([minPrice, maxPrice]);
+  const [selectedCategory, setSelectedCategory] = useState("Tất cả sản phẩm");
+  const [sortOption, setSortOption] = useState("Đề xuất");
+  const [visibleProductsCount, setVisibleProductsCount] = useState(20); // Manage visible products count
+
   const optionStyle = {
     backgroundColor: "#00060F",
     color: "white",
+  };
+
+  // Filter and sort products based on selected criteria
+  const filteredProducts = products
+    .filter((product) => {
+      // Filter by category
+      if (selectedCategory !== "Tất cả sản phẩm") {
+        return (
+          product.category.toUpperCase() === selectedCategory.toUpperCase()
+        );
+      }
+      return true;
+    })
+    .filter((product) => {
+      // Filter by price range
+      return product.price >= priceRange[0] && product.price <= priceRange[1];
+    })
+    .sort((a, b) => {
+      // Sort products based on selected sorting option
+      if (sortOption === "Giá (thấp đến cao)") {
+        return a.price - b.price;
+      } else if (sortOption === "Giá (cao đến thấp)") {
+        return b.price - a.price;
+      } else if (sortOption === "Tên A-Z") {
+        return a.name.localeCompare(b.name);
+      } else if (sortOption === "Tên Z-A") {
+        return b.name.localeCompare(a.name);
+      }
+      return 0; // Default sort (Đề xuất)
+    });
+
+  // Show only the visible products (initially 20)
+  const visibleProducts = filteredProducts.slice(0, visibleProductsCount);
+
+  const handleShowMore = () => {
+    setVisibleProductsCount((prevCount) => prevCount + 20); // Increase visible products count by 20
   };
 
   return (
@@ -66,51 +106,61 @@ export default function ProductsPage() {
             </Text>
 
             <Stack mt="10px" spacing="0">
-              <ChakraLink
-                as={RouterLink}
-                to={"/"}
+              <Box
                 py="10px"
-                _hover={{ color: "app_blue.0" }}
+                _hover={{ color: "app_blue.0", cursor: "pointer" }}
+                onClick={() => {
+                  setSelectedCategory("Tất cả sản phẩm");
+                  setVisibleProductsCount(20);
+                }}
                 transition="color 0.3s ease"
               >
                 Tất cả sản phẩm
-              </ChakraLink>
-              <ChakraLink
-                as={RouterLink}
-                to={"/"}
+              </Box>
+              <Box
                 py="10px"
-                _hover={{ color: "app_blue.0" }}
+                _hover={{ color: "app_blue.0", cursor: "pointer" }}
+                onClick={() => {
+                  setSelectedCategory("Anime");
+                  setVisibleProductsCount(20);
+                }}
                 transition="color 0.3s ease"
               >
                 Anime
-              </ChakraLink>
-              <ChakraLink
-                as={RouterLink}
-                to={"/"}
+              </Box>
+              <Box
                 py="10px"
-                _hover={{ color: "app_blue.0" }}
+                _hover={{ color: "app_blue.0", cursor: "pointer" }}
+                onClick={() => {
+                  setSelectedCategory("Decoration");
+                  setVisibleProductsCount(20);
+                }}
                 transition="color 0.3s ease"
               >
                 Decoration
-              </ChakraLink>
-              <ChakraLink
-                as={RouterLink}
-                to={"/"}
+              </Box>
+              <Box
                 py="10px"
-                _hover={{ color: "app_blue.0" }}
+                _hover={{ color: "app_blue.0", cursor: "pointer" }}
+                onClick={() => {
+                  setSelectedCategory("Game");
+                  setVisibleProductsCount(20);
+                }}
                 transition="color 0.3s ease"
               >
                 Game
-              </ChakraLink>
-              <ChakraLink
-                as={RouterLink}
-                to={"/"}
+              </Box>
+              <Box
                 py="10px"
-                _hover={{ color: "app_blue.0" }}
+                _hover={{ color: "app_blue.0", cursor: "pointer" }}
+                onClick={() => {
+                  setSelectedCategory("Movie");
+                  setVisibleProductsCount(20);
+                }}
                 transition="color 0.3s ease"
               >
                 Movie
-              </ChakraLink>
+              </Box>
             </Stack>
 
             <Text
@@ -126,8 +176,8 @@ export default function ProductsPage() {
               mt="20px"
               aria-label={["min", "max"]}
               defaultValue={priceRange}
-              min={0}
-              max={100}
+              min={minPrice}
+              max={maxPrice}
               onChangeEnd={(val) => setPriceRange(val)}
             >
               <RangeSliderTrack bgColor="app_grey.0">
@@ -155,12 +205,13 @@ export default function ProductsPage() {
               <Text>Sắp xếp theo: </Text>
               <Select
                 bg="app_black.0"
-                bgColor="app_black.0"
                 color="app_white.0"
                 cursor="pointer"
                 width="fit-content"
                 outline="none"
                 border="none"
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
               >
                 <option style={optionStyle}>Đề xuất</option>
                 <option style={optionStyle}>Mới nhất</option>
@@ -181,12 +232,24 @@ export default function ProductsPage() {
                 xl: 4,
               }}
             >
-              {products.map((product) => (
+              {visibleProducts.map((product) => (
                 <GridItem key={product.id}>
                   <Product product={product} />
                 </GridItem>
               ))}
             </SimpleGrid>
+
+            {visibleProductsCount < filteredProducts.length && (
+              <Flex mt="40px" justifyContent="center">
+                <Button
+                  onClick={handleShowMore}
+                  bg="app_black.0"
+                  color="app_white.0"
+                >
+                  Hiển thị thêm
+                </Button>
+              </Flex>
+            )}
           </GridItem>
         </Grid>
       </Container>
