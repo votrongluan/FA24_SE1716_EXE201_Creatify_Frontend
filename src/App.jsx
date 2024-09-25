@@ -37,6 +37,7 @@ import SupplierLayout from "./layouts/SupplierLayout.jsx";
 import AllOrderPage from "./pages/supplier/AllOrderPage.jsx";
 import OwnOrderPage from "./pages/supplier/OwnOrderPage.jsx";
 import VerifyPage from "./pages/customer/VerifyPage.jsx";
+import TestPage from "./pages/TestPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -85,6 +86,7 @@ function App() {
         <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
           {/* Index page route */}
           <Route index element={<HomePage />} />
+          <Route path="test" element={<TestPage />} />
 
           {/* Auth route */}
           <Route path="auth" element={<AuthPage />} />
