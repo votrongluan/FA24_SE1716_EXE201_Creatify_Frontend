@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Box,
   Breadcrumb,
@@ -22,13 +22,14 @@ import {
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import Product from "../../components/Product";
-import { products } from "../../data/globalMockData";
+import { GlobalContext } from "../../context/GlobalContext";
 
 export default function ProductsPage() {
+  const { products } = useContext(GlobalContext);
   const minPrice = 0;
   const maxPrice = 10000000;
   const [priceRange, setPriceRange] = useState([minPrice, maxPrice]);
-  const [selectedCategory, setSelectedCategory] = useState("Tất cả sản phẩm");
+  const [selectedCategory, setSelectedCategory] = useState(-1);
   const [sortOption, setSortOption] = useState("Đề xuất");
   const [visibleProductsCount, setVisibleProductsCount] = useState(20); // Manage visible products count
 
@@ -41,10 +42,8 @@ export default function ProductsPage() {
   const filteredProducts = products
     .filter((product) => {
       // Filter by category
-      if (selectedCategory !== "Tất cả sản phẩm") {
-        return (
-          product.category.toUpperCase() === selectedCategory.toUpperCase()
-        );
+      if (selectedCategory !== -1) {
+        return product.category === selectedCategory;
       }
       return true;
     })
@@ -110,7 +109,7 @@ export default function ProductsPage() {
                 py="10px"
                 _hover={{ color: "app_blue.0", cursor: "pointer" }}
                 onClick={() => {
-                  setSelectedCategory("Tất cả sản phẩm");
+                  setSelectedCategory(-1);
                   setVisibleProductsCount(20);
                 }}
                 transition="color 0.3s ease"
@@ -121,7 +120,7 @@ export default function ProductsPage() {
                 py="10px"
                 _hover={{ color: "app_blue.0", cursor: "pointer" }}
                 onClick={() => {
-                  setSelectedCategory("Anime");
+                  setSelectedCategory(0);
                   setVisibleProductsCount(20);
                 }}
                 transition="color 0.3s ease"
@@ -132,7 +131,7 @@ export default function ProductsPage() {
                 py="10px"
                 _hover={{ color: "app_blue.0", cursor: "pointer" }}
                 onClick={() => {
-                  setSelectedCategory("Decoration");
+                  setSelectedCategory(1);
                   setVisibleProductsCount(20);
                 }}
                 transition="color 0.3s ease"
@@ -143,7 +142,7 @@ export default function ProductsPage() {
                 py="10px"
                 _hover={{ color: "app_blue.0", cursor: "pointer" }}
                 onClick={() => {
-                  setSelectedCategory("Game");
+                  setSelectedCategory(2);
                   setVisibleProductsCount(20);
                 }}
                 transition="color 0.3s ease"
@@ -154,7 +153,7 @@ export default function ProductsPage() {
                 py="10px"
                 _hover={{ color: "app_blue.0", cursor: "pointer" }}
                 onClick={() => {
-                  setSelectedCategory("Movie");
+                  setSelectedCategory(3);
                   setVisibleProductsCount(20);
                 }}
                 transition="color 0.3s ease"
@@ -233,7 +232,7 @@ export default function ProductsPage() {
               }}
             >
               {visibleProducts.map((product) => (
-                <GridItem key={product.id}>
+                <GridItem key={product.productId}>
                   <Product product={product} />
                 </GridItem>
               ))}

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Container, Flex, Image, Text } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import FadeWrapper from "./FadeWrapper";
-import { products } from "../data/globalMockData";
+import { mockProducts } from "../data/globalData";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -47,7 +47,7 @@ export default function HomeProduct() {
           <Box mt="60px">
             <FadeWrapper>
               <Slider {...sliderSettings}>
-                {products.map((product) => (
+                {mockProducts.slice(0, 8).map((product) => (
                   <Box key={product.id} px="10px" height="200px">
                     <Image
                       src={product.img}

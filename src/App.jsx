@@ -9,6 +9,7 @@ import { ChakraProvider, extendTheme, useDisclosure } from "@chakra-ui/react";
 import NotFoundPage from "./pages/customer/NotFoundPage.jsx";
 import ErrorPage from "./pages/customer/ErrorPage.jsx";
 import { GlobalProvider } from "./context/GlobalContext.jsx";
+import { CartProvider } from "./context/CartContext.jsx";
 import AuthPage from "./pages/customer/AuthPage.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import AccountPage from "./pages/customer/AccountPage.jsx";
@@ -136,13 +137,15 @@ function App() {
   return (
     <AuthProvider>
       <GlobalProvider>
-        <ChakraProvider theme={theme}>
-          <RouterProvider router={router} />
-          <SplineModal
-            splineIsOpen={splineIsOpen}
-            splineOnClose={() => setSplineIsOpen(false)}
-          />
-        </ChakraProvider>
+        <CartProvider>
+          <ChakraProvider theme={theme}>
+            <RouterProvider router={router} />
+            <SplineModal
+              splineIsOpen={splineIsOpen}
+              splineOnClose={() => setSplineIsOpen(false)}
+            />
+          </ChakraProvider>
+        </CartProvider>
       </GlobalProvider>
     </AuthProvider>
   );

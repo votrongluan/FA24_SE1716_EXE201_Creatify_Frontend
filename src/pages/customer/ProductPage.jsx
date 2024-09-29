@@ -21,12 +21,14 @@ import {
 import { Link as RouterLink, useParams } from "react-router-dom";
 import ShareBar from "../../components/ShareBar";
 import { Link as ChakraLink } from "@chakra-ui/react";
-import { getProductById } from "../../data/globalMockData";
+import { useContext } from "react";
+import { GlobalContext } from "../../context/GlobalContext";
 
 export default function ProductPage() {
   const { id } = useParams();
+  const { products } = useContext(GlobalContext);
   const { isOpen, onToggle } = useDisclosure();
-  const product = getProductById(id);
+  const product = products.find((item) => item.productId == id);
 
   return (
     <>
@@ -44,7 +46,7 @@ export default function ProductPage() {
           </BreadcrumbItem>
           <BreadcrumbItem>
             <RouterLink to={`/products/${id}`}>
-              <BreadcrumbLink>{product.id}</BreadcrumbLink>
+              <BreadcrumbLink>{product.productId}</BreadcrumbLink>
             </RouterLink>
           </BreadcrumbItem>
         </Breadcrumb>
@@ -69,6 +71,7 @@ export default function ProductPage() {
               objectFit="cover"
               objectPosition="center"
               src={product.img}
+              h="440px"
             />
           </GridItem>
 

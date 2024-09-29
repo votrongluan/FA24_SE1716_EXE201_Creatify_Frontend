@@ -4,7 +4,7 @@ import { Link as RouterLink } from "react-router-dom";
 export default function Product({ product }) {
   return (
     <>
-      <RouterLink to={`/products/${product.id}`}>
+      <RouterLink to={`/products/${product.productId}`}>
         <Image
           src={product.img}
           objectFit="cover"
@@ -17,7 +17,7 @@ export default function Product({ product }) {
         </Text>
         <Box width="20px" height="1px" bgColor="app_white.0"></Box>
         <Text color="app_grey.1" mt="10px">
-          2.200.000đ
+          {product.price.toLocaleString()}
         </Text>
       </RouterLink>
       <Button

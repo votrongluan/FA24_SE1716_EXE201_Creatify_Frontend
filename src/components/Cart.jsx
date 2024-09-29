@@ -18,9 +18,11 @@ import {
 import { ShoppingCart } from "@mui/icons-material";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import CartItem from "./CartItem";
+import useCart from "../hooks/useCart";
 
 export default function Cart() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { getCartLength } = useCart();
 
   return (
     <>
@@ -42,7 +44,7 @@ export default function Cart() {
           right="-10px"
           position="absolute"
         >
-          12
+          {getCartLength()}
         </Text>
       </Flex>
 
