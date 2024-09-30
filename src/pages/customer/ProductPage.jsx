@@ -10,6 +10,10 @@ import {
   Grid,
   GridItem,
   Image,
+  Modal,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -17,18 +21,30 @@ import {
   NumberInputStepper,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import ShareBar from "../../components/ShareBar";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
+import ModelEditor from "../../components/ModelEditor";
+import { STLLoader } from "three-stdlib";
+import model from "../../assets/3dobject/humpback-swim-whole.stl";
+import useCart from "../../hooks/useCart";
 
 export default function ProductPage() {
+  const toast = useToast();
   const { id } = useParams();
   const { products } = useContext(GlobalContext);
   const { isOpen, onToggle } = useDisclosure();
+  const {
+    isOpen: isModelOpen,
+    onOpen: onModelOpen,
+    onClose: onModelClose,
+  } = useDisclosure();
   const product = products.find((item) => item.productId == id);
+  const { addCartItem } = useCart();
 
   return (
     <>
@@ -72,6 +88,8 @@ export default function ProductPage() {
               objectPosition="center"
               src={product.img}
               h="440px"
+              cursor="zoom-in"
+              onClick={onModelOpen}
             />
           </GridItem>
 
@@ -84,7 +102,7 @@ export default function ProductPage() {
             <Text fontSize="26px">{product.name}</Text>
 
             <Text fontSize="20px" mt="30px">
-              2.200.000đ
+              {product.price.toLocaleString()}
             </Text>
 
             <Text
@@ -126,6 +144,15 @@ export default function ProductPage() {
               color="app_white.0"
               borderRadius="0"
               mt="30px"
+              onClick={() => {
+                addCartItem(product);
+                toast({
+                  title: `${product.name} đã được thêm vào giỏ hàng`,
+                  status: "success",
+                  duration: 1500,
+                  isClosable: true,
+                });
+              }}
             >
               Thêm vào giỏ hàng
             </Button>
@@ -184,6 +211,19 @@ export default function ProductPage() {
             </Collapse>
           </Box>
         </Box>
+
+        <Modal
+          isOpen={isModelOpen}
+          onClose={onModelClose}
+          size="full"
+          isCentered
+        >
+          <ModalOverlay />
+          <ModalContent bg="transparent" boxShadow="none">
+            <ModalCloseButton zIndex="1" color="white" />
+            <ModelEditor modelUrl={model} fileType={STLLoader} />
+          </ModalContent>
+        </Modal>
       </Container>
     </>
   );

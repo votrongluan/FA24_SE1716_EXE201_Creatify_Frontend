@@ -6,7 +6,8 @@ const CartContext = createContext({});
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(() => {
     const cookieCart = Cookies.get("cart");
-    return cookieCart ? JSON.parse(cookieCart) : [];
+    //return cookieCart ? JSON.parse(cookieCart) : [];
+    return cookieCart ? [] : [];
   });
 
   useEffect(() => {
@@ -19,21 +20,23 @@ export const CartProvider = ({ children }) => {
     }
   }, [cart]);
 
-  const addCartItem = (productId, quantity) => {
+  const addCartItem = (product) => {
+    product.quantity = 1;
+
     setCart((prevCart) => {
       const existingItem = prevCart.find(
-        (item) => item.productId === productId
+        (item) => item.productId === product.productId
       );
       if (existingItem) {
         return prevCart.map((item) =>
-          item.productId === productId
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
+          item.productId === product.productId ? { ...item, quantity: 1 } : item
         );
       }
-      return [...prevCart, { productId, quantity }];
+      return [...prevCart, product];
     });
   };
+
+  const getCart = () => cart;
 
   const changeQuantity = (productId, quantity) => {
     setCart((prevCart) =>
@@ -57,6 +60,10 @@ export const CartProvider = ({ children }) => {
     return cart.reduce((total, item) => total + item.quantity, 0);
   };
 
+  const calculateTotalPrice = () => {
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -66,6 +73,8 @@ export const CartProvider = ({ children }) => {
         removeCartItem,
         clearCart,
         getCartLength,
+        getCart,
+        calculateTotalPrice,
       }}
     >
       {children}

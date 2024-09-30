@@ -23,6 +23,8 @@ import useCart from "../hooks/useCart";
 export default function Cart() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getCartLength } = useCart();
+  const { getCart } = useCart();
+  const products = getCart();
 
   return (
     <>
@@ -70,7 +72,9 @@ export default function Cart() {
             </DrawerHeader>
             <DrawerBody p="20px">
               <VStack alignItems="flex-start" spacing="20px">
-                <CartItem />
+                {products.map((product) => (
+                  <CartItem product={product} key={product.productId} />
+                ))}
 
                 <Button
                   _hover={{

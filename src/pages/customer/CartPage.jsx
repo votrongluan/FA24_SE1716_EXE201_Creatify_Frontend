@@ -5,14 +5,19 @@ import {
   Grid,
   GridItem,
   HStack,
+  Input,
   Spacer,
   Stack,
   Text,
   Textarea,
 } from "@chakra-ui/react";
 import CartItemDetail from "../../components/CartItemDetail";
+import useCart from "../../hooks/useCart"; // Using custom hook for cart
 
 export default function CartPage() {
+  const { getCart, calculateTotalPrice } = useCart();
+  const products = getCart(); // Fetch cart items from the context
+
   return (
     <Container w="90%" maxW="1400px" pb="100px">
       <Grid columnGap="60px" px="5%" templateColumns="repeat(3, 1fr)">
@@ -26,8 +31,9 @@ export default function CartPage() {
           </Text>
 
           <Stack>
-            <CartItemDetail />
-            <CartItemDetail />
+            {products.map((product) => (
+              <CartItemDetail key={product.productId} product={product} />
+            ))}
           </Stack>
         </GridItem>
 
@@ -38,6 +44,17 @@ export default function CartPage() {
             </Text>
             <Textarea
               h="150px"
+              fontSize="16px"
+              color="app_white.0"
+              placeholder="Hướng dẫn? Yêu cầu đặc biệt? Hãy thêm chúng tại đây"
+            />
+          </Box>
+
+          <Box mt="20px">
+            <Text fontSize="20px" pb="20px">
+              Địa chỉ giao hàng
+            </Text>
+            <Input
               fontSize="16px"
               color="app_white.0"
               placeholder="Hướng dẫn? Yêu cầu đặc biệt? Hãy thêm chúng tại đây"
@@ -63,7 +80,8 @@ export default function CartPage() {
               <HStack>
                 <Text>Sản phẩm</Text>
                 <Spacer />
-                <Text>12.000.000đ</Text>
+                <Text>{calculateTotalPrice().toLocaleString()}đ</Text>{" "}
+                {/* Dynamic total price */}
               </HStack>
 
               <HStack>
@@ -76,7 +94,10 @@ export default function CartPage() {
             <HStack fontSize="20px" py="20px">
               <Text>Tổng</Text>
               <Spacer />
-              <Text>12.000.000đ</Text>
+              <Text>
+                {(calculateTotalPrice() + 30000).toLocaleString()}đ
+              </Text>{" "}
+              {/* Dynamic grand total */}
             </HStack>
 
             <Button

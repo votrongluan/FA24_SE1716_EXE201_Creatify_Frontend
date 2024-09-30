@@ -19,6 +19,7 @@ import {
   Stack,
   Text,
   Button,
+  Input,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import Product from "../../components/Product";
@@ -29,9 +30,17 @@ export default function ProductsPage() {
   const minPrice = 0;
   const maxPrice = 10000000;
   const [priceRange, setPriceRange] = useState([minPrice, maxPrice]);
+  const [searchString, setSearchString] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(-1);
   const [sortOption, setSortOption] = useState("Đề xuất");
   const [visibleProductsCount, setVisibleProductsCount] = useState(20); // Manage visible products count
+  let categoryMap = {
+    [-1]: "Tất cả sản phẩm",
+    [0]: "Anime",
+    [1]: "Decoration",
+    [2]: "Game",
+    [3]: "Movie",
+  };
 
   const optionStyle = {
     backgroundColor: "#00060F",
@@ -50,6 +59,10 @@ export default function ProductsPage() {
     .filter((product) => {
       // Filter by price range
       return product.price >= priceRange[0] && product.price <= priceRange[1];
+    })
+    .filter((product) => {
+      // Filter by search string
+      return product.name.toUpperCase().includes(searchString.toUpperCase());
     })
     .sort((a, b) => {
       // Sort products based on selected sorting option
@@ -112,6 +125,7 @@ export default function ProductsPage() {
                   setSelectedCategory(-1);
                   setVisibleProductsCount(20);
                 }}
+                color={selectedCategory == -1 ? "app_blue.0" : "white"}
                 transition="color 0.3s ease"
               >
                 Tất cả sản phẩm
@@ -123,6 +137,7 @@ export default function ProductsPage() {
                   setSelectedCategory(0);
                   setVisibleProductsCount(20);
                 }}
+                color={selectedCategory == 0 ? "app_blue.0" : "white"}
                 transition="color 0.3s ease"
               >
                 Anime
@@ -134,6 +149,7 @@ export default function ProductsPage() {
                   setSelectedCategory(1);
                   setVisibleProductsCount(20);
                 }}
+                color={selectedCategory == 1 ? "app_blue.0" : "white"}
                 transition="color 0.3s ease"
               >
                 Decoration
@@ -145,6 +161,7 @@ export default function ProductsPage() {
                   setSelectedCategory(2);
                   setVisibleProductsCount(20);
                 }}
+                color={selectedCategory == 2 ? "app_blue.0" : "white"}
                 transition="color 0.3s ease"
               >
                 Game
@@ -156,6 +173,7 @@ export default function ProductsPage() {
                   setSelectedCategory(3);
                   setVisibleProductsCount(20);
                 }}
+                color={selectedCategory == 3 ? "app_blue.0" : "white"}
                 transition="color 0.3s ease"
               >
                 Movie
@@ -196,8 +214,18 @@ export default function ProductsPage() {
 
           <GridItem colSpan={{ base: 5, xl: 4 }}>
             <Text fontSize="26px" fontFamily="Montserrat">
-              Tất cả sản phẩm
+              {categoryMap[selectedCategory]}
             </Text>
+
+            <Input
+              my="20px"
+              py="20px"
+              fontSize="16px"
+              placeholder="Nhập từ khóa tìm kiếm"
+              size="md"
+              value={searchString}
+              onChange={(e) => setSearchString(e.target.value)}
+            />
 
             <Flex alignItems="center">
               <Box flex="1"></Box>

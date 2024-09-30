@@ -39,6 +39,7 @@ import AllOrderPage from "./pages/supplier/AllOrderPage.jsx";
 import OwnOrderPage from "./pages/supplier/OwnOrderPage.jsx";
 import VerifyPage from "./pages/customer/VerifyPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
+import ScrollToTopAndBottom from "./components/ScrollToTopAndBottom.jsx";
 
 function App() {
   useEffect(() => {
@@ -139,6 +140,7 @@ function App() {
       <GlobalProvider>
         <CartProvider>
           <ChakraProvider theme={theme}>
+            <ScrollToTopAndBottom />
             <RouterProvider router={router} />
             <SplineModal
               splineIsOpen={splineIsOpen}

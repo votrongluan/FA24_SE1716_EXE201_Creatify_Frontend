@@ -1,7 +1,11 @@
-import { Box, Button, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Text, useToast } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import useCart from "../hooks/useCart";
 
 export default function Product({ product }) {
+  const toast = useToast();
+  const { addCartItem } = useCart();
+
   return (
     <>
       <RouterLink to={`/products/${product.productId}`}>
@@ -29,6 +33,15 @@ export default function Product({ product }) {
         color="app_black.0"
         borderRadius="0"
         mt="20px"
+        onClick={() => {
+          addCartItem(product);
+          toast({
+            title: `${product.name} đã được thêm vào giỏ hàng`,
+            status: "success",
+            duration: 1500,
+            isClosable: true,
+          });
+        }}
       >
         Thêm vào giỏ hàng
       </Button>

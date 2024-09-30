@@ -11,19 +11,19 @@ function Footer() {
         <Box mb={{ base: "40px", xl: "0" }}>
           <Text
             fontFamily="Montserrat"
-            fontSize="14px"
+            fontSize="16px"
             color="app_white.0"
             fontWeight="bold"
           >
             Địa chỉ
           </Text>
-          <Text mt="20px" fontSize="14px" color="app_grey.1">
+          <Text mt="20px" fontSize="16px" color="app_grey.1">
             Đại học FPT
           </Text>
-          <Text mt="10px" fontSize="14px" color="app_grey.1">
+          <Text mt="10px" fontSize="16px" color="app_grey.1">
             3d.creatifyteam6@gmail.com
           </Text>
-          <Text mt="10px" fontSize="14px" color="app_grey.1">
+          <Text mt="10px" fontSize="16px" color="app_grey.1">
             099.9999.999
           </Text>
           <Button
@@ -45,14 +45,14 @@ function Footer() {
           <Box>
             <Text
               fontFamily="Montserrat"
-              fontSize="14px"
+              fontSize="16px"
               color="app_white.0"
               fontWeight="bold"
             >
               Nhận thông tin mới từ chúng tôi
             </Text>
 
-            <Text mt="20px" fontSize="14px" color="app_grey.1">
+            <Text mt="20px" fontSize="16px" color="app_grey.1">
               Đăng ký bằng cách gửi email để nhận được những thông tin mới nhất
               từ chúng tôi
             </Text>
@@ -62,7 +62,7 @@ function Footer() {
                 base: "20px",
                 xl: "80px",
               }}
-              fontSize="14px"
+              fontSize="16px"
               color="app_grey.1"
             >
               Email*
@@ -99,13 +99,13 @@ function Footer() {
         <Box>
           <Text
             fontFamily="Montserrat"
-            fontSize="14px"
+            fontSize="16px"
             color="app_white.0"
             fontWeight="bold"
           >
             Theo dõi chúng tôi
           </Text>
-          <Text mt="20px" fontSize="14px" color="app_grey.1">
+          <Text mt="20px" fontSize="16px" color="app_grey.1">
             <a
               rel="noreferrer"
               target="_blank"
@@ -114,7 +114,7 @@ function Footer() {
               Facebook
             </a>
           </Text>
-          <Text mt="10px" fontSize="14px" color="app_grey.1">
+          <Text mt="10px" fontSize="16px" color="app_grey.1">
             <a
               rel="noreferrer"
               target="_blank"
@@ -126,7 +126,7 @@ function Footer() {
         </Box>
       </Flex>
 
-      <Text color="app_grey.1" mt="10%">
+      <Text color="app_grey.1" mt="80px">
         © 2024 by Creatify
       </Text>
     </Box>

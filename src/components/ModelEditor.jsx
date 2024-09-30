@@ -35,7 +35,7 @@ function EditableModel({ url, fileType, editingState }) {
   return (
     <group>
       <mesh ref={meshRef} geometry={model.geometry || model}>
-        <meshStandardMaterial color="orange" />
+        <meshStandardMaterial />
       </mesh>
     </group>
   );

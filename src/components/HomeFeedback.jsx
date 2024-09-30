@@ -2,7 +2,7 @@ import {
   Box,
   Container,
   Flex,
-  GenericAvatarIcon,
+  Avatar,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
@@ -53,8 +53,9 @@ export default function HomeFeedback() {
 
                   <SlideWrapper direction="left" speed="1s">
                     <Text height="150px" fontSize="16px" textAlign="justify">
-                      Chất lượng sản phẩm rất cao và giá thành hợp lý. Tôi sẽ
-                      quay lại và mua thêm sản phẩm mới.
+                      Sản phẩm 3D rất sắc nét và chi tiết, vượt xa mong đợi của
+                      mình. Giao hàng nhanh chóng và đóng gói cẩn thận. Chắc
+                      chắn sẽ tiếp tục ủng hộ.
                     </Text>
                   </SlideWrapper>
 
@@ -65,14 +66,15 @@ export default function HomeFeedback() {
                     columnGap="20px"
                     rowGap="20px"
                   >
-                    <GenericAvatarIcon
+                    <Avatar
                       bgColor="app_black.0"
                       borderRadius="10px"
                       height="60px"
                       width="60px"
+                      src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                     />
                     <Box>
-                      <Text>Samantha Reed</Text>
+                      <Text>Võ Trọng Luân</Text>
                     </Box>
                   </Flex>
                 </Box>
@@ -102,8 +104,8 @@ export default function HomeFeedback() {
 
                   <SlideWrapper direction="left" speed="1s">
                     <Text height="150px" fontSize="16px" textAlign="justify">
-                      Chất lượng sản phẩm rất cao và giá thành hợp lý. Tôi sẽ
-                      quay lại và mua thêm sản phẩm mới.
+                      Mẫu 3D cực kỳ tinh xảo, độ chính xác cao và chất lượng
+                      tuyệt vời. Giá cả lại rất phải chăng. Rất đáng để đầu tư.
                     </Text>
                   </SlideWrapper>
 
@@ -114,14 +116,15 @@ export default function HomeFeedback() {
                     columnGap="20px"
                     rowGap="20px"
                   >
-                    <GenericAvatarIcon
+                    <Avatar
                       bgColor="app_black.0"
                       borderRadius="10px"
                       height="60px"
                       width="60px"
+                      src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                     />
                     <Box>
-                      <Text>Samantha Reed</Text>
+                      <Text>Cao Hoàng Gia Bảo</Text>
                     </Box>
                   </Flex>
                 </Box>
@@ -150,8 +153,9 @@ export default function HomeFeedback() {
 
                   <SlideWrapper direction="left" speed="1s">
                     <Text height="150px" fontSize="16px" textAlign="justify">
-                      Chất lượng sản phẩm rất cao và giá thành hợp lý. Tôi sẽ
-                      quay lại và mua thêm sản phẩm mới.
+                      Mình rất hài lòng với sản phẩm 3D này, đường nét thiết kế
+                      đẹp mắt và chất liệu tốt. Sẽ giới thiệu cho bạn bè và quay
+                      lại mua thêm.
                     </Text>
                   </SlideWrapper>
 
@@ -162,14 +166,15 @@ export default function HomeFeedback() {
                     columnGap="20px"
                     rowGap="20px"
                   >
-                    <GenericAvatarIcon
+                    <Avatar
                       bgColor="app_black.0"
                       borderRadius="10px"
                       height="60px"
                       width="60px"
+                      src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                     />
                     <Box>
-                      <Text>Samantha Reed</Text>
+                      <Text>Nguyễn Thị Châu</Text>
                     </Box>
                   </Flex>
                 </Box>
