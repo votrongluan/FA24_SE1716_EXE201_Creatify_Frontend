@@ -19,6 +19,7 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Spinner,
   Text,
   useDisclosure,
   useToast,
@@ -32,6 +33,7 @@ import ModelEditor from "../../components/ModelEditor";
 import { STLLoader } from "three-stdlib";
 import model from "../../assets/3dobject/humpback-swim-whole.stl";
 import useCart from "../../hooks/useCart";
+import { categoryMap } from "../../data/globalData";
 
 export default function ProductPage() {
   const toast = useToast();
@@ -45,6 +47,8 @@ export default function ProductPage() {
   } = useDisclosure();
   const product = products.find((item) => item.productId == id);
   const { addCartItem } = useCart();
+
+  if (!product) return <Spinner />;
 
   return (
     <>
@@ -84,10 +88,10 @@ export default function ProductPage() {
               border="1.5px solid"
               borderColor="rgba(255,255,255,.7)"
               w="100%"
-              objectFit="cover"
+              objectFit="contain"
               objectPosition="center"
               src={product.img}
-              h="440px"
+              h="500px"
               cursor="zoom-in"
               onClick={onModelOpen}
             />
@@ -108,13 +112,40 @@ export default function ProductPage() {
             <Text
               textAlign="justify"
               fontSize="16px"
-              mt="20px"
+              mt="40px"
+              color="app_grey.1"
+            >
+              Mã sản phẩm: {product.productId}
+            </Text>
+
+            <Text
+              textAlign="justify"
+              fontSize="16px"
+              mt="16px"
+              color="app_grey.1"
+            >
+              Loại sản phẩm: {categoryMap[product.category]}
+            </Text>
+
+            <Text
+              textAlign="justify"
+              fontSize="16px"
+              mt="16px"
               color="app_grey.1"
             >
               Mô tả: {product.description}
             </Text>
 
-            <Box mt="20px">
+            <Text
+              textAlign="justify"
+              fontSize="16px"
+              mt="16px"
+              color="app_grey.1"
+            >
+              Nhà cung cấp: {product.employee.name}
+            </Text>
+
+            {/* <Box mt="20px">
               <Text color="app_white.0" fontSize="14px">
                 Số lượng
               </Text>
@@ -133,7 +164,7 @@ export default function ProductPage() {
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
-            </Box>
+            </Box> */}
 
             <Button
               _hover={{
@@ -145,7 +176,7 @@ export default function ProductPage() {
               borderRadius="0"
               mt="30px"
               onClick={() => {
-                addCartItem(product);
+                addCartItem(product.employee.employeeId, product);
                 toast({
                   title: `${product.name} đã được thêm vào giỏ hàng`,
                   status: "success",
@@ -174,12 +205,14 @@ export default function ProductPage() {
               mt="40px"
               fontSize="16px"
             >
-              Dùng mô hình này của chúng tôi để chỉnh sửa theo ý của bạn và đặt
-              in theo yêu cầu. Hiện chức năng vẫn chưa hoàn thiện nhưng khách
-              hàng có thể xem một bản demo trên{" "}
-              <ChakraLink color="app_blue.0" href="https://youtube.com">
-                youtube
-              </ChakraLink>
+              Dùng file mô hình này của chúng tôi để chỉnh sửa theo ý của bạn và
+              đặt in theo yêu cầu. Bạn có thể tìm hiểu cách làm việc với các
+              loại file 3D qua đường dẫn sau
+              <Text mt="20px" fontSize="18px" color={"app_blue.0"}>
+                <RouterLink to="/personalized">
+                  Hướng dẫn cá nhân hóa sản phẩm in ấn 3D
+                </RouterLink>
+              </Text>
             </Text>
           </Flex>
           <Box>
@@ -195,7 +228,7 @@ export default function ProductPage() {
               color="app_black.0"
               borderRadius="20px"
             >
-              Chỉnh sửa
+              Nhận file
             </Button>
             <Collapse in={isOpen} animateOpacity>
               <Box
@@ -206,7 +239,8 @@ export default function ProductPage() {
                 rounded="md"
                 shadow="md"
               >
-                Đây là tính năng đang trong quá trình phát triển và triển khai
+                File vẫn đang trong quá trình chuẩn bị mong quý khách hàng thông
+                cảm
               </Box>
             </Collapse>
           </Box>

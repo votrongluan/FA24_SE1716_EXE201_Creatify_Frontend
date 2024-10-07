@@ -40,6 +40,8 @@ import OwnOrderPage from "./pages/supplier/OwnOrderPage.jsx";
 import VerifyPage from "./pages/customer/VerifyPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
 import ScrollToTopAndBottom from "./components/ScrollToTopAndBottom.jsx";
+import OrderDetailPage from "./pages/customer/OrderDetailPage.jsx";
+import PrintOrderDetailPage from "./pages/customer/PrintOrderDetailPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -80,7 +82,6 @@ function App() {
 
         {/* Supplier page route */}
         <Route path="supplier" element={<SupplierLayout />}>
-          <Route index element={<NotFoundPage />} />
           <Route path="task" element={<AllOrderPage />} />
           <Route path="own" element={<OwnOrderPage />} />
         </Route>
@@ -95,6 +96,12 @@ function App() {
 
           <Route path="about" element={<AboutPage />} />
           <Route path="account" element={<AccountPage />} />
+          <Route path="order">
+            <Route path=":id" element={<OrderDetailPage />} />
+          </Route>
+          <Route path="printorder">
+            <Route path=":id" element={<PrintOrderDetailPage />} />
+          </Route>
           <Route path="contact" element={<ContactPage />} />
           <Route path="material" element={<MaterialPage />} />
           <Route path="forum">

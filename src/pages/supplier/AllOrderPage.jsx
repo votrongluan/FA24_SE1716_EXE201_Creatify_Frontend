@@ -36,22 +36,17 @@ export default function AllOrderPage() {
   return (
     <>
       <Heading as="h2" size="lg" textAlign="center">
-        Tất cả đơn hàng
+        Đơn in đang chờ
       </Heading>
 
       <Box mt="5" h="40px"></Box>
 
       <Tabs colorScheme="black">
         <TabList>
-          <Tab>Sản phẩm</Tab>
           <Tab>Đơn in</Tab>
         </TabList>
-
+    
         <TabPanels>
-          <TabPanel>
-            <AllProductOrder />
-          </TabPanel>
-
           <TabPanel>
             <AllPrintOrder />
           </TabPanel>

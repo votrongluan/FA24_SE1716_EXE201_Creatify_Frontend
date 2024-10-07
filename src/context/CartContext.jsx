@@ -6,63 +6,126 @@ const CartContext = createContext({});
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(() => {
     const cookieCart = Cookies.get("cart");
-    //return cookieCart ? JSON.parse(cookieCart) : [];
-    return cookieCart ? [] : [];
+    // return cookieCart ? JSON.parse(cookieCart) : [];
+    return cookieCart ? [] : []; // You'll likely want to JSON.parse(cookieCart) once you're done testing
   });
 
   useEffect(() => {
     if (cart.length > 0) {
-      // Set cookie with an expiration of 5 days
       Cookies.set("cart", JSON.stringify(cart), { expires: 5 });
     } else {
-      // Remove the cookie if cart is empty
       Cookies.remove("cart");
     }
   }, [cart]);
 
-  const addCartItem = (product) => {
+  const addCartItem = (employeeId, product) => {
     product.quantity = 1;
 
     setCart((prevCart) => {
-      const existingItem = prevCart.find(
-        (item) => item.productId === product.productId
+      const employeeCart = prevCart.find(
+        (item) => item.employeeId === employeeId
       );
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.productId === product.productId ? { ...item, quantity: 1 } : item
+
+      if (employeeCart) {
+        const existingProduct = employeeCart.products.find(
+          (item) => item.productId === product.productId
         );
+
+        if (existingProduct) {
+          return prevCart.map((item) =>
+            item.employeeId === employeeId
+              ? {
+                  ...item,
+                  products: item.products.map((prod) =>
+                    prod.productId === product.productId
+                      ? { ...prod, quantity: 1 }
+                      : prod
+                  ),
+                }
+              : item
+          );
+        } else {
+          return prevCart.map((item) =>
+            item.employeeId === employeeId
+              ? { ...item, products: [...item.products, product] }
+              : item
+          );
+        }
+      } else {
+        return [
+          ...prevCart,
+          { name: product.employee.name, employeeId, products: [product] },
+        ];
       }
-      return [...prevCart, product];
     });
   };
 
-  const getCart = () => cart;
-
-  const changeQuantity = (productId, quantity) => {
+  const changeQuantity = (employeeId, productId, quantity) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.productId === productId ? { ...item, quantity } : item
+        item.employeeId === employeeId
+          ? {
+              ...item,
+              products: item.products.map((prod) =>
+                prod.productId === productId ? { ...prod, quantity } : prod
+              ),
+            }
+          : item
       )
     );
   };
 
-  const removeCartItem = (productId) => {
-    setCart((prevCart) =>
-      prevCart.filter((item) => item.productId !== productId)
+  const removeCartItem = (employeeId, productId) => {
+    setCart(
+      (prevCart) =>
+        prevCart
+          .map((item) =>
+            item.employeeId === employeeId
+              ? {
+                  ...item,
+                  products: item.products.filter(
+                    (prod) => prod.productId !== productId
+                  ),
+                }
+              : item
+          )
+          .filter((item) => item.products.length > 0) // remove empty employee entries
     );
   };
 
-  const clearCart = () => {
-    setCart([]);
+  const clearCart = (id) => {
+    const newCart = cart.filter((item) => item.employeeId != id);
+
+    setCart(newCart);
   };
 
   const getCartLength = () => {
-    return cart.reduce((total, item) => total + item.quantity, 0);
+    return cart.reduce(
+      (total, item) =>
+        total +
+        item.products.reduce((prodTotal, prod) => prodTotal + prod.quantity, 0),
+      0
+    );
   };
 
-  const calculateTotalPrice = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const getNameById = (employeeId) => {
+    const employeeCart = cart.find((item) => item.employeeId === employeeId);
+
+    return employeeCart.name;
   };
+
+  const calculateTotalPrice = (employeeId) => {
+    const employeeCart = cart.find((item) => item.employeeId === employeeId);
+
+    if (!employeeCart) return 0; // If no products for the given employeeId, return 0
+
+    return employeeCart.products.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0
+    );
+  };
+
+  const getCart = () => cart;
 
   return (
     <CartContext.Provider
@@ -75,6 +138,7 @@ export const CartProvider = ({ children }) => {
         getCartLength,
         getCart,
         calculateTotalPrice,
+        getNameById,
       }}
     >
       {children}

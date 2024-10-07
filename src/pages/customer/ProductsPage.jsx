@@ -24,6 +24,7 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import Product from "../../components/Product";
 import { GlobalContext } from "../../context/GlobalContext";
+import {categoryMap} from '../../data/globalData'
 
 export default function ProductsPage() {
   const { products } = useContext(GlobalContext);
@@ -34,13 +35,6 @@ export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState(-1);
   const [sortOption, setSortOption] = useState("Đề xuất");
   const [visibleProductsCount, setVisibleProductsCount] = useState(20); // Manage visible products count
-  let categoryMap = {
-    [-1]: "Tất cả sản phẩm",
-    [0]: "Anime",
-    [1]: "Decoration",
-    [2]: "Game",
-    [3]: "Movie",
-  };
 
   const optionStyle = {
     backgroundColor: "#00060F",

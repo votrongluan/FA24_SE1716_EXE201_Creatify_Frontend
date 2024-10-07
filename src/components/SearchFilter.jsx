@@ -73,6 +73,8 @@ function SearchFilter({
         const valueA = a[sortMethod].toString();
         const valueB = b[sortMethod].toString();
 
+        console.log(valueA, valueB);
+
         if (sortOrder === "asc") {
           return valueA.localeCompare(valueB);
         } else {

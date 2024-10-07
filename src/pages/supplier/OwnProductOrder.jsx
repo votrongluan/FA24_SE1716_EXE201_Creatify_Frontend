@@ -28,8 +28,38 @@ import OrderUpdateButton from "../../components/OrderUpdateButton.jsx";
 import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import ConfirmationDialog from "../../components/ConfirmationDialog.jsx";
 import axios from "../../api/axios.js";
+import useAuth from "../../hooks/useAuth.js";
+import { useEffect, useState } from "react";
+import { orderStatusColorMap, orderStatusMap } from "../../data/globalData.js";
 
 export default function OwnProductOrder() {
+  const { auth } = useAuth();
+  const [productOrders, setProductOrders] = useState([]);
+
+  function calculatePrice(orderDetail, additional = 0) {
+    let sum = additional;
+
+    orderDetail.forEach((item) => (sum += item.products.price * item.quantity));
+
+    return sum.toLocaleString();
+  }
+
+  function fetchProductOrders() {
+    axios
+      .get(`/Order/GetOrderBySupplierId?supplierId=${auth.EmployeeId}`)
+      .then((response) => {
+        const data = response.data;
+        setProductOrders(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    fetchProductOrders();
+  }, []);
+
   const orders = [
     {
       id: 1,
@@ -87,13 +117,15 @@ export default function OwnProductOrder() {
     },
   ];
 
+  if (productOrders.length == 0) return <></>;
+
   return (
     <>
       <SearchFilter
         searchPlaceholder="Tìm theo tên, số điện thoại, địa chỉ"
-        data={orders}
-        methods={[{ value: "name", label: "Tên sản phẩm" }]}
-        properties={["id"]}
+        data={productOrders}
+        methods={[{ value: "orderId", label: "Mã đặt hàng" }]}
+        properties={["orderId"]}
         DisplayData={({ filteredData }) => (
           <Pagination
             itemsPerPage={2}
@@ -115,15 +147,15 @@ export default function OwnProductOrder() {
                   </Thead>
                   <Tbody>
                     {currentData.map((order) => (
-                      <Tr key={order.id}>
+                      <Tr key={order.orderId}>
                         <Td>
-                          <Text>{order.id}</Text>
+                          <Text>{order.orderId}</Text>
                         </Td>
                         <Td>
-                          {order.products.map((e) => {
+                          {order.orderDetail.map((e) => {
                             return (
-                              <Text key={e.name}>
-                                {e.name}
+                              <Text key={e.products.id}>
+                                {e.products.name}
                                 <span
                                   style={{
                                     fontWeight: "bold",
@@ -137,26 +169,30 @@ export default function OwnProductOrder() {
                           })}
                         </Td>
                         <Td>
-                          <Text>{order.date}</Text>
+                          <Text>
+                            {new Date(order.orderDate).toLocaleDateString(
+                              "vi-VN"
+                            )}
+                          </Text>
                         </Td>
                         <Td>
-                          <Text>{order.email}</Text>
+                          <Text>{order.customer[0].email}</Text>
                         </Td>
                         <Td>
-                          <Text>{order.phone}</Text>
-                        </Td>
-                        <Td>
-                          <Text>{order.price}</Text>
+                          <Text>{order.customer[0].phone}</Text>
                         </Td>
                         <Td>
                           <Text>
-                            {order.status == true ? (
-                              <Badge colorScheme="green" p="8px">
-                                Đã xử lý
-                              </Badge>
-                            ) : (
-                              <Badge p="8px">Chưa xử lý</Badge>
-                            )}
+                            {calculatePrice(order.orderDetail, 30000)}
+                          </Text>
+                        </Td>
+                        <Td>
+                          <Text>
+                            <Badge
+                              color={orderStatusColorMap[order.orderStatus]}
+                            >
+                              {orderStatusMap[order.orderStatus]}
+                            </Badge>
                           </Text>
                         </Td>
                         <Td>
@@ -176,7 +212,7 @@ export default function OwnProductOrder() {
                                 fontSize="16px"
                               >
                                 <MenuItem p="0">
-                                  <OrderDetailButton />
+                                  <OrderDetailButton order={order} />
                                 </MenuItem>
                                 <MenuItem p="0">
                                   <OrderUpdateButton />

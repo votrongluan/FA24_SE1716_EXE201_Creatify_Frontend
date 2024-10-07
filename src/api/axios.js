@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const baseURL = "http://localhost:5000";
+export const appURL = "http://localhost:5173";
 
 // Default instance without Bearer token
 export const axiosNoAuth = axios.create({

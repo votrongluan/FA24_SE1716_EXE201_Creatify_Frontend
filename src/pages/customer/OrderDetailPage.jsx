@@ -1,12 +1,5 @@
+import { useParams } from "react-router-dom";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
   FormControl,
   FormLabel,
   Input,
@@ -23,17 +16,31 @@ import {
   Image,
   Flex,
   Text,
-  useDisclosure,
+  Container,
   Link,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import { orderStatusMap } from "../data/globalData";
-import { appURL } from "../api/axios";
+import { useEffect, useState } from "react";
+import axios, { appURL } from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
+import { orderStatusColorMap, orderStatusMap } from "../../data/globalData";
 
-export default function OrderDetailButton({ order }) {
-  // Modal
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const initialRef = useRef(null);
+export default function OrderDetailPage() {
+  const { id } = useParams();
+  const { auth } = useAuth();
+  const [order, setOrder] = useState(null);
+
+  function fetchProductOrders() {
+    axios
+      .get(`/Order/GetOrderByCustomerId?employeeId=${auth.EmployeeId}`)
+      .then((response) => {
+        const data = response.data;
+        const tmpOrder = data.find((item) => item.orderId == id);
+        setOrder(tmpOrder);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   function calculatePrice(orderDetail, additional = 0) {
     let sum = additional;
@@ -43,26 +50,29 @@ export default function OrderDetailButton({ order }) {
     return sum.toLocaleString();
   }
 
-  return (
-    <>
-      <Box p="8px" width="100%" onClick={onOpen}>
-        Chi tiết
-      </Box>
+  useEffect(() => {
+    fetchProductOrders();
+  }, []);
 
-      <Modal
-        initialFocusRef={initialRef}
-        isOpen={isOpen}
-        onClose={onClose}
-        size="8xl"
-        isCentered
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            Chi tiết đơn hàng
-            <ModalCloseButton />
-          </ModalHeader>
-          <ModalBody>
+  if (!order) {
+    return <></>;
+  } else {
+    return (
+      <>
+        <Container w="90%" maxW="1400px" pb="100px">
+          <Box height="100px">
+            <Heading
+              fontWeight="normal"
+              as="h2"
+              fontSize="26px"
+              fontFamily="Montserrat"
+              textAlign="center"
+            >
+              Chi tiết đơn hàng
+            </Heading>
+          </Box>
+
+          <Box borderRadius="10px" bg="white" color="app_black.0">
             <Flex wrap="wrap" spacing={8}>
               <Box flex="2">
                 <Box boxShadow="sm" p={8}>
@@ -73,7 +83,11 @@ export default function OrderDetailButton({ order }) {
                     <FormLabel>
                       <Flex alignItems="center">
                         <Text>Mã đơn hàng </Text>
-                        <Badge ml={2}>
+                        <Badge
+                          color={orderStatusColorMap[order.orderStatus]}
+                          p={2}
+                          ml={2}
+                        >
                           {orderStatusMap[order.orderStatus]}
                         </Badge>
                       </Flex>
@@ -215,14 +229,9 @@ export default function OrderDetailButton({ order }) {
                 </Box>
               </Box>
             </Flex>
-          </ModalBody>
-          <ModalFooter>
-            <Button variant="ghost" onClick={onClose}>
-              Đóng
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
+          </Box>
+        </Container>
+      </>
+    );
+  }
 }

@@ -1,8 +1,21 @@
-import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Input, Text, useToast } from "@chakra-ui/react";
+import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 function Footer() {
+  const toast = useToast();
+  const [email, setEmail] = useState("");
+
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
   return (
-    <Box as="footer" py="80px" px="80px" bg="app_grey.0" color="white">
+    <Box as="footer" py="50px" px="50px" bg="app_grey.0" color="white">
       <Flex
         direction={{ base: "column", xl: "row" }} // Responsive direction
         alignItems={{ base: "center", xl: "flex-start" }} // Center align items on small screens
@@ -23,9 +36,6 @@ function Footer() {
           <Text mt="10px" fontSize="16px" color="app_grey.1">
             3d.creatifyteam6@gmail.com
           </Text>
-          <Text mt="10px" fontSize="16px" color="app_grey.1">
-            099.9999.999
-          </Text>
           <Button
             _hover={{
               color: "app_black.0",
@@ -36,6 +46,8 @@ function Footer() {
             color="app_white.0"
             borderRadius="40px"
             mt="40px"
+            as={RouterLink}
+            to={"/contact"}
           >
             Nhận hỗ trợ
           </Button>
@@ -60,7 +72,7 @@ function Footer() {
             <Text
               mt={{
                 base: "20px",
-                xl: "80px",
+                xl: "20px",
               }}
               fontSize="16px"
               color="app_grey.1"
@@ -73,6 +85,8 @@ function Footer() {
                     width="330px"
                     color="app_grey.1"
                     py="25px"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                   <Button
                     _hover={{
@@ -86,7 +100,30 @@ function Footer() {
                     borderRadius="40px"
                     ml="-40px"
                     zIndex="1"
-                    mt="-5px"
+                    mt="-2px"
+                    onClick={() => {
+                      const isEmailCorrect = validateEmail(email);
+
+                      if (!isEmailCorrect) {
+                        toast({
+                          title: "Email không hợp lệ",
+                          status: "error",
+                          duration: 700,
+                          isClosable: true,
+                        });
+
+                        setEmail("");
+                      } else {
+                        toast({
+                          title: "Bạn đã đăng ký nhận thông tin thành công",
+                          status: "success",
+                          duration: 700,
+                          isClosable: true,
+                        });
+
+                        setEmail("");
+                      }
+                    }}
                   >
                     Gửi ngay
                   </Button>
@@ -125,10 +162,6 @@ function Footer() {
           </Text>
         </Box>
       </Flex>
-
-      <Text color="app_grey.1" mt="80px">
-        © 2024 by Creatify
-      </Text>
     </Box>
   );
 }

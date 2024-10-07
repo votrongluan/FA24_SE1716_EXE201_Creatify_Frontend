@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Tab,
@@ -15,12 +15,52 @@ import {
   useColorModeValue,
   Flex,
   Button,
+  Spacer,
+  Spinner,
+  Heading,
 } from "@chakra-ui/react";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
+import { orderStatusColorMap, orderStatusMap, printOrderStatusColorMap, printOrderStatusMap } from "../../data/globalData";
+import { Link as RouterLink } from "react-router-dom";
 
 export default function AccountPage() {
   const { auth, setAuth } = useAuth();
+  const [productOrders, setProductOrders] = useState(null);
+  const [printOrders, setPrintOrders] = useState(null);
+
+  function fetchProductOrders() {
+    axios
+      .get(`/Order/GetOrderByCustomerId?employeeId=${auth.EmployeeId}`)
+      .then((response) => {
+        const data = response.data;
+        setProductOrders(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function fetchPrintOrders() {
+    axios
+      .get(`/PrintOrder/GetAllPrintOrders`)
+      .then((response) => {
+        const data = response.data;
+        const tmpPrintOrder = data.filter(
+          (item) => item.customerId == auth.EmployeeId
+        );
+        setPrintOrders(tmpPrintOrder);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    fetchProductOrders();
+    fetchPrintOrders();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -30,77 +70,31 @@ export default function AccountPage() {
     navigate("/auth");
   };
 
-  const printOrders = [
-    {
-      id: 1,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: true,
-    },
-    {
-      id: 2,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-    {
-      id: 3,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-  ];
+  function calculatePrice(orderDetail) {
+    let sum = 0;
 
-  const productOrders = [
-    {
-      id: 1,
-      products: [
-        { name: "Mô hình 1", quantity: 2 },
-        { name: "Mô hình 2", quantity: 4 },
-      ],
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: true,
-    },
-    {
-      id: 2,
-      products: [
-        { name: "Mô hình 1", quantity: 2 },
-        { name: "Mô hình 2", quantity: 4 },
-      ],
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-    {
-      id: 3,
-      products: [
-        { name: "Mô hình 1", quantity: 2 },
-        { name: "Mô hình 2", quantity: 4 },
-      ],
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-  ];
+    orderDetail.forEach((item) => (sum += item.products.price));
+
+    return sum.toLocaleString();
+  }
+
+  if (!printOrders) return <Spinner />;
+  if (!productOrders) return <Spinner />;
 
   return (
-    <Box minHeight="100vh" p={6}>
+    <Box minHeight="100vh">
+      <Box height="100px">
+        <Heading
+          fontWeight="normal"
+          as="h2"
+          fontSize="26px"
+          fontFamily="Montserrat"
+          textAlign="center"
+        >
+          Thông tin cá nhân
+        </Heading>
+      </Box>
+
       <Box
         bgColor="app_white.0"
         color="app_black.0"
@@ -112,7 +106,7 @@ export default function AccountPage() {
         <Tabs variant="enclosed">
           <Flex justify="space-between" align="center" mb={4}>
             <TabList>
-              <Tab>Thông tin tài khoản</Tab>
+              <Tab>Tài khoản</Tab>
               <Tab>Lịch sử mua hàng</Tab>
               <Tab>Đơn in</Tab>
             </TabList>
@@ -125,29 +119,47 @@ export default function AccountPage() {
               <VStack spacing={4} align="flex-start">
                 <Text fontSize="lg">Tên khách hàng: {auth?.EmployeeName}</Text>
                 <Text fontSize="lg">Email: {auth?.Email}</Text>
+                <Text fontSize="lg">SĐT: {auth?.Phone}</Text>
+                <Text fontSize="lg">Địa chỉ: {auth?.Address}</Text>
               </VStack>
             </TabPanel>
             <TabPanel>
               <VStack spacing={4} align="stretch">
                 {productOrders.map((order) => (
-                  <Box key={order.id} borderWidth="1px" borderRadius="md" p={4}>
+                  <Box
+                    key={order.orderId}
+                    borderWidth="1px"
+                    borderRadius="md"
+                    p={4}
+                  >
                     <HStack justify="space-between">
-                      <Text fontWeight="bold">Order #{order.id}</Text>
-                      <Text color={order.status ? "green.500" : "red.500"}>
-                        {order.status ? "Hoàn thành" : "Đang xử lý"}
+                      <Text fontWeight="bold">Order #{order.orderId}</Text>
+                      <Text color={orderStatusColorMap[order.orderStatus]}>
+                        {orderStatusMap[order.orderStatus]}
                       </Text>
                     </HStack>
-                    <Text>Date: {order.date}</Text>
-                    <Text>Price: {order.price}</Text>
+                    <Text>
+                      Ngày đặt:{" "}
+                      {new Date(order.orderDate).toLocaleDateString("vi-VN")}
+                    </Text>
+                    <Text>Thành tiền: {calculatePrice(order.orderDetail)}</Text>
                     <Divider my={2} />
                     <Text fontWeight="bold">Sản phẩm:</Text>
                     <Stack spacing={0}>
-                      {order.products.map((product, index) => (
+                      {order.orderDetail.map((product, index) => (
                         <Text key={index}>
-                          {product.name} - Số lượng: {product.quantity}
+                          {product.products.name} - Số lượng: {product.quantity}
                         </Text>
                       ))}
                     </Stack>
+                    <HStack>
+                      <Spacer />
+                      <RouterLink to={`/order/${order.orderId}`}>
+                        <Text cursor="pointer" textDecor={"underline"}>
+                          Xem chi tiết
+                        </Text>
+                      </RouterLink>
+                    </HStack>
                   </Box>
                 ))}
               </VStack>
@@ -155,19 +167,38 @@ export default function AccountPage() {
             <TabPanel>
               <VStack spacing={4} align="stretch">
                 {printOrders.map((order) => (
-                  <Box key={order.id} borderWidth="1px" borderRadius="md" p={4}>
+                  <Box
+                    key={order.printOrderId}
+                    borderWidth="1px"
+                    borderRadius="md"
+                    p={4}
+                  >
                     <HStack justify="space-between">
-                      <Text fontWeight="bold">Order #{order.id}</Text>
-                      <Text color={order.status ? "green.500" : "red.500"}>
-                        {order.status ? "Hoàn thành" : "Đang xử lý"}
+                      <Text fontWeight="bold">Order #{order.printOrderId}</Text>
+                      <Text color={printOrderStatusColorMap[order.status]}>
+                        {printOrderStatusMap[order.status]}
                       </Text>
                     </HStack>
-                    <Text>Date: {order.date}</Text>
-                    <Text>Price: {order.price}</Text>
+                    <Text>
+                      Ngày đặt:{" "}
+                      {new Date(order?.orderDate).toLocaleDateString("vi-VN")}
+                    </Text>
+                    <Text>
+                      Thành tiền:{" "}
+                      {order?.price ? order.price : "Chưa cập nhật giá tiền"}
+                    </Text>
                     <Divider my={2} />
                     <Text fontWeight="bold">
-                      File: <ChakraLink color="app_blue.0">file.stl</ChakraLink>
+                      Đường dẫn đến thư mục: <ChakraLink href={order.fileLink} isExternal color="app_blue.0">{order.fileLink}</ChakraLink>
                     </Text>
+                    <HStack>
+                      <Spacer />
+                      <RouterLink to={`/printorder/${order.printOrderId}`}>
+                        <Text cursor="pointer" textDecor={"underline"}>
+                          Xem chi tiết
+                        </Text>
+                      </RouterLink>
+                    </HStack>
                   </Box>
                 ))}
               </VStack>

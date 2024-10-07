@@ -11,7 +11,7 @@ export default function Product({ product }) {
       <RouterLink to={`/products/${product.productId}`}>
         <Image
           src={product.img}
-          objectFit="cover"
+          objectFit="contain"
           objectPosition="center"
           height="250px"
           w="100%"
@@ -34,7 +34,7 @@ export default function Product({ product }) {
         borderRadius="0"
         mt="20px"
         onClick={() => {
-          addCartItem(product);
+          addCartItem(product.employee.employeeId, product);
           toast({
             title: `${product.name} đã được thêm vào giỏ hàng`,
             status: "success",

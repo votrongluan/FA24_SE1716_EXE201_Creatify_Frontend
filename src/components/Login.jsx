@@ -51,6 +51,14 @@ export default function Login({ changeTab }) {
           setAuth(user);
           navigate(from);
           break;
+        case 2:
+          setAuth(user);
+          navigate("/supplier");
+          break;
+        case 3:
+          setAuth(user);
+          navigate("/admin");
+          break;
         default:
           setAuth(user);
           navigate(from);

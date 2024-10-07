@@ -3,6 +3,7 @@ import {
   IconButton,
   Image,
   Spacer,
+  Stack,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -13,17 +14,20 @@ export default function CartItemDetail({ product }) {
   const { changeQuantity, removeCartItem } = useCart(); // Get cart functions from context
 
   const handleIncrease = () => {
-    changeQuantity(product.productId, product.quantity + 1); // Increase quantity
+    // Pass both employeeId and productId when changing quantity
+    changeQuantity(product.employee.employeeId, product.productId, product.quantity + 1); 
   };
 
   const handleDecrease = () => {
     if (product.quantity > 1) {
-      changeQuantity(product.productId, product.quantity - 1); // Decrease quantity
+      // Pass both employeeId and productId when changing quantity
+      changeQuantity(product.employee.employeeId, product.productId, product.quantity - 1); 
     }
   };
 
   const handleRemove = () => {
-    removeCartItem(product.productId); // Remove item from cart
+    // Pass both employeeId and productId when removing the item
+    removeCartItem(product.employee.employeeId, product.productId); 
   };
 
   return (
@@ -43,10 +47,10 @@ export default function CartItemDetail({ product }) {
         objectPosition="center"
       />
 
-      <VStack fontSize="16px" ml="20px">
+      <Stack fontSize="16px" ml="20px">
         <Text fontSize="16px">{product.name}</Text>
         <Text fontSize="16px">{product.price.toLocaleString()}đ</Text>
-      </VStack>
+      </Stack>
 
       <Spacer />
 

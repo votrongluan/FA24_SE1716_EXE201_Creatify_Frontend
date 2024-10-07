@@ -1,16 +1,18 @@
-import { List, ListItem } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
+import { Box, List, ListItem } from "@chakra-ui/react";
+import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth.js";
 import BrandLogo from "./BrandLogo.jsx";
 
 export default function SupplierSideBar() {
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
+  const navigate = useNavigate();
   const navLinkStyle = ({ isActive }) => {
     return {
       display: "block",
       color: isActive ? "#3A6AFD" : null,
       paddingTop: "20px",
       paddingBottom: "20px",
+      cursor: "pointer",
     };
   };
 
@@ -27,7 +29,7 @@ export default function SupplierSideBar() {
           }}
         >
           <NavLink style={navLinkStyle} to={`task`}>
-            Tất cả đơn hàng
+            Đơn in đang chờ
           </NavLink>
         </ListItem>
 
@@ -62,9 +64,15 @@ export default function SupplierSideBar() {
             ml: "8px",
           }}
         >
-          <NavLink style={navLinkStyle} to={`/auth`}>
+          <Box
+            onClick={() => {
+              setAuth(null);
+              navigate("/auth");
+            }}
+            style={navLinkStyle(false)}
+          >
             Đăng xuất{" "}
-          </NavLink>
+          </Box>
         </ListItem>
       </List>
     </>

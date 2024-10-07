@@ -1,12 +1,17 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
-const RequireAuth = ({ allowedRoles }) => {
+const RequireAuth = ({ allowedRoles, children }) => {
   const { auth } = useAuth();
 
-  return auth?.role === allowedRoles ? (
-    <Outlet />
-  ) : auth?.username ? (
+  // Check if allowedRoles is an array and if the user's role exists in that array
+  const hasAccess = Array.isArray(allowedRoles)
+    ? allowedRoles.includes(auth?.Role)
+    : auth?.Role == allowedRoles;
+
+  return hasAccess ? (
+    children
+  ) : auth?.Role ? (
     <Navigate to="/unauthorized" replace />
   ) : (
     <Navigate to="/auth" replace />

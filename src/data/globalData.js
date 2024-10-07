@@ -923,3 +923,45 @@ export const mockProducts = [
 export function getProductById(id) {
   return products.find((product) => product.id == id);
 }
+
+export const categoryMap = {
+  [-1]: "Tất cả sản phẩm",
+  [0]: "Anime",
+  [1]: "Decoration",
+  [2]: "Game",
+  [3]: "Movie",
+};
+
+export const roleMap = {
+  [1]: "Customer",
+  [2]: "Supplier",
+  [3]: "Admin", 
+}
+
+export const orderStatusMap = {
+  [0]: "Đang chờ",
+  [1]: "Đã thanh toán",
+  [2]: "Đã hoàn thành",
+  [3]: "Đã hủy",
+}
+
+export const orderStatusColorMap = {
+  [0]: "blue",
+  [1]: "green",
+  [2]: "green",
+  [3]: "red",
+}
+
+export const printOrderStatusMap = {
+  [0]: "Đang chờ",
+  [1]: "Đã xác nhận",
+  [2]: "Đã hoàn thành",
+  [3]: "Đã hủy",
+}
+
+export const printOrderStatusColorMap = {
+  [0]: "blue",
+  [1]: "purple",
+  [2]: "green",
+  [3]: "red",
+}

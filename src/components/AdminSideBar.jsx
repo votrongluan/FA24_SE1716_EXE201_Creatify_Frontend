@@ -1,15 +1,17 @@
-import { List, ListItem } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
+import { Box, List, ListItem } from "@chakra-ui/react";
+import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth.js";
 import BrandLogo from "./BrandLogo.jsx";
 export default function AdminSideBar() {
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
+  const navigate = useNavigate();
   const navLinkStyle = ({ isActive }) => {
     return {
       display: "block",
       color: isActive ? "#3A6AFD" : null,
       paddingTop: "20px",
       paddingBottom: "20px",
+      cursor: "pointer",
     };
   };
 
@@ -85,9 +87,15 @@ export default function AdminSideBar() {
             ml: "8px",
           }}
         >
-          <NavLink style={navLinkStyle} to={`/auth`}>
+          <Box
+            onClick={() => {
+              setAuth(null);
+              navigate("/auth");
+            }}
+            style={navLinkStyle(false)}
+          >
             Đăng xuất{" "}
-          </NavLink>
+          </Box>
         </ListItem>
       </List>
     </>
