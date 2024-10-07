@@ -19,9 +19,11 @@ import {
 } from "@chakra-ui/react";
 import axios from "../api/axios";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function OrderUpdateButton() {
+export default function OrderUpdateButton({ order, reFetch }) {
   const toast = useToast();
+  const navigate = useNavigate();
 
   // Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -43,55 +45,33 @@ export default function OrderUpdateButton() {
               onSubmit={async (e) => {
                 e.preventDefault();
                 const formData = new FormData(e.target);
-                const data = Object.fromEntries(formData);
+                const putData = Object.fromEntries(formData);
+                putData.orderStatus = +putData.orderStatus;
 
-                if (!data.phone.match(/^[0-9]{9,11}$/)) {
-                  toast({
-                    title: "Cập nhật thất bại",
-                    description: "Số điện thoại không hợp lệ",
-                    status: "error",
-                    duration: 700,
-                    isClosable: true,
-                  });
-                  return;
-                }
+                axios
+                  .put(
+                    `/Order/UpdateOrderStatus?orderId=${order.orderId}`,
+                    putData
+                  )
+                  .then((response) => {
+                    toast({
+                      title: `${order.orderId} đã cập nhật thành công`,
+                      status: "success",
+                      duration: 500,
+                      isClosable: true,
+                    });
 
-                const res = await axios.post(
-                  "/v1/clubInsert",
-                  JSON.stringify(data),
-                  {
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                  }
-                );
-
-                if (res.data.status == "Ok") {
-                  toast({
-                    title: "Thêm thành công",
-                    description: "Club đã được thêm vào hệ thống",
-                    status: "success",
-                    duration: 700,
-                    isClosable: true,
+                    reFetch();
+                  })
+                  .catch((error) => {
+                    console.error("Error placing order", error);
                   });
-                  onClose();
-                  window.location.reload();
-                } else {
-                  toast({
-                    title: "Thêm thất bại",
-                    description: "Club không được thêm vào hệ thống",
-                    status: "error",
-                    duration: 700,
-                    isClosable: true,
-                  });
-                }
               }}
             >
               <FormControl isRequired>
                 <FormLabel>Trạng thái</FormLabel>
-                <Select name="name" type="text" ref={initialRef}>
-                  <option>Đã xử lý</option>
-                  <option>Chưa xử lý</option>
+                <Select name="orderStatus" type="text" ref={initialRef}>
+                  <option value={2}>Đã hoàn thành</option>
                 </Select>
               </FormControl>
 

@@ -21,8 +21,12 @@ import {
 } from "@chakra-ui/react";
 import { Download } from "@mui/icons-material";
 import { useRef } from "react";
+import {
+  printOrderStatusColorMap,
+  printOrderStatusMap,
+} from "../data/globalData";
 
-export default function PrintOrderDetailButton() {
+export default function PrintOrderDetailButton({ order }) {
   // Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
@@ -57,42 +61,45 @@ export default function PrintOrderDetailButton() {
                     <FormLabel>
                       <Flex alignItems="center">
                         <Text>Mã đơn hàng </Text>
-                        <Badge colorScheme="green" ml={2}>
-                          Đã xử lý
+                        <Badge
+                          p={2}
+                          color={printOrderStatusColorMap[order?.status]}
+                          ml={2}
+                        >
+                          {printOrderStatusMap[order?.status]}
                         </Badge>
                       </Flex>
                     </FormLabel>
                     <Input
-                      value="OD202406200001"
+                      value={order?.printOrderId}
                       readOnly
                       _readOnly={{ bg: "gray.100" }}
                     />
                   </FormControl>
                   <FormControl color="gray.400" mt={2}>
-                    Tải file xuống
+                    Đường dẫn đến thư mục
                     <Link
                       p="20px"
-                      ml="40px"
                       color="app_blue.0"
                       target="_blank"
-                      href="order.file"
+                      href={order?.fileLink}
                       verticalAlign="baseline"
                     >
-                      File
+                      {order?.fileLink}
                     </Link>
                   </FormControl>
-                  <FormControl mt={8}>
+                  {/* <FormControl mt={8}>
                     <FormLabel>Ngày đặt</FormLabel>
                     <Input
                       value="22/12/2023"
                       readOnly
                       _readOnly={{ bg: "gray.100" }}
                     />
-                  </FormControl>
+                  </FormControl> */}
                   <FormControl mt={4}>
                     <FormLabel>Tên</FormLabel>
                     <Input
-                      value="Nguyễn Văn A"
+                      value={order?.name}
                       readOnly
                       _readOnly={{ bg: "gray.100" }}
                     />
@@ -100,7 +107,7 @@ export default function PrintOrderDetailButton() {
                   <FormControl mt={4}>
                     <FormLabel>Số điện thoại</FormLabel>
                     <Input
-                      value="0982934834"
+                      value={order?.phone}
                       readOnly
                       _readOnly={{ bg: "gray.100" }}
                     />
@@ -108,7 +115,7 @@ export default function PrintOrderDetailButton() {
                   <FormControl mt={4}>
                     <FormLabel>Địa chỉ giao hàng</FormLabel>
                     <Input
-                      value="1775 đường Nguyễn Bình, quận 6, TP.HCM"
+                      value={order?.shipAddress}
                       readOnly
                       _readOnly={{ bg: "gray.100" }}
                     />
@@ -116,7 +123,7 @@ export default function PrintOrderDetailButton() {
                   <FormControl mt={4}>
                     <FormLabel>Email</FormLabel>
                     <Input
-                      value="example@example.com"
+                      value={order?.email}
                       readOnly
                       _readOnly={{ bg: "gray.100" }}
                     />
@@ -125,7 +132,7 @@ export default function PrintOrderDetailButton() {
                     <FormLabel>Thành tiền</FormLabel>
                     <Input
                       _readOnly={{ bg: "gray.100" }}
-                      value="4.800.000 đ"
+                      value={order?.price ? order.price : "Chưa cập nhật giá tiền"}
                       readOnly
                     />
                   </FormControl>
@@ -133,7 +140,7 @@ export default function PrintOrderDetailButton() {
                     <FormLabel>Ghi chú của bạn</FormLabel>
                     <Textarea
                       _readOnly={{ bg: "gray.100" }}
-                      value="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla accusantium necessitatibus impedit quia error tempora cum harum nemo dicta. Dolore atque in officia rerum et doloribus est quos, numquam praesentium."
+                      value={order?.note}
                       height="150px"
                       readOnly
                     />

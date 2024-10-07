@@ -43,7 +43,7 @@ export default function CartItemDetail({ product }) {
         src={product.img}
         w="100px"
         h="150px"
-        objectFit="cover"
+        objectFit="contain"
         objectPosition="center"
       />
 
@@ -84,7 +84,7 @@ export default function CartItemDetail({ product }) {
           />
         </Flex>
 
-        <Text fontSize="16px">
+        <Text width="100px" fontSize="16px">
           {(product.price * product.quantity).toLocaleString()}đ
         </Text>
 

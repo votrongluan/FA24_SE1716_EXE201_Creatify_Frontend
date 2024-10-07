@@ -28,14 +28,27 @@ export default function OrderDetailPage() {
   const { id } = useParams();
   const { auth } = useAuth();
   const [order, setOrder] = useState(null);
+  const [paymentDetail, setPaymentDetail] = useState(null);
+  let payOSLink = "https://pay.payos.vn/web/";
 
-  function fetchProductOrders() {
+  function fetchAll() {
     axios
       .get(`/Order/GetOrderByCustomerId?employeeId=${auth.EmployeeId}`)
       .then((response) => {
         const data = response.data;
         const tmpOrder = data.find((item) => item.orderId == id);
+        const payOsOrderId = tmpOrder.payOsOrderId;
         setOrder(tmpOrder);
+
+        axios
+          .get(`/Payment/GetOrder/${payOsOrderId}`)
+          .then((response) => {
+            const data = response.data;
+            setPaymentDetail(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -51,7 +64,7 @@ export default function OrderDetailPage() {
   }
 
   useEffect(() => {
-    fetchProductOrders();
+    fetchAll();
   }, []);
 
   if (!order) {
@@ -161,6 +174,38 @@ export default function OrderDetailPage() {
               </Box>
 
               <Box flex="5">
+                <Box boxShadow="sm" p={8}>
+                  <Heading as="h2" size="sm" textAlign="center" mb={4}>
+                    Thông tin thanh toán
+                  </Heading>
+
+                  <Text mt={4}>
+                    Tình trạng thanh toán: {paymentDetail?.status}
+                  </Text>
+                  <Text mt={4}>
+                    Số tiền thanh toán: {paymentDetail?.amount.toLocaleString()}{" "}
+                    đ
+                  </Text>
+                  <Text mt={4}>
+                    Link thanh toán:{" "}
+                    <Link href={payOSLink + paymentDetail?.id} color="teal.500">
+                      {payOSLink + paymentDetail?.id}
+                    </Link>
+                  </Text>
+                  <Text mt={4}>
+                    Ngày tạo:{" "}
+                    {new Date(paymentDetail?.createdAt).toLocaleString("vi-VN")}
+                  </Text>
+                  <Text mt={4}>
+                    Ngày thanh toán:{" "}
+                    {paymentDetail?.transactions.length != 0
+                      ? new Date(
+                          paymentDetail?.transactions[0].transactionDateTime
+                        ).toLocaleString("vi-VN")
+                      : "Chưa thanh toán"}
+                  </Text>
+                </Box>
+
                 <Box boxShadow="sm" p={8}>
                   <Heading as="h2" size="sm" textAlign="center" mb={4}>
                     Sản phẩm

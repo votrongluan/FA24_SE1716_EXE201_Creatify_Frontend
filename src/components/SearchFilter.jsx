@@ -73,8 +73,6 @@ function SearchFilter({
         const valueA = a[sortMethod].toString();
         const valueB = b[sortMethod].toString();
 
-        console.log(valueA, valueB);
-
         if (sortOrder === "asc") {
           return valueA.localeCompare(valueB);
         } else {
@@ -138,7 +136,9 @@ function SearchFilter({
             bgColor="app_black.0"
             color="app_white.0"
             value={sortMethod}
-            onChange={(e) => setSortMethod(e.target.value)}
+            onChange={(e) => {
+              setSortMethod(e.target.value);
+            }}
           >
             {methods.map((method) => (
               <option

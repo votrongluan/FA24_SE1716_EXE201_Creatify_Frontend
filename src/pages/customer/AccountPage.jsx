@@ -22,7 +22,12 @@ import {
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
-import { orderStatusColorMap, orderStatusMap, printOrderStatusColorMap, printOrderStatusMap } from "../../data/globalData";
+import {
+  orderStatusColorMap,
+  orderStatusMap,
+  printOrderStatusColorMap,
+  printOrderStatusMap,
+} from "../../data/globalData";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function AccountPage() {
@@ -35,10 +40,11 @@ export default function AccountPage() {
       .get(`/Order/GetOrderByCustomerId?employeeId=${auth.EmployeeId}`)
       .then((response) => {
         const data = response.data;
+        console.log(data);
         setProductOrders(data);
       })
       .catch((error) => {
-        console.log(error);
+        setProductOrders([]);
       });
   }
 
@@ -53,7 +59,7 @@ export default function AccountPage() {
         setPrintOrders(tmpPrintOrder);
       })
       .catch((error) => {
-        console.log(error);
+        setPrintOrders([]);
       });
   }
 
@@ -82,7 +88,7 @@ export default function AccountPage() {
   if (!productOrders) return <Spinner />;
 
   return (
-    <Box minHeight="100vh">
+    <Box minHeight="100vh" pb="40px">
       <Box height="100px">
         <Heading
           fontWeight="normal"
@@ -189,7 +195,14 @@ export default function AccountPage() {
                     </Text>
                     <Divider my={2} />
                     <Text fontWeight="bold">
-                      Đường dẫn đến thư mục: <ChakraLink href={order.fileLink} isExternal color="app_blue.0">{order.fileLink}</ChakraLink>
+                      Đường dẫn đến thư mục:{" "}
+                      <ChakraLink
+                        href={order.fileLink}
+                        isExternal
+                        color="app_blue.0"
+                      >
+                        {order.fileLink}
+                      </ChakraLink>
                     </Text>
                     <HStack>
                       <Spacer />

@@ -25,13 +25,13 @@ export default function PrintOrderPage() {
   const { auth } = useAuth();
 
   const [formData, setFormData] = useState({
-    name: auth.EmployeeName,
-    phone: auth.Phone,
-    email: auth.Email,
-    shipAddress: auth.Address,
+    name: auth?.EmployeeName,
+    phone: auth?.Phone,
+    email: auth?.Email,
+    shipAddress: auth?.Address,
     fileLink: "",
     note: "",
-    customerId: auth.EmployeeId,
+    customerId: auth?.EmployeeId,
     supplierId: "",
     payOsOrderId: "",
     status: 0,

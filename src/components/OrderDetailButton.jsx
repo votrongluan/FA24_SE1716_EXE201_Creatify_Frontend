@@ -25,10 +25,11 @@ import {
   Text,
   useDisclosure,
   Link,
+  Spinner,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { orderStatusMap } from "../data/globalData";
-import { appURL } from "../api/axios";
+import axios, { appURL } from "../api/axios";
 
 export default function OrderDetailButton({ order }) {
   // Modal
@@ -42,6 +43,27 @@ export default function OrderDetailButton({ order }) {
 
     return sum.toLocaleString();
   }
+
+  const [paymentDetail, setPaymentDetail] = useState(null);
+  const [showPaymentInfo, setShowPaymentInfo] = useState(false); // Add state to control payment info display
+  let payOSLink = "https://pay.payos.vn/web/";
+
+  function fetchAll() {
+    axios
+      .get(`/Payment/GetOrder/${order.payOsOrderId}`)
+      .then((response) => {
+        const data = response.data;
+        setPaymentDetail(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const handleShowPaymentInfo = () => {
+    fetchAll();
+    setShowPaymentInfo(true); // Show payment info after fetching data
+  };
 
   return (
     <>
@@ -87,9 +109,7 @@ export default function OrderDetailButton({ order }) {
                   <FormControl mt={4}>
                     <FormLabel>Ngày đặt</FormLabel>
                     <Input
-                      value={new Date(order.orderDate).toLocaleDateString(
-                        "vi-VN"
-                      )}
+                      value={new Date(order.orderDate).toLocaleString("vi-VN")}
                       readOnly
                       _readOnly={{ bg: "gray.100" }}
                     />
@@ -167,44 +187,40 @@ export default function OrderDetailButton({ order }) {
                         const product = order.products;
 
                         return (
-                          <>
-                            <Tr>
-                              <Td>
-                                <Link
-                                  noOfLines={1}
-                                  href={`${appURL}/products/${product.productId}`}
-                                  isExternal
-                                  color="teal.300"
-                                >
-                                  {product.productId}
-                                </Link>
-                              </Td>
-                              <Td>
-                                <Text noOfLines={1}>{product.name}</Text>
-                              </Td>
-                              <Td>
-                                <Image
-                                  src={product.img}
-                                  alt="Product Image"
-                                  w="100px"
-                                  objectFit="contain"
-                                />
-                              </Td>
-                              <Td>{product.price.toLocaleString()}</Td>
-                              <Td>
-                                <Flex align="center" justify="center">
-                                  <Text mx={2}>{order.quantity}</Text>
-                                </Flex>
-                              </Td>
-                              <Td textAlign="end">
-                                <Text fontWeight="bold">
-                                  {(
-                                    order.quantity * product.price
-                                  ).toLocaleString()}{" "}
-                                </Text>
-                              </Td>
-                            </Tr>
-                          </>
+                          <Tr key={product.productId}>
+                            <Td>
+                              <Link
+                                noOfLines={1}
+                                href={`${appURL}/products/${product.productId}`}
+                                isExternal
+                                color="teal.300"
+                              >
+                                {product.productId}
+                              </Link>
+                            </Td>
+                            <Td>
+                              <Text noOfLines={1}>{product.name}</Text>
+                            </Td>
+                            <Td>
+                              <Image
+                                src={product.img}
+                                alt="Product Image"
+                                w="100px"
+                                objectFit="contain"
+                              />
+                            </Td>
+                            <Td>{product.price.toLocaleString()}</Td>
+                            <Td>
+                              <Flex align="center" justify="center">
+                                <Text mx={2}>{order.quantity}</Text>
+                              </Flex>
+                            </Td>
+                            <Td textAlign="end">
+                              <Text fontWeight="bold">
+                                {(order.quantity * product.price).toLocaleString()}{" "}
+                              </Text>
+                            </Td>
+                          </Tr>
                         );
                       })}
                     </Tbody>
@@ -213,6 +229,55 @@ export default function OrderDetailButton({ order }) {
                     Thành tiền: {calculatePrice(order.orderDetail)}đ
                   </Text>
                 </Box>
+
+                {/* Payment Info Section */}
+                {!showPaymentInfo ? (
+                  <Box textAlign="center" mt={4}>
+                    <Button onClick={handleShowPaymentInfo}>
+                      Hiển thị thông tin thanh toán
+                    </Button>
+                  </Box>
+                ) : (
+                  <Box boxShadow="sm" p={8} mt={4}>
+                    <Heading as="h2" size="sm" textAlign="center" mb={4}>
+                      Thông tin thanh toán
+                    </Heading>
+
+                    {paymentDetail ? (
+                      <>
+                        <Text mt={4}>
+                          Tình trạng thanh toán: {paymentDetail?.status}
+                        </Text>
+                        <Text mt={4}>
+                          Số tiền thanh toán: {paymentDetail?.amount.toLocaleString()} đ
+                        </Text>
+                        <Text mt={4}>
+                          Link thanh toán:{" "}
+                          <Link
+                            href={payOSLink + paymentDetail?.id}
+                            color="teal.500"
+                          >
+                            {payOSLink + paymentDetail?.id}
+                          </Link>
+                        </Text>
+                        <Text mt={4}>
+                          Ngày tạo:{" "}
+                          {new Date(paymentDetail?.createdAt).toLocaleString("vi-VN")}
+                        </Text>
+                        <Text mt={4}>
+                          Ngày thanh toán:{" "}
+                          {paymentDetail?.transactions.length !== 0
+                            ? new Date(
+                                paymentDetail?.transactions[0].transactionDateTime
+                              ).toLocaleString("vi-VN")
+                            : "Chưa thanh toán"}
+                        </Text>
+                      </>
+                    ) : (
+                      <Spinner />
+                    )}
+                  </Box>
+                )}
               </Box>
             </Flex>
           </ModalBody>

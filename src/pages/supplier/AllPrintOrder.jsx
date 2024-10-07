@@ -11,6 +11,7 @@ import {
   MenuItem,
   MenuList,
   Spacer,
+  Spinner,
   Table,
   TableContainer,
   Tbody,
@@ -22,54 +23,46 @@ import {
 } from "@chakra-ui/react";
 import SearchFilter from "../../components/SearchFilter.jsx";
 import Pagination from "../../components/Pagination.jsx";
-import ProductUpdateButton from "../../components/ProductUpdateButton.jsx";
-import ProductAddButton from "../../components/ProductAddButton.jsx";
-import OrderDetailButton from "../../components/OrderDetailButton.jsx";
-import OrderUpdateButton from "../../components/OrderUpdateButton.jsx";
-import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import ConfirmationDialog from "../../components/ConfirmationDialog.jsx";
 import axios from "../../api/axios.js";
 import PrintOrderDetailButton from "../../components/PrintOrderDetailButton.jsx";
+import { useEffect, useState } from "react";
 import PrintOrderUpdateButton from "../../components/PrintOrderUpdateButton.jsx";
+import {
+  printOrderStatusColorMap,
+  printOrderStatusMap,
+} from "../../data/globalData.js";
 
 export default function AllPrintOrder() {
-  const orders = [
-    {
-      id: 1,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-    {
-      id: 2,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-    {
-      id: 3,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-  ];
+  const [printOrder, setPrintOrder] = useState(null);
+
+  function fetchAll() {
+    axios
+      .get(`/PrintOrder/GetAllPrintOrders`)
+      .then((response) => {
+        const data = response.data;
+        setPrintOrder(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    fetchAll();
+  }, []);
+
+  if (!printOrder) return <Spinner />;
 
   return (
     <>
       <SearchFilter
         searchPlaceholder="Tìm theo tên, số điện thoại, địa chỉ"
-        data={orders}
-        methods={[{ value: "name", label: "Tên sản phẩm" }]}
-        properties={["id"]}
+        data={printOrder}
+        methods={[{ value: "printOrderId", label: "Mã in" }]}
+        properties={["printOrderId"]}
         DisplayData={({ filteredData }) => (
           <Pagination
             itemsPerPage={2}
@@ -80,8 +73,7 @@ export default function AllPrintOrder() {
                   <Thead>
                     <Tr>
                       <Th>Mã</Th>
-                      <Th>File</Th>
-                      <Th>Ngày đặt</Th>
+                      <Th>File Link</Th>
                       <Th>Email</Th>
                       <Th>SĐT</Th>
                       <Th>Giá</Th>
@@ -91,21 +83,18 @@ export default function AllPrintOrder() {
                   </Thead>
                   <Tbody>
                     {currentData.map((order) => (
-                      <Tr key={order.id}>
+                      <Tr key={order.printOrderId}>
                         <Td>
-                          <Text>{order.id}</Text>
+                          <Text>{order.printOrderId}</Text>
                         </Td>
                         <Td>
                           <Link
                             color="app_blue.0"
                             target="_blank"
-                            href="order.file"
+                            href={order.fileLink}
                           >
-                            {order.file}
+                            {order.fileLink}
                           </Link>
-                        </Td>
-                        <Td>
-                          <Text>{order.date}</Text>
                         </Td>
                         <Td>
                           <Text>{order.email}</Text>
@@ -114,17 +103,15 @@ export default function AllPrintOrder() {
                           <Text>{order.phone}</Text>
                         </Td>
                         <Td>
-                          <Text>{order.price}</Text>
+                          <Text>
+                            {order?.price
+                              ? order.price
+                              : "Chưa cập nhất giá tiền"}
+                          </Text>
                         </Td>
                         <Td>
-                          <Text>
-                            {order.status == true ? (
-                              <Badge colorScheme="green" p="8px">
-                                Đã xử lý
-                              </Badge>
-                            ) : (
-                              <Badge p="8px">Chưa xử lý</Badge>
-                            )}
+                          <Text color={printOrderStatusColorMap[order?.status]}>
+                            {printOrderStatusMap[order?.status]}
                           </Text>
                         </Td>
                         <Td>
@@ -144,14 +131,10 @@ export default function AllPrintOrder() {
                                 fontSize="16px"
                               >
                                 <MenuItem p="0">
-                                  <PrintOrderDetailButton />
+                                  <PrintOrderDetailButton order={order} />
                                 </MenuItem>
                                 <MenuItem p="0">
-                                  <ConfirmationDialog
-                                    title="Nhận đơn"
-                                    onConfirm={async () => {}}
-                                    colorScheme="red"
-                                  />
+                                  <PrintOrderUpdateButton />
                                 </MenuItem>
                               </MenuList>
                             </Menu>

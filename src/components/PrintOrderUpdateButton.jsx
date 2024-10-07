@@ -44,46 +44,6 @@ export default function PrintOrderUpdateButton() {
                 const formData = new FormData(e.target);
                 const data = Object.fromEntries(formData);
 
-                if (!data.phone.match(/^[0-9]{9,11}$/)) {
-                  toast({
-                    title: "Cập nhật thất bại",
-                    description: "Số điện thoại không hợp lệ",
-                    status: "error",
-                    duration: 700,
-                    isClosable: true,
-                  });
-                  return;
-                }
-
-                const res = await axios.post(
-                  "/v1/clubInsert",
-                  JSON.stringify(data),
-                  {
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                  }
-                );
-
-                if (res.data.status == "Ok") {
-                  toast({
-                    title: "Thêm thành công",
-                    description: "Club đã được thêm vào hệ thống",
-                    status: "success",
-                    duration: 700,
-                    isClosable: true,
-                  });
-                  onClose();
-                  window.location.reload();
-                } else {
-                  toast({
-                    title: "Thêm thất bại",
-                    description: "Club không được thêm vào hệ thống",
-                    status: "error",
-                    duration: 700,
-                    isClosable: true,
-                  });
-                }
               }}
             >
               <FormControl isRequired>
@@ -91,16 +51,10 @@ export default function PrintOrderUpdateButton() {
                 <Input name="price" type="text" ref={initialRef} />
               </FormControl>
 
-              <FormControl isRequired>
-                <FormLabel>Supplier</FormLabel>
-                <Input name="supplier" type="text" ref={initialRef} />
-              </FormControl>
-
               <FormControl isRequired mt={4}>
                 <FormLabel>Trạng thái</FormLabel>
-                <Select name="name" type="text" ref={initialRef}>
-                  <option>Đã xử lý</option>
-                  <option>Chưa xử lý</option>
+                <Select name="status" type="text" ref={initialRef}>
+                  <option value={1}>Chờ xác nhận</option>
                 </Select>
               </FormControl>
 

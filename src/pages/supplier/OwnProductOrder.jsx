@@ -34,7 +34,7 @@ import { orderStatusColorMap, orderStatusMap } from "../../data/globalData.js";
 
 export default function OwnProductOrder() {
   const { auth } = useAuth();
-  const [productOrders, setProductOrders] = useState([]);
+  const [productOrders, setProductOrders] = useState(null);
 
   function calculatePrice(orderDetail, additional = 0) {
     let sum = additional;
@@ -60,71 +60,18 @@ export default function OwnProductOrder() {
     fetchProductOrders();
   }, []);
 
-  const orders = [
-    {
-      id: 1,
-      products: [
-        {
-          name: "Mô hình 1",
-          quantity: 2,
-        },
-        {
-          name: "Mô hình 2",
-          quantity: 4,
-        },
-      ],
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: true,
-    },
-    {
-      id: 2,
-      products: [
-        {
-          name: "Mô hình 1",
-          quantity: 2,
-        },
-        {
-          name: "Mô hình 2",
-          quantity: 4,
-        },
-      ],
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-    {
-      id: 3,
-      products: [
-        {
-          name: "Mô hình 1",
-          quantity: 2,
-        },
-        {
-          name: "Mô hình 2",
-          quantity: 4,
-        },
-      ],
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-  ];
-
-  if (productOrders.length == 0) return <></>;
+  if (!productOrders) return <></>;
 
   return (
     <>
       <SearchFilter
-        searchPlaceholder="Tìm theo tên, số điện thoại, địa chỉ"
+        searchPlaceholder="Tìm theo mã đặt hàng"
         data={productOrders}
-        methods={[{ value: "orderId", label: "Mã đặt hàng" }]}
+        methods={[
+          { value: "orderId", label: "Mã đặt hàng" },
+          { value: "orderDate", label: "Ngày đặt" },
+          { value: "orderStatus", label: "Trạng thái" },
+        ]}
         properties={["orderId"]}
         DisplayData={({ filteredData }) => (
           <Pagination
@@ -215,7 +162,10 @@ export default function OwnProductOrder() {
                                   <OrderDetailButton order={order} />
                                 </MenuItem>
                                 <MenuItem p="0">
-                                  <OrderUpdateButton />
+                                  <OrderUpdateButton
+                                    reFetch={fetchProductOrders}
+                                    order={order}
+                                  />
                                 </MenuItem>
                               </MenuList>
                             </Menu>

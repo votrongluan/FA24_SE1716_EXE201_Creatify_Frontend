@@ -954,14 +954,16 @@ export const orderStatusColorMap = {
 
 export const printOrderStatusMap = {
   [0]: "Đang chờ",
-  [1]: "Đã xác nhận",
-  [2]: "Đã hoàn thành",
-  [3]: "Đã hủy",
+  [1]: "Chờ xác nhận",
+  [2]: "Đã xác nhận",
+  [3]: "Đã hoàn thành",
+  [4]: "Đã hủy",
 }
 
 export const printOrderStatusColorMap = {
   [0]: "blue",
   [1]: "purple",
-  [2]: "green",
-  [3]: "red",
+  [2]: "orange",
+  [3]: "green",
+  [4]: "red",
 }
