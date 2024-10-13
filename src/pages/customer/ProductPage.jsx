@@ -24,8 +24,6 @@ import ShareBar from "../../components/ShareBar";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
-import ModelEditor from "../../components/ModelEditor";
-import { STLLoader } from "three-stdlib";
 import useCart from "../../hooks/useCart";
 import { categoryMap, stlModelLookup } from "../../data/globalData";
 
@@ -79,6 +77,7 @@ export default function ProductPage() {
             }}
           >
             <Image
+              title="Tùy chỉnh sản phẩm"
               border="1.5px solid"
               borderColor="rgba(255,255,255,.7)"
               w="100%"
@@ -88,11 +87,11 @@ export default function ProductPage() {
               h="500px"
               cursor="zoom-in"
               onClick={() => {
-                if (stlModelLookup[product.name]) {
+                if (product?.modelUrl) {
                   onModelOpen();
                 } else {
                   toast({
-                    title: "Mô hình chưa hỗ trợ xem 3D",
+                    title: "Mô hình chưa hỗ trợ xem và chỉnh sửa 3D",
                     description: "File in 3D vẫn đang trong quá trình chuẩn bị",
                     status: "info",
                     duration: 1000,
@@ -261,10 +260,20 @@ export default function ProductPage() {
           <ModalOverlay />
           <ModalContent bg="transparent" boxShadow="none">
             <ModalCloseButton zIndex="1" color="white" />
-            <ModelEditor
-              modelUrl={stlModelLookup[product.name]}
-              fileType={STLLoader}
-            />
+            <iframe
+              style={{
+                display: "block",
+                position: "relative",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+              }}
+              src={product?.modelUrl}
+              frameBorder="0"
+              width={window.innerWidth}
+              height={window.innerHeight}
+            ></iframe>
           </ModalContent>
         </Modal>
       </Container>
