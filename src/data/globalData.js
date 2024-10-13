@@ -1,5 +1,3 @@
-import HumbackWhale from "../assets/3dobject/humpback-swim-whole.stl";
-
 export const mockProducts = [
   {
     productId: 1,
@@ -923,7 +921,7 @@ export const mockProducts = [
 ];
 
 export const stlModelLookup = {
-  ["Humpack Whale - Warhammer 40k"]: HumbackWhale,
+  ["Humpack Whale - Warhammer 40k"]: "nothing",
 };
 
 export function getProductById(id) {
