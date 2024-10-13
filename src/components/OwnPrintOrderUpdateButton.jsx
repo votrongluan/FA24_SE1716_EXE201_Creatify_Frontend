@@ -13,6 +13,7 @@ import {
   ModalOverlay,
   Select,
   Spacer,
+  Text,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -20,7 +21,7 @@ import axios from "../api/axios";
 import { useRef } from "react";
 import useAuth from "../hooks/useAuth";
 
-export default function PrintOrderUpdateButton({ order, reFetch }) {
+export default function OwnPrintOrderUpdateButton({ order, reFetch }) {
   const toast = useToast();
   const { auth } = useAuth();
 
@@ -43,16 +44,15 @@ export default function PrintOrderUpdateButton({ order, reFetch }) {
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
-                const formData = new FormData(e.target);
-                const data = Object.fromEntries(formData);
-                data.supplierId = auth?.EmployeeId;
-                data.status = +data.status;
-                data.price = +data.price;
 
                 axios
                   .put(
                     `/PrintOrder/UpdatePrintOrderStatus?printOrderId=${order.printOrderId}`,
-                    data
+                    {
+                      status: 3,
+                      price: order?.price,
+                      supplierId: order?.supplierId,
+                    }
                   )
                   .then((response) => {
                     toast({
@@ -71,21 +71,31 @@ export default function PrintOrderUpdateButton({ order, reFetch }) {
             >
               <FormControl isRequired>
                 <FormLabel>Giá</FormLabel>
-                <Input name="price" type="text" ref={initialRef} />
+                <Input
+                  value={order?.price?.toLocaleString() + " đ"}
+                  readOnly
+                  name="price"
+                  type="text"
+                  ref={initialRef}
+                />
               </FormControl>
 
               <FormControl isRequired mt={4}>
                 <FormLabel>Trạng thái</FormLabel>
                 <Select name="status" type="text" ref={initialRef}>
-                  <option value={1}>Chờ xác nhận</option>
+                  <option value={3}>Đã hoàn thành</option>
                 </Select>
               </FormControl>
 
               <HStack mt={10}>
                 <Spacer />
-                <Button colorScheme="blue" mr={3} type="submit">
-                  Xác nhận
-                </Button>
+                {order?.status == 2 ? (
+                  <Button colorScheme="blue" mr={3} type="submit">
+                    Xác nhận
+                  </Button>
+                ) : (
+                  <Text>Khách hàng chưa xác nhận</Text>
+                )}
                 <Button onClick={onClose}>Hủy</Button>
               </HStack>
             </form>

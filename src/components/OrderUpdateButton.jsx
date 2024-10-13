@@ -27,7 +27,7 @@ export default function OrderUpdateButton({ order, reFetch }) {
 
   // Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const initialRef = useRef(null);
+  const initialRef = useRef(null);  
 
   return (
     <>

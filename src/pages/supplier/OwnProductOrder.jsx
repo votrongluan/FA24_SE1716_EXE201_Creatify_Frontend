@@ -136,6 +136,7 @@ export default function OwnProductOrder() {
                         <Td>
                           <Text>
                             <Badge
+                              p="8px"
                               color={orderStatusColorMap[order.orderStatus]}
                             >
                               {orderStatusMap[order.orderStatus]}

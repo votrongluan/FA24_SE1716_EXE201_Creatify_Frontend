@@ -14,11 +14,6 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Spinner,
   Text,
   useDisclosure,
@@ -31,9 +26,8 @@ import { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
 import ModelEditor from "../../components/ModelEditor";
 import { STLLoader } from "three-stdlib";
-import model from "../../assets/3dobject/humpback-swim-whole.stl";
 import useCart from "../../hooks/useCart";
-import { categoryMap } from "../../data/globalData";
+import { categoryMap, stlModelLookup } from "../../data/globalData";
 
 export default function ProductPage() {
   const toast = useToast();
@@ -93,7 +87,19 @@ export default function ProductPage() {
               src={product.img}
               h="500px"
               cursor="zoom-in"
-              onClick={onModelOpen}
+              onClick={() => {
+                if (stlModelLookup[product.name]) {
+                  onModelOpen();
+                } else {
+                  toast({
+                    title: "Mô hình chưa hỗ trợ xem 3D",
+                    description: "File in 3D vẫn đang trong quá trình chuẩn bị",
+                    status: "info",
+                    duration: 1000,
+                    isClosable: true,
+                  });
+                }
+              }}
             />
           </GridItem>
 
@@ -255,7 +261,10 @@ export default function ProductPage() {
           <ModalOverlay />
           <ModalContent bg="transparent" boxShadow="none">
             <ModalCloseButton zIndex="1" color="white" />
-            <ModelEditor modelUrl={model} fileType={STLLoader} />
+            <ModelEditor
+              modelUrl={stlModelLookup[product.name]}
+              fileType={STLLoader}
+            />
           </ModalContent>
         </Modal>
       </Container>

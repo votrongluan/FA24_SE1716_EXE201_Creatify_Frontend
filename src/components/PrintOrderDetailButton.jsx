@@ -18,18 +18,45 @@ import {
   Text,
   useDisclosure,
   Link,
+  Spinner,
 } from "@chakra-ui/react";
 import { Download } from "@mui/icons-material";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   printOrderStatusColorMap,
   printOrderStatusMap,
 } from "../data/globalData";
+import axios from "../api/axios";
 
 export default function PrintOrderDetailButton({ order }) {
   // Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
+  const [paymentDetail, setPaymentDetail] = useState(null);
+  const [showPaymentInfo, setShowPaymentInfo] = useState(false); // State to control showing payment info
+  let payOSLink = "https://pay.payos.vn/web/";
+
+  function fetchPaymentInfo() {
+    if (!order?.payOsOrderId) {
+      setPaymentDetail({});
+      return;
+    }
+
+    axios
+      .get(`/Payment/GetOrder/${order.payOsOrderId}`)
+      .then((response) => {
+        const data = response.data;
+        setPaymentDetail(data);
+      })
+      .catch((error) => {
+        setPaymentDetail({});
+      });
+  }
+
+  const handleShowPaymentInfo = () => {
+    fetchPaymentInfo();
+    setShowPaymentInfo(true); // Show payment info after fetching data
+  };
 
   return (
     <>
@@ -41,7 +68,7 @@ export default function PrintOrderDetailButton({ order }) {
         initialFocusRef={initialRef}
         isOpen={isOpen}
         onClose={onClose}
-        size="4xl"
+        size="8xl"
         isCentered
       >
         <ModalOverlay />
@@ -88,14 +115,14 @@ export default function PrintOrderDetailButton({ order }) {
                       {order?.fileLink}
                     </Link>
                   </FormControl>
-                  {/* <FormControl mt={8}>
+                  <FormControl mt={8}>
                     <FormLabel>Ngày đặt</FormLabel>
                     <Input
-                      value="22/12/2023"
+                      value={new Date(order?.date).toLocaleDateString()}
                       readOnly
                       _readOnly={{ bg: "gray.100" }}
                     />
-                  </FormControl> */}
+                  </FormControl>
                   <FormControl mt={4}>
                     <FormLabel>Tên</FormLabel>
                     <Input
@@ -132,7 +159,11 @@ export default function PrintOrderDetailButton({ order }) {
                     <FormLabel>Thành tiền</FormLabel>
                     <Input
                       _readOnly={{ bg: "gray.100" }}
-                      value={order?.price ? order.price : "Chưa cập nhật giá tiền"}
+                      value={
+                        order?.price
+                          ? order.price.toLocaleString()
+                          : "Chưa cập nhật giá tiền"
+                      }
                       readOnly
                     />
                   </FormControl>
@@ -145,6 +176,60 @@ export default function PrintOrderDetailButton({ order }) {
                       readOnly
                     />
                   </FormControl>
+                </Box>
+              </Box>
+
+              <Box flex="2">
+                <Box boxShadow="sm" p={8}>
+                  <Heading as="h2" size="sm" textAlign="center" mb={4}>
+                    Thông tin thanh toán
+                  </Heading>
+
+                  {!showPaymentInfo ? (
+                    <Box textAlign="center" mt={4}>
+                      <Button onClick={handleShowPaymentInfo}>
+                        Hiển thị thông tin thanh toán
+                      </Button>
+                    </Box>
+                  ) : paymentDetail ? (
+                    <>
+                      <Text mt={4}>
+                        Tình trạng thanh toán:{" "}
+                        {paymentDetail?.status || "Chưa có thông tin"}
+                      </Text>
+                      <Text mt={4}>
+                        Số tiền thanh toán:{" "}
+                        {paymentDetail?.amount?.toLocaleString() ||
+                          "Chưa có thông tin"}{" "}
+                        đ
+                      </Text>
+                      <Text mt={4}>
+                        Link thanh toán:{" "}
+                        <Link
+                          href={payOSLink + paymentDetail?.id}
+                          color="teal.500"
+                        >
+                          {payOSLink + paymentDetail?.id}
+                        </Link>
+                      </Text>
+                      <Text mt={4}>
+                        Ngày tạo:{" "}
+                        {new Date(paymentDetail?.createdAt)?.toLocaleString(
+                          "vi-VN"
+                        )}
+                      </Text>
+                      <Text mt={4}>
+                        Ngày thanh toán:{" "}
+                        {paymentDetail?.transactions?.length !== 0
+                          ? new Date(
+                              paymentDetail?.transactions?.[0]?.transactionDateTime
+                            ).toLocaleString("vi-VN")
+                          : "Chưa thanh toán"}
+                      </Text>
+                    </>
+                  ) : (
+                    <Spinner />
+                  )}
                 </Box>
               </Box>
             </Flex>

@@ -54,11 +54,12 @@ export default function CartPage() {
 
     const postData = {
       note: note[employeeId] || "", // Specific note for employeeId
-      shipAddress: shipAddress[employeeId] || "", // Specific shipping address for employeeId
+      shipAddress: shipAddress[employeeId] || auth?.Address, // Specific shipping address for employeeId
       orderDetail,
       paymentId: 2,
       employeeId: auth.EmployeeId,
       supplierId: employeeId, // EmployeeId acts as the supplierId in this case
+      totalPrice: calculateTotalPrice(employeeId) + 30000,
     };
 
     axios
@@ -71,8 +72,8 @@ export default function CartPage() {
         const paymentData = {
           orderId: orderId.toString(),
           description: `Thanh toan ma don ${appOrderId}`,
-          priceTotal: calculateTotalPrice(employeeId),
-          returnUrl: `${appURL}/order/${appOrderId}?paySuccess=true`,
+          priceTotal: calculateTotalPrice(employeeId) + 30000,
+          returnUrl: `${appURL}/order/${appOrderId}?paySuccess=true&orderId=${orderId}`,
           cancelUrl: `${appURL}/order/${appOrderId}?paySuccess=false`,
           items: [
             {
@@ -82,8 +83,6 @@ export default function CartPage() {
             },
           ],
         };
-
-        console.log(JSON.stringify(paymentData));
 
         axios
           .post("/Payment/CreatePayment", paymentData, {
@@ -161,7 +160,7 @@ export default function CartPage() {
                 fontSize="16px"
                 color="app_white.0"
                 placeholder="Nhập địa chỉ giao hàng"
-                value={shipAddress[employeeId] || ""}
+                value={shipAddress[employeeId] || auth?.Address}
                 onChange={(e) =>
                   handleAddressChange(employeeId, e.target.value)
                 } // Handle shipping address input per employeeId

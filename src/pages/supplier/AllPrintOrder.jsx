@@ -42,7 +42,7 @@ export default function AllPrintOrder() {
       .get(`/PrintOrder/GetAllPrintOrders`)
       .then((response) => {
         const data = response.data;
-        setPrintOrder(data);
+        setPrintOrder(data.filter((item) => item.status == 0));
         console.log(data);
       })
       .catch((error) => {
@@ -110,9 +110,12 @@ export default function AllPrintOrder() {
                           </Text>
                         </Td>
                         <Td>
-                          <Text color={printOrderStatusColorMap[order?.status]}>
+                          <Badge
+                            color={printOrderStatusColorMap[order?.status]}
+                            p="8px"
+                          >
                             {printOrderStatusMap[order?.status]}
-                          </Text>
+                          </Badge>
                         </Td>
                         <Td>
                           <Flex alignItems="center" columnGap="20px">
@@ -134,7 +137,10 @@ export default function AllPrintOrder() {
                                   <PrintOrderDetailButton order={order} />
                                 </MenuItem>
                                 <MenuItem p="0">
-                                  <PrintOrderUpdateButton />
+                                  <PrintOrderUpdateButton
+                                    order={order}
+                                    reFetch={fetchAll}
+                                  />
                                 </MenuItem>
                               </MenuList>
                             </Menu>

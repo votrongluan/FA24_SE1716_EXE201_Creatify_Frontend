@@ -22,7 +22,7 @@ export default function SplineModal({ splineIsOpen, splineOnClose }) {
             right: 0,
             bottom: 0,
           }}
-          src="https://my.spline.design/bugati-b9193452067cfd69c000a6936e17dacc/"
+          src="https://app.spline.design/community/file/038a1264-3fbf-4b72-b7e1-56ef4adb962c"
           frameBorder="0"
           width={window.innerWidth}
           height={window.innerHeight}

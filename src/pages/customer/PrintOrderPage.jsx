@@ -20,9 +20,11 @@ import { useState } from "react";
 import axios, { appURL } from "../../api/axios";
 import RequireAuth from "../../components/RequireAuth";
 import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function PrintOrderPage() {
   const { auth } = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: auth?.EmployeeName,
@@ -51,14 +53,7 @@ export default function PrintOrderPage() {
       .post("/PrintOrder/AddPrintOrder", formData)
       .then((response) => {
         console.log(response.data);
-        toast({
-          title: "Đơn in của bạn đã được gửi!",
-          description:
-            "Bạn sẽ nhận được email xác nhận nếu nhà cung cấp có thể thực hiện yêu cầu.",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
+        navigate(`/printorder/${response.data.data[0].printOrderId}`);
       })
       .catch((error) => {
         console.error("Error placing order", error);
@@ -177,8 +172,8 @@ export default function PrintOrderPage() {
               <FormControl isRequired mt="40px">
                 <FormLabel>Địa chỉ giao hàng</FormLabel>
                 <Input
-                  name="address"
-                  value={formData.address}
+                  name="shipAddress"
+                  value={formData.shipAddress}
                   onChange={handleInputChange}
                 />
               </FormControl>

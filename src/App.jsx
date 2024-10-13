@@ -42,6 +42,8 @@ import TestPage from "./pages/TestPage.jsx";
 import ScrollToTopAndBottom from "./components/ScrollToTopAndBottom.jsx";
 import OrderDetailPage from "./pages/customer/OrderDetailPage.jsx";
 import PrintOrderDetailPage from "./pages/customer/PrintOrderDetailPage.jsx";
+import OrderStatusPage from "./pages/customer/OrderStatusPage.jsx";
+import SupplierDashboard from "./pages/supplier/SupplierDashboard.jsx";
 
 function App() {
   useEffect(() => {
@@ -82,6 +84,8 @@ function App() {
 
         {/* Supplier page route */}
         <Route path="supplier" element={<SupplierLayout />}>
+          <Route index element={<SupplierDashboard />} />
+          <Route path="dashboard" element={<SupplierDashboard />} />
           <Route path="task" element={<AllOrderPage />} />
           <Route path="own" element={<OwnOrderPage />} />
         </Route>

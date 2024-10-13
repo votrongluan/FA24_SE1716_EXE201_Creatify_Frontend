@@ -40,7 +40,7 @@ export default function AccountPage() {
       .get(`/Order/GetOrderByCustomerId?employeeId=${auth.EmployeeId}`)
       .then((response) => {
         const data = response.data;
-        console.log(data);
+        data.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
         setProductOrders(data);
       })
       .catch((error) => {
@@ -56,6 +56,7 @@ export default function AccountPage() {
         const tmpPrintOrder = data.filter(
           (item) => item.customerId == auth.EmployeeId
         );
+        tmpPrintOrder.sort((a, b) => new Date(b.date) - new Date(a.date));
         setPrintOrders(tmpPrintOrder);
       })
       .catch((error) => {
@@ -122,7 +123,7 @@ export default function AccountPage() {
           </Flex>
           <TabPanels>
             <TabPanel>
-              <VStack spacing={4} align="flex-start">
+              <VStack spacing={12} align="flex-start">
                 <Text fontSize="lg">Tên khách hàng: {auth?.EmployeeName}</Text>
                 <Text fontSize="lg">Email: {auth?.Email}</Text>
                 <Text fontSize="lg">SĐT: {auth?.Phone}</Text>
@@ -130,7 +131,7 @@ export default function AccountPage() {
               </VStack>
             </TabPanel>
             <TabPanel>
-              <VStack spacing={4} align="stretch">
+              <VStack spacing={12} align="stretch">
                 {productOrders.map((order) => (
                   <Box
                     key={order.orderId}
@@ -148,7 +149,9 @@ export default function AccountPage() {
                       Ngày đặt:{" "}
                       {new Date(order.orderDate).toLocaleDateString("vi-VN")}
                     </Text>
-                    <Text>Thành tiền: {calculatePrice(order.orderDetail)}</Text>
+                    <Text>
+                      Thành tiền: {order?.totalPrice?.toLocaleString() + " đ"}
+                    </Text>
                     <Divider my={2} />
                     <Text fontWeight="bold">Sản phẩm:</Text>
                     <Stack spacing={0}>
@@ -171,7 +174,7 @@ export default function AccountPage() {
               </VStack>
             </TabPanel>
             <TabPanel>
-              <VStack spacing={4} align="stretch">
+              <VStack spacing={12} align="stretch">
                 {printOrders.map((order) => (
                   <Box
                     key={order.printOrderId}
@@ -187,11 +190,13 @@ export default function AccountPage() {
                     </HStack>
                     <Text>
                       Ngày đặt:{" "}
-                      {new Date(order?.orderDate).toLocaleDateString("vi-VN")}
+                      {new Date(order?.date).toLocaleDateString("vi-VN")}
                     </Text>
                     <Text>
                       Thành tiền:{" "}
-                      {order?.price ? order.price : "Chưa cập nhật giá tiền"}
+                      {order?.price
+                        ? order.price.toLocaleString() + " đ"
+                        : "Chưa cập nhật giá tiền"}
                     </Text>
                     <Divider my={2} />
                     <Text fontWeight="bold">

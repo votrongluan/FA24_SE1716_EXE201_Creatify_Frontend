@@ -5,7 +5,6 @@ import {
   Flex,
   Heading,
   IconButton,
-  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -18,58 +17,58 @@ import {
   Text,
   Th,
   Thead,
+  Link as ChakraLink,
   Tr,
 } from "@chakra-ui/react";
 import SearchFilter from "../../components/SearchFilter.jsx";
 import Pagination from "../../components/Pagination.jsx";
-import ProductUpdateButton from "../../components/ProductUpdateButton.jsx";
-import ProductAddButton from "../../components/ProductAddButton.jsx";
-import OrderDetailButton from "../../components/OrderDetailButton.jsx";
-import OrderUpdateButton from "../../components/OrderUpdateButton.jsx";
-import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
-import ConfirmationDialog from "../../components/ConfirmationDialog.jsx";
 import axios from "../../api/axios.js";
 import PrintOrderDetailButton from "../../components/PrintOrderDetailButton.jsx";
 import PrintOrderUpdateButton from "../../components/PrintOrderUpdateButton.jsx";
+import useAuth from "../../hooks/useAuth.js";
+import { useEffect, useState } from "react";
+import { HamburgerIcon } from "@chakra-ui/icons";
+import {
+  printOrderStatusColorMap,
+  printOrderStatusMap,
+} from "../../data/globalData.js";
+import OwnPrintOrderUpdateButton from "../../components/OwnPrintOrderUpdateButton.jsx";
 
 export default function OwnPrintOrder() {
-  const orders = [
-    {
-      id: 1,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: true,
-    },
-    {
-      id: 2,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-    {
-      id: 3,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-  ];
+  const { auth } = useAuth();
+  const [printOrder, setPrintOrder] = useState(null);
+
+  function fetchProductOrders() {
+    axios
+      .get(`/PrintOrder/GetAllPrintOrders`)
+      .then((response) => {
+        const data = response.data;
+        const filterData = data.filter(
+          (item) => item.supplierId == auth?.EmployeeId
+        );
+        setPrintOrder(filterData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    fetchProductOrders();
+  }, []);
+
+  if (!printOrder) return <></>;
 
   return (
     <>
       <SearchFilter
         searchPlaceholder="Tìm theo tên, số điện thoại, địa chỉ"
-        data={orders}
-        methods={[{ value: "name", label: "Tên sản phẩm" }]}
-        properties={["id"]}
+        data={printOrder}
+        methods={[
+          { value: "name", label: "Tên khách hàng" },
+          { value: "status", label: "Trạng thái" },
+        ]}
+        properties={["printOrderId"]}
         DisplayData={({ filteredData }) => (
           <Pagination
             itemsPerPage={2}
@@ -91,21 +90,23 @@ export default function OwnPrintOrder() {
                   </Thead>
                   <Tbody>
                     {currentData.map((order) => (
-                      <Tr key={order.id}>
+                      <Tr key={order.printOrderId}>
                         <Td>
-                          <Text>{order.id}</Text>
+                          <Text>{order.printOrderId}</Text>
                         </Td>
                         <Td>
-                          <Link
+                          <ChakraLink
                             color="app_blue.0"
                             target="_blank"
-                            href="order.file"
+                            href={order.fileLink}
                           >
-                            {order.file}
-                          </Link>
+                            {order.fileLink}
+                          </ChakraLink>
                         </Td>
                         <Td>
-                          <Text>{order.date}</Text>
+                          <Text>
+                            {new Date(order.date).toLocaleDateString("vi-VN")}
+                          </Text>
                         </Td>
                         <Td>
                           <Text>{order.email}</Text>
@@ -114,17 +115,16 @@ export default function OwnPrintOrder() {
                           <Text>{order.phone}</Text>
                         </Td>
                         <Td>
-                          <Text>{order.price}</Text>
+                          <Text>{order.price.toLocaleString()} đ</Text>
                         </Td>
                         <Td>
                           <Text>
-                            {order.status == true ? (
-                              <Badge colorScheme="green" p="8px">
-                                Đã xử lý
-                              </Badge>
-                            ) : (
-                              <Badge p="8px">Chưa xử lý</Badge>
-                            )}
+                            <Badge
+                              color={printOrderStatusColorMap[order?.status]}
+                              p="8px"
+                            >
+                              {printOrderStatusMap[order?.status]}
+                            </Badge>
                           </Text>
                         </Td>
                         <Td>
@@ -144,10 +144,13 @@ export default function OwnPrintOrder() {
                                 fontSize="16px"
                               >
                                 <MenuItem p="0">
-                                  <PrintOrderDetailButton />
+                                  <PrintOrderDetailButton order={order} />
                                 </MenuItem>
                                 <MenuItem p="0">
-                                  <PrintOrderUpdateButton />
+                                  <OwnPrintOrderUpdateButton
+                                    reFetch={fetchProductOrders}
+                                    order={order}
+                                  />
                                 </MenuItem>
                               </MenuList>
                             </Menu>

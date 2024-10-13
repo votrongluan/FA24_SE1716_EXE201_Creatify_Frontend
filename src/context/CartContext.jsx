@@ -6,8 +6,7 @@ const CartContext = createContext({});
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(() => {
     const cookieCart = Cookies.get("cart");
-    // return cookieCart ? JSON.parse(cookieCart) : [];
-    return cookieCart ? [] : []; // You'll likely want to JSON.parse(cookieCart) once you're done testing
+    return cookieCart ? JSON.parse(cookieCart) : [];
   });
 
   useEffect(() => {

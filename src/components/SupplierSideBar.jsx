@@ -28,6 +28,18 @@ export default function SupplierSideBar() {
             ml: "8px",
           }}
         >
+          <NavLink style={navLinkStyle} to={`dashboard`}>
+            Tổng quan
+          </NavLink>
+        </ListItem>
+
+        <ListItem
+          transition="margin ease 0.3s"
+          _hover={{
+            color: "app_blue.0",
+            ml: "8px",
+          }}
+        >
           <NavLink style={navLinkStyle} to={`task`}>
             Đơn in đang chờ
           </NavLink>

@@ -1,3 +1,5 @@
+import HumbackWhale from "../assets/3dobject/humpback-swim-whole.stl";
+
 export const mockProducts = [
   {
     productId: 1,
@@ -920,6 +922,10 @@ export const mockProducts = [
   },
 ];
 
+export const stlModelLookup = {
+  ["Humpack Whale - Warhammer 40k"]: HumbackWhale,
+};
+
 export function getProductById(id) {
   return products.find((product) => product.id == id);
 }
@@ -935,22 +941,22 @@ export const categoryMap = {
 export const roleMap = {
   [1]: "Customer",
   [2]: "Supplier",
-  [3]: "Admin", 
-}
+  [3]: "Admin",
+};
 
 export const orderStatusMap = {
   [0]: "Đang chờ",
   [1]: "Đã thanh toán",
   [2]: "Đã hoàn thành",
   [3]: "Đã hủy",
-}
+};
 
 export const orderStatusColorMap = {
   [0]: "blue",
   [1]: "green",
   [2]: "green",
   [3]: "red",
-}
+};
 
 export const printOrderStatusMap = {
   [0]: "Đang chờ",
@@ -958,7 +964,7 @@ export const printOrderStatusMap = {
   [2]: "Đã xác nhận",
   [3]: "Đã hoàn thành",
   [4]: "Đã hủy",
-}
+};
 
 export const printOrderStatusColorMap = {
   [0]: "blue",
@@ -966,4 +972,4 @@ export const printOrderStatusColorMap = {
   [2]: "orange",
   [3]: "green",
   [4]: "red",
-}
+};

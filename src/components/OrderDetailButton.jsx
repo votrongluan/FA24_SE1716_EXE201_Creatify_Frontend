@@ -217,7 +217,9 @@ export default function OrderDetailButton({ order }) {
                             </Td>
                             <Td textAlign="end">
                               <Text fontWeight="bold">
-                                {(order.quantity * product.price).toLocaleString()}{" "}
+                                {(
+                                  order.quantity * product.price
+                                ).toLocaleString()}{" "}
                               </Text>
                             </Td>
                           </Tr>
@@ -249,7 +251,8 @@ export default function OrderDetailButton({ order }) {
                           Tình trạng thanh toán: {paymentDetail?.status}
                         </Text>
                         <Text mt={4}>
-                          Số tiền thanh toán: {paymentDetail?.amount.toLocaleString()} đ
+                          Số tiền thanh toán:{" "}
+                          {paymentDetail?.amount.toLocaleString()} đ
                         </Text>
                         <Text mt={4}>
                           Link thanh toán:{" "}
@@ -262,7 +265,9 @@ export default function OrderDetailButton({ order }) {
                         </Text>
                         <Text mt={4}>
                           Ngày tạo:{" "}
-                          {new Date(paymentDetail?.createdAt).toLocaleString("vi-VN")}
+                          {new Date(paymentDetail?.createdAt).toLocaleString(
+                            "vi-VN"
+                          )}
                         </Text>
                         <Text mt={4}>
                           Ngày thanh toán:{" "}

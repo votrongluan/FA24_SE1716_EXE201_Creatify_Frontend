@@ -32,7 +32,7 @@ export default function AdminSideBar() {
           </NavLink>
         </ListItem>
 
-        <ListItem
+        {/* <ListItem
           transition="margin ease 0.3s"
           _hover={{
             color: "app_blue.0",
@@ -78,7 +78,7 @@ export default function AdminSideBar() {
           <NavLink style={navLinkStyle} to={`/`}>
             Quay về trang chủ
           </NavLink>
-        </ListItem>
+        </ListItem> */}
 
         <ListItem
           transition="margin ease 0.3s"

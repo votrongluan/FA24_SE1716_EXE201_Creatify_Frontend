@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   FormControl,
   FormLabel,
@@ -18,18 +18,66 @@ import {
   Text,
   Container,
   Link,
+  Spinner,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios, { appURL } from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import { orderStatusColorMap, orderStatusMap } from "../../data/globalData";
+import { GlobalContext } from "../../context/GlobalContext";
 
 export default function OrderDetailPage() {
+  const { orderId, incrementOrderId } = useContext(GlobalContext);
+  const navigate = useNavigate();
   const { id } = useParams();
   const { auth } = useAuth();
   const [order, setOrder] = useState(null);
   const [paymentDetail, setPaymentDetail] = useState(null);
+  const [isNewPaymentLoading, setIsNewPaymentLoading] = useState(false);
   let payOSLink = "https://pay.payos.vn/web/";
+
+  function refreshPayment() {
+    setIsNewPaymentLoading(true);
+
+    const paymentData = {
+      orderId: orderId.toString(),
+      description: `Thanh toan ma don ${id}`,
+      priceTotal: order.totalPrice,
+      returnUrl: `${appURL}/order/${id}`,
+      cancelUrl: `${appURL}/order/${id}`,
+      items: [
+        {
+          productName: `Ma don ${id}`,
+          quantity: 1,
+          priceSingle: order.totalPrice,
+        },
+      ],
+    };
+
+    axios
+      .post("/Payment/CreatePayment", paymentData, {
+        headers: {
+          "Content-Type": "application/json", // Explicitly set the content type
+        },
+      })
+      .then((response) => {
+        axios
+          .put(`/Order/UpdatePayOsOrderId?orderId=${id}`, {
+            payOsOrderId: orderId,
+          })
+          .then((response) => {
+            incrementOrderId();
+            setIsNewPaymentLoading(false);
+            fetchAll();
+          })
+          .catch((error) => {
+            console.error("Error placing order", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error placing order", error);
+      });
+  }
 
   function fetchAll() {
     axios
@@ -45,6 +93,10 @@ export default function OrderDetailPage() {
           .then((response) => {
             const data = response.data;
             setPaymentDetail(data);
+
+            if (data.status == "PAID") {
+              axios.put(`/Order/UpdatePayStatus?orderId=${id}`);
+            }
           })
           .catch((error) => {
             console.log(error);
@@ -67,7 +119,7 @@ export default function OrderDetailPage() {
     fetchAll();
   }, []);
 
-  if (!order) {
+  if (!order || !orderId) {
     return <></>;
   } else {
     return (
@@ -157,7 +209,7 @@ export default function OrderDetailPage() {
                     <FormLabel>Thành tiền</FormLabel>
                     <Input
                       _readOnly={{ bg: "gray.100" }}
-                      value={`${calculatePrice(order.orderDetail, 30000)}`}
+                      value={order?.totalPrice?.toLocaleString() + " đ"}
                       readOnly
                     />
                   </FormControl>
@@ -174,37 +226,56 @@ export default function OrderDetailPage() {
               </Box>
 
               <Box flex="5">
-                <Box boxShadow="sm" p={8}>
-                  <Heading as="h2" size="sm" textAlign="center" mb={4}>
-                    Thông tin thanh toán
-                  </Heading>
+                {!isNewPaymentLoading ? (
+                  <Box boxShadow="sm" p={8}>
+                    <Heading as="h2" size="sm" textAlign="center" mb={4}>
+                      Thông tin thanh toán
+                    </Heading>
 
-                  <Text mt={4}>
-                    Tình trạng thanh toán: {paymentDetail?.status}
-                  </Text>
-                  <Text mt={4}>
-                    Số tiền thanh toán: {paymentDetail?.amount.toLocaleString()}{" "}
-                    đ
-                  </Text>
-                  <Text mt={4}>
-                    Link thanh toán:{" "}
-                    <Link href={payOSLink + paymentDetail?.id} color="teal.500">
-                      {payOSLink + paymentDetail?.id}
-                    </Link>
-                  </Text>
-                  <Text mt={4}>
-                    Ngày tạo:{" "}
-                    {new Date(paymentDetail?.createdAt).toLocaleString("vi-VN")}
-                  </Text>
-                  <Text mt={4}>
-                    Ngày thanh toán:{" "}
-                    {paymentDetail?.transactions.length != 0
-                      ? new Date(
-                          paymentDetail?.transactions[0].transactionDateTime
-                        ).toLocaleString("vi-VN")
-                      : "Chưa thanh toán"}
-                  </Text>
-                </Box>
+                    <Text mt={4}>
+                      Tình trạng thanh toán: {paymentDetail?.status}
+                    </Text>
+                    <Text mt={4}>
+                      Số tiền thanh toán:{" "}
+                      {paymentDetail?.amount.toLocaleString()} đ
+                    </Text>
+                    <Text mt={4}>
+                      Link thanh toán:{" "}
+                      <Link
+                        href={payOSLink + paymentDetail?.id}
+                        color="teal.500"
+                      >
+                        {payOSLink + paymentDetail?.id}
+                      </Link>
+                    </Text>
+                    <Text mt={4}>
+                      Ngày tạo:{" "}
+                      {new Date(paymentDetail?.createdAt).toLocaleString(
+                        "vi-VN"
+                      )}
+                    </Text>
+                    <Text mt={4}>
+                      Ngày thanh toán:{" "}
+                      {paymentDetail?.transactions.length != 0
+                        ? new Date(
+                            paymentDetail?.transactions[0].transactionDateTime
+                          ).toLocaleString("vi-VN")
+                        : "Chưa thanh toán"}
+                    </Text>
+                    {paymentDetail?.status != "PAID" && (
+                      <Text
+                        onClick={refreshPayment}
+                        cursor={"pointer"}
+                        color="teal.500"
+                        mt={4}
+                      >
+                        Tạo mới thanh toán
+                      </Text>
+                    )}
+                  </Box>
+                ) : (
+                  <Spinner />
+                )}
 
                 <Box boxShadow="sm" p={8}>
                   <Heading as="h2" size="sm" textAlign="center" mb={4}>

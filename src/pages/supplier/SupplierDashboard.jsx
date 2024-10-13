@@ -15,6 +15,7 @@ import {
 import { Line } from "react-chartjs-2";
 import axios from "../../api/axios";
 import { useEffect, useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
 function renderStat(stat, period) {
   return (
@@ -51,8 +52,9 @@ const optionStyle = {
   color: "white",
 };
 
-export default function RevenueDashboard() {
+export default function SupplierDashboard() {
   const [statsData, setData] = useState(null);
+  const { auth } = useAuth();
 
   const revenueData = {
     labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5"],
@@ -79,10 +81,12 @@ export default function RevenueDashboard() {
   };
 
   function fetchAll() {
-    axios.get("/statistic/admin").then((response) => {
-      setData(response.data);
-      console.log(response.data);
-    });
+    axios
+      .get(`/statistic/supplier?supplierId=${auth?.EmployeeId}`)
+      .then((response) => {
+        setData(response.data);
+        console.log(response.data);
+      });
   }
 
   useEffect(() => {
@@ -93,16 +97,6 @@ export default function RevenueDashboard() {
 
   return (
     <>
-      <SimpleGrid mt="8px" columns={2} gap="8px">
-        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          {renderStat(statsData.allCustomer)}
-        </GridItem>
-
-        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          {renderStat(statsData.allSupplier)}
-        </GridItem>
-      </SimpleGrid>
-
       <SimpleGrid mt="8px" columns={3} gap="8px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.todayOrders)}
@@ -142,18 +136,6 @@ export default function RevenueDashboard() {
 
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.totalRevenueAllTime)}
-        </GridItem>
-      </SimpleGrid>
-
-      <SimpleGrid mt="8px" columns={2} gap="8px">
-        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          {renderStat(statsData.totalRevenueAllTime)}
-          <Line data={revenueData} />
-        </GridItem>
-
-        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          {renderStat(statsData.totalRevenueAllTime)}
-          <Line data={profitData} />
         </GridItem>
       </SimpleGrid>
     </>
