@@ -34,7 +34,7 @@ function renderStat(stat, period) {
       </Box>
 
       <Stat color="app_black.0" my="16px">
-        <StatNumber>{stat.value}</StatNumber>
+        <StatNumber>{(+stat.value).toLocaleString()}</StatNumber>
         <StatHelpText>
           <Text color={stat.direction === "down" ? "red.500" : "green.500"}>
             {stat.direction === "down" ? "▼" : "▲"} {Math.abs(stat.change)}% (

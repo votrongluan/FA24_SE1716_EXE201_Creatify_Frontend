@@ -263,13 +263,14 @@ export default function OrderDetailPage() {
                         : "Chưa thanh toán"}
                     </Text>
                     {paymentDetail?.status != "PAID" && (
-                      <Text
-                        onClick={refreshPayment}
-                        cursor={"pointer"}
-                        color="teal.500"
-                        mt={4}
-                      >
-                        Tạo mới thanh toán
+                      <Text mt={12}>
+                        <Link
+                          onClick={refreshPayment}
+                          cursor={"pointer"}
+                          color="teal.500"
+                        >
+                          Tạo mới thanh toán
+                        </Link>
                       </Text>
                     )}
                   </Box>

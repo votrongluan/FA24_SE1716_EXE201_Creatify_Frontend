@@ -22,12 +22,16 @@ import {
 import { Link as RouterLink, useParams } from "react-router-dom";
 import ShareBar from "../../components/ShareBar";
 import { Link as ChakraLink } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
 import useCart from "../../hooks/useCart";
 import { categoryMap, stlModelLookup } from "../../data/globalData";
+import CustomizeHelpGuide from "../../components/CustomizeHelpGuide";
 
 export default function ProductPage() {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const handleExpand = () => setIsExpanded(true);
+  const handleMinimize = () => setIsExpanded(false);
   const toast = useToast();
   const { id } = useParams();
   const { products } = useContext(GlobalContext);
@@ -267,13 +271,41 @@ export default function ProductPage() {
                 top: 0,
                 left: 0,
                 right: 0,
-                bottom: 0,
+                bottom: "-70px",
               }}
               src={product?.modelUrl}
               frameBorder="0"
               width={window.innerWidth}
               height={window.innerHeight}
             ></iframe>
+
+            {/* Help section */}
+            <Box
+              position="absolute"
+              bottom={0}
+              width="100%"
+              color={"app_white.0"}
+              bg="app_grey.0"
+              boxShadow="0 -4px 10px rgba(0, 0, 0, 0.1)"
+              height={isExpanded ? "40%" : "70px"}
+              transition="height 0.3s ease"
+              overflow={isExpanded ? "auto" : "hidden"}
+            >
+              <Box padding="1rem">
+                <CustomizeHelpGuide />
+              </Box>
+
+              <Button
+                onClick={isExpanded ? handleMinimize : handleExpand}
+                position="fixed"
+                bottom="1rem"
+                left="50%"
+                transform="translateX(-50%)"
+                color={"app_blue.0"}
+              >
+                {isExpanded ? "Thu nhỏ" : "Mở rộng"}
+              </Button>
+            </Box>
           </ModalContent>
         </Modal>
       </Container>

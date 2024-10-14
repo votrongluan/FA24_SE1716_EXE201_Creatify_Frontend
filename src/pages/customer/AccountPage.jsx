@@ -152,6 +152,12 @@ export default function AccountPage() {
                     <Text>
                       Thành tiền: {order?.totalPrice?.toLocaleString() + " đ"}
                     </Text>
+                    <Text
+                      py="8px"
+                      color={order?.payStatus ? "green" : "app_blue.0"}
+                    >
+                      {order?.payStatus ? "Đã thanh toán" : "Chưa thanh toán"}
+                    </Text>
                     <Divider my={2} />
                     <Text fontWeight="bold">Sản phẩm:</Text>
                     <Stack spacing={0}>
@@ -197,6 +203,12 @@ export default function AccountPage() {
                       {order?.price
                         ? order.price.toLocaleString() + " đ"
                         : "Chưa cập nhật giá tiền"}
+                    </Text>
+                    <Text
+                      py="8px"
+                      color={order?.payStatus ? "green" : "app_blue.0"}
+                    >
+                      {order?.payStatus ? "Đã thanh toán" : "Chưa thanh toán"}
                     </Text>
                     <Divider my={2} />
                     <Text fontWeight="bold">
