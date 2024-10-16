@@ -116,7 +116,11 @@ export default function OwnPrintOrder() {
                           <Text>{order.phone}</Text>
                         </Td>
                         <Td>
-                          <Text>{order.price.toLocaleString()} đ</Text>
+                          <Text>
+                            {order?.price
+                              ? order?.price?.toLocaleString() + " đ"
+                              : "(Đang chờ)"}{" "}
+                          </Text>
                         </Td>
                         <Td>
                           <Text>

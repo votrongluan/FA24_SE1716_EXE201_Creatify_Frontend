@@ -1,10 +1,10 @@
 import {
   Badge,
   Box,
+  Button,
   Flex,
   Heading,
   IconButton,
-  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -17,62 +17,54 @@ import {
   Text,
   Th,
   Thead,
+  Link as ChakraLink,
   Tr,
 } from "@chakra-ui/react";
 import SearchFilter from "../../components/SearchFilter.jsx";
 import Pagination from "../../components/Pagination.jsx";
-import ProductUpdateButton from "../../components/ProductUpdateButton.jsx";
-import ProductAddButton from "../../components/ProductAddButton.jsx";
-import OrderDetailButton from "../../components/OrderDetailButton.jsx";
+import axios from "../../api/axios.js";
 import PrintOrderDetailButton from "../../components/PrintOrderDetailButton.jsx";
 import PrintOrderUpdateButton from "../../components/PrintOrderUpdateButton.jsx";
+import useAuth from "../../hooks/useAuth.js";
+import { useEffect, useState } from "react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import ConfirmationDialog from "../../components/ConfirmationDialog.jsx";
+import {
+  printOrderStatusColorMap,
+  printOrderStatusMap,
+} from "../../data/globalData.js";
+import OwnPrintOrderUpdateButton from "../../components/OwnPrintOrderUpdateButton.jsx";
 
 export default function PrintManagePage() {
-  const orders = [
-    {
-      id: 1,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: true,
-    },
-    {
-      id: 2,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-    {
-      id: 3,
-      file: "abc.x",
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-  ];
+  const [printOrder, setPrintOrder] = useState(null);
+
+  function fetchProductOrders() {
+    axios
+      .get(`/PrintOrder/GetAllPrintOrders`)
+      .then((response) => {
+        const data = response.data;
+        setPrintOrder(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    fetchProductOrders();
+  }, []);
+
+  if (!printOrder) return <></>;
 
   return (
     <>
-      <Heading as="h2" size="lg" textAlign="center">
-        Quản lý đơn in
-      </Heading>
-
-      <Box mt="5" h="40px"></Box>
-
       <SearchFilter
         searchPlaceholder="Tìm theo tên, số điện thoại, địa chỉ"
-        data={orders}
-        methods={[{ value: "name", label: "Tên sản phẩm" }]}
-        properties={["id"]}
+        data={printOrder}
+        methods={[
+          { value: "name", label: "Tên khách hàng" },
+          { value: "status", label: "Trạng thái" },
+        ]}
+        properties={["printOrderId"]}
         DisplayData={({ filteredData }) => (
           <Pagination
             itemsPerPage={2}
@@ -88,28 +80,30 @@ export default function PrintManagePage() {
                       <Th>Email</Th>
                       <Th>SĐT</Th>
                       <Th>Giá</Th>
-                      <Th>Supplier</Th>
                       <Th>Trạng thái</Th>
+                      <Th>Thanh toán</Th>
                       <Th textAlign="center">Thao tác</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
                     {currentData.map((order) => (
-                      <Tr key={order.id}>
+                      <Tr key={order.printOrderId}>
                         <Td>
-                          <Text>{order.id}</Text>
+                          <Text>{order.printOrderId}</Text>
                         </Td>
-                        <Td>
-                          <Link
+                        <Td overflow="hidden" maxW="100px">
+                          <ChakraLink
                             color="app_blue.0"
                             target="_blank"
-                            href="order.file"
+                            href={order.fileLink}
                           >
-                            {order.file}
-                          </Link>
+                            {order.fileLink}
+                          </ChakraLink>
                         </Td>
                         <Td>
-                          <Text>{order.date}</Text>
+                          <Text>
+                            {new Date(order.date).toLocaleDateString("vi-VN")}
+                          </Text>
                         </Td>
                         <Td>
                           <Text>{order.email}</Text>
@@ -118,22 +112,32 @@ export default function PrintManagePage() {
                           <Text>{order.phone}</Text>
                         </Td>
                         <Td>
-                          <Text>{order.price}</Text>
-                        </Td>
-                        <Td>
-                          <Text>Tân Bình 3D</Text>
+                          <Text>
+                            {order?.price
+                              ? order?.price?.toLocaleString() + " đ"
+                              : "(Đang chờ)"}{" "}
+                          </Text>
                         </Td>
                         <Td>
                           <Text>
-                            {order.status == true ? (
-                              <Badge colorScheme="green" p="8px">
-                                Đã xử lý
-                              </Badge>
-                            ) : (
-                              <Badge p="8px">Chưa xử lý</Badge>
-                            )}
+                            <Badge
+                              color={printOrderStatusColorMap[order?.status]}
+                              p="8px"
+                            >
+                              {printOrderStatusMap[order?.status]}
+                            </Badge>
                           </Text>
                         </Td>
+
+                        <Td>
+                          <Badge
+                            colorScheme={order?.payStatus ? "green" : "blue"}
+                            p="8px"
+                          >
+                            {order?.payStatus ? "PAID" : "PENDING"}
+                          </Badge>
+                        </Td>
+
                         <Td>
                           <Flex alignItems="center" columnGap="20px">
                             <Spacer />
@@ -151,16 +155,12 @@ export default function PrintManagePage() {
                                 fontSize="16px"
                               >
                                 <MenuItem p="0">
-                                  <PrintOrderDetailButton />
+                                  <PrintOrderDetailButton order={order} />
                                 </MenuItem>
                                 <MenuItem p="0">
-                                  <PrintOrderUpdateButton />
-                                </MenuItem>
-                                <MenuItem p="0">
-                                  <ConfirmationDialog
-                                    title="Hủy"
-                                    onConfirm={async () => {}}
-                                    colorScheme="red"
+                                  <OwnPrintOrderUpdateButton
+                                    reFetch={fetchProductOrders}
+                                    order={order}
                                   />
                                 </MenuItem>
                               </MenuList>
