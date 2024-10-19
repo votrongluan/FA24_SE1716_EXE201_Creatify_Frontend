@@ -147,7 +147,7 @@ export default function AccountPage() {
                     </HStack>
                     <Text>
                       Ngày đặt:{" "}
-                      {new Date(order.orderDate).toLocaleDateString("vi-VN")}
+                      {new Date(order.orderDate).toLocaleString("vi-VN")}
                     </Text>
                     <Text>
                       Thành tiền: {order?.totalPrice?.toLocaleString() + " đ"}
@@ -196,7 +196,7 @@ export default function AccountPage() {
                     </HStack>
                     <Text>
                       Ngày đặt:{" "}
-                      {new Date(order?.date).toLocaleDateString("vi-VN")}
+                      {new Date(order?.date).toLocaleString("vi-VN")}
                     </Text>
                     <Text>
                       Thành tiền:{" "}

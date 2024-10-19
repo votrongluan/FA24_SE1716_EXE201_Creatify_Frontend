@@ -210,7 +210,7 @@ export default function PrintOrderDetailPage() {
                 <FormControl mt={8}>
                   <FormLabel>Ngày đặt</FormLabel>
                   <Input
-                    value={new Date(order?.date).toLocaleDateString("vi-VN")}
+                    value={new Date(order?.date).toLocaleString("vi-VN")}
                     readOnly
                     _readOnly={{ bg: "gray.100" }}
                   />
@@ -381,7 +381,7 @@ export default function PrintOrderDetailPage() {
                     </Text>
                     <Text mt={4}>
                       Ngày tạo:{" "}
-                      {new Date(paymentDetail?.createdAt).toLocaleDateString(
+                      {new Date(paymentDetail?.createdAt).toLocaleString(
                         "vi-VN"
                       )}
                     </Text>
@@ -390,7 +390,7 @@ export default function PrintOrderDetailPage() {
                       {paymentDetail?.transactions.length != 0
                         ? new Date(
                             paymentDetail?.transactions[0].transactionDateTime
-                          ).toLocaleDateString("vi-VN")
+                          ).toLocaleString("vi-VN")
                         : "Chưa thanh toán"}
                     </Text>
                     {paymentDetail?.status != "PAID" && (

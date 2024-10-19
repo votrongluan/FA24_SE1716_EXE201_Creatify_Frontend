@@ -118,9 +118,7 @@ export default function OwnProductOrder() {
                         </Td>
                         <Td>
                           <Text>
-                            {new Date(order.orderDate).toLocaleDateString(
-                              "vi-VN"
-                            )}
+                            {new Date(order.orderDate).toLocaleString("vi-VN")}
                           </Text>
                         </Td>
                         <Td>

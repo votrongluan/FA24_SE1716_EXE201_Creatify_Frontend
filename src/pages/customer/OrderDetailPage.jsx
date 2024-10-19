@@ -166,9 +166,7 @@ export default function OrderDetailPage() {
                   <FormControl mt={4}>
                     <FormLabel>Ngày đặt</FormLabel>
                     <Input
-                      value={new Date(order.orderDate).toLocaleDateString(
-                        "vi-VN"
-                      )}
+                      value={new Date(order.orderDate).toLocaleString("vi-VN")}
                       readOnly
                       _readOnly={{ bg: "gray.100" }}
                     />
@@ -250,7 +248,7 @@ export default function OrderDetailPage() {
                     </Text>
                     <Text mt={4}>
                       Ngày tạo:{" "}
-                      {new Date(paymentDetail?.createdAt).toLocaleDateString(
+                      {new Date(paymentDetail?.createdAt).toLocaleString(
                         "vi-VN"
                       )}
                     </Text>
@@ -259,7 +257,7 @@ export default function OrderDetailPage() {
                       {paymentDetail?.transactions.length != 0
                         ? new Date(
                             paymentDetail?.transactions[0].transactionDateTime
-                          ).toLocaleDateString("vi-VN")
+                          ).toLocaleString("vi-VN")
                         : "Chưa thanh toán"}
                     </Text>
                     {paymentDetail?.status != "PAID" && (

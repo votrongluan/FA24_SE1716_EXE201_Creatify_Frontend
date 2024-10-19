@@ -118,7 +118,7 @@ export default function OrderManagePage() {
                         </Td>
                         <Td>
                           <Text>
-                            {new Date(order.orderDate).toLocaleDateString(
+                            {new Date(order.orderDate).toLocaleString(
                               "vi-VN"
                             )}
                           </Text>

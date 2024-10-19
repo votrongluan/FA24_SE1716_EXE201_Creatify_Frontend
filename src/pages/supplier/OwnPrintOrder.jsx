@@ -106,7 +106,7 @@ export default function OwnPrintOrder() {
                         </Td>
                         <Td>
                           <Text>
-                            {new Date(order.date).toLocaleDateString("vi-VN")}
+                            {new Date(order.date).toLocaleString("vi-VN")}
                           </Text>
                         </Td>
                         <Td>
