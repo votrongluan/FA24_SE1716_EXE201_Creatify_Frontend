@@ -381,7 +381,7 @@ export default function PrintOrderDetailPage() {
                     </Text>
                     <Text mt={4}>
                       Ngày tạo:{" "}
-                      {new Date(paymentDetail?.createdAt).toLocaleString(
+                      {new Date(paymentDetail?.createdAt).toLocaleDateString(
                         "vi-VN"
                       )}
                     </Text>
@@ -390,17 +390,18 @@ export default function PrintOrderDetailPage() {
                       {paymentDetail?.transactions.length != 0
                         ? new Date(
                             paymentDetail?.transactions[0].transactionDateTime
-                          ).toLocaleString("vi-VN")
+                          ).toLocaleDateString("vi-VN")
                         : "Chưa thanh toán"}
                     </Text>
                     {paymentDetail?.status != "PAID" && (
-                      <Text
-                        onClick={refreshPayment}
-                        cursor={"pointer"}
-                        color="teal.500"
-                        mt={4}
-                      >
-                        Tạo mới thanh toán
+                      <Text mt={12}>
+                        <Link
+                          onClick={refreshPayment}
+                          cursor={"pointer"}
+                          color="teal.500"
+                        >
+                          Tạo mới thanh toán
+                        </Link>
                       </Text>
                     )}
                   </Box>

@@ -34,7 +34,7 @@ function renderStat(stat, period) {
       </Box>
 
       <Stat color="app_black.0" my="16px">
-        <StatNumber>{stat.value}</StatNumber>
+        <StatNumber>{(+stat.value).toLocaleString()}</StatNumber>
         <StatHelpText>
           <Text color={stat.direction === "down" ? "red.500" : "green.500"}>
             {stat.direction === "down" ? "▼" : "▲"} {Math.abs(stat.change)}% (
@@ -93,7 +93,7 @@ export default function RevenueDashboard() {
 
   return (
     <>
-      <SimpleGrid mt="8px" columns={2} gap="8px">
+      <SimpleGrid mt="20px" columns={3} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.allCustomer)}
         </GridItem>
@@ -101,9 +101,15 @@ export default function RevenueDashboard() {
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.allSupplier)}
         </GridItem>
+
+        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
+          {renderStat(statsData.allTransaction)}
+        </GridItem>
       </SimpleGrid>
 
-      <SimpleGrid mt="8px" columns={3} gap="8px">
+      <Box height="50px"></Box>
+
+      <SimpleGrid mt="20px" columns={3} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.todayOrders)}
         </GridItem>
@@ -117,7 +123,7 @@ export default function RevenueDashboard() {
         </GridItem>
       </SimpleGrid>
 
-      <SimpleGrid mt="8px" columns={3} gap="8px">
+      <SimpleGrid mt="20px" columns={3} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.last30DaysOrders, statsData.monthPeriod)}
         </GridItem>
@@ -131,7 +137,7 @@ export default function RevenueDashboard() {
         </GridItem>
       </SimpleGrid>
 
-      <SimpleGrid mt="8px" columns={3} gap="8px">
+      <SimpleGrid mt="20px" columns={3} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.allOrders)}
         </GridItem>
@@ -145,7 +151,9 @@ export default function RevenueDashboard() {
         </GridItem>
       </SimpleGrid>
 
-      <SimpleGrid mt="8px" columns={2} gap="8px">
+      <Box height="50px"></Box>
+
+      <SimpleGrid mt="20px" columns={2} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.totalRevenueAllTime)}
           <Line data={revenueData} />

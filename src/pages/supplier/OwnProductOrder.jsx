@@ -89,6 +89,7 @@ export default function OwnProductOrder() {
                       <Th>SĐT</Th>
                       <Th>Giá</Th>
                       <Th>Trạng thái</Th>
+                      <Th>Thanh toán</Th>
                       <Th textAlign="center">Thao tác</Th>
                     </Tr>
                   </Thead>
@@ -133,6 +134,7 @@ export default function OwnProductOrder() {
                             {calculatePrice(order.orderDetail, 30000)}
                           </Text>
                         </Td>
+
                         <Td>
                           <Text>
                             <Badge
@@ -143,6 +145,16 @@ export default function OwnProductOrder() {
                             </Badge>
                           </Text>
                         </Td>
+
+                        <Td>
+                          <Badge
+                            colorScheme={order?.payStatus ? "green" : "blue"}
+                            p="8px"
+                          >
+                            {order?.payStatus ? "PAID" : "PENDING"}
+                          </Badge>
+                        </Td>
+
                         <Td>
                           <Flex alignItems="center" columnGap="20px">
                             <Spacer />

@@ -28,78 +28,51 @@ import OrderUpdateButton from "../../components/OrderUpdateButton.jsx";
 import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import ConfirmationDialog from "../../components/ConfirmationDialog.jsx";
 import axios from "../../api/axios.js";
+import useAuth from "../../hooks/useAuth.js";
+import { useEffect, useState } from "react";
+import { orderStatusColorMap, orderStatusMap } from "../../data/globalData.js";
 
 export default function OrderManagePage() {
-  const orders = [
-    {
-      id: 1,
-      products: [
-        {
-          name: "Mô hình 1",
-          quantity: 2,
-        },
-        {
-          name: "Mô hình 2",
-          quantity: 4,
-        },
-      ],
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: true,
-    },
-    {
-      id: 2,
-      products: [
-        {
-          name: "Mô hình 1",
-          quantity: 2,
-        },
-        {
-          name: "Mô hình 2",
-          quantity: 4,
-        },
-      ],
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-    {
-      id: 3,
-      products: [
-        {
-          name: "Mô hình 1",
-          quantity: 2,
-        },
-        {
-          name: "Mô hình 2",
-          quantity: 4,
-        },
-      ],
-      date: "20/06/2024",
-      email: "trongluan115@gmail.com",
-      phone: "0972831212",
-      price: "1.200.000đ",
-      status: false,
-    },
-  ];
+  const { auth } = useAuth();
+  const [productOrders, setProductOrders] = useState(null);
+
+  function calculatePrice(orderDetail, additional = 0) {
+    let sum = additional;
+
+    orderDetail.forEach((item) => (sum += item.products.price * item.quantity));
+
+    return sum.toLocaleString();
+  }
+
+  function fetchProductOrders() {
+    axios
+      .get(`/Order/all`)
+      .then((response) => {
+        const data = response.data;
+        setProductOrders(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    fetchProductOrders();
+  }, []);
+
+  if (!productOrders) return <></>;
 
   return (
     <>
-      <Heading as="h2" size="lg" textAlign="center">
-        Quản lý đơn hàng
-      </Heading>
-
-      <Box mt="5" h="40px"></Box>
-
       <SearchFilter
-        searchPlaceholder="Tìm theo tên, số điện thoại, địa chỉ"
-        data={orders}
-        methods={[{ value: "name", label: "Tên sản phẩm" }]}
-        properties={["id"]}
+        searchPlaceholder="Tìm theo mã đặt hàng"
+        data={productOrders}
+        methods={[
+          { value: "orderId", label: "Mã đặt hàng" },
+          { value: "orderDate", label: "Ngày đặt" },
+          { value: "orderStatus", label: "Trạng thái" },
+        ]}
+        properties={["orderId"]}
         DisplayData={({ filteredData }) => (
           <Pagination
             itemsPerPage={2}
@@ -115,22 +88,22 @@ export default function OrderManagePage() {
                       <Th>Email</Th>
                       <Th>SĐT</Th>
                       <Th>Giá</Th>
-                      <Th>Supplier</Th>
                       <Th>Trạng thái</Th>
+                      <Th>Thanh toán</Th>
                       <Th textAlign="center">Thao tác</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
                     {currentData.map((order) => (
-                      <Tr key={order.id}>
+                      <Tr key={order.orderId}>
                         <Td>
-                          <Text>{order.id}</Text>
+                          <Text>{order.orderId}</Text>
                         </Td>
                         <Td>
-                          {order.products.map((e) => {
+                          {order.orderDetail.map((e) => {
                             return (
-                              <Text key={e.name}>
-                                {e.name}
+                              <Text key={e.products.id}>
+                                {e.products.name}
                                 <span
                                   style={{
                                     fontWeight: "bold",
@@ -144,31 +117,44 @@ export default function OrderManagePage() {
                           })}
                         </Td>
                         <Td>
-                          <Text>{order.date}</Text>
-                        </Td>
-                        <Td>
-                          <Text>{order.email}</Text>
-                        </Td>
-                        <Td>
-                          <Text>{order.phone}</Text>
-                        </Td>
-                        <Td>
-                          <Text>{order.price}</Text>
-                        </Td>
-                        <Td>
-                          <Text>Tân Bình 3D</Text>
-                        </Td>
-                        <Td>
                           <Text>
-                            {order.status == true ? (
-                              <Badge colorScheme="green" p="8px">
-                                Đã xử lý
-                              </Badge>
-                            ) : (
-                              <Badge p="8px">Chưa xử lý</Badge>
+                            {new Date(order.orderDate).toLocaleDateString(
+                              "vi-VN"
                             )}
                           </Text>
                         </Td>
+                        <Td>
+                          <Text>{order.customer[0].email}</Text>
+                        </Td>
+                        <Td>
+                          <Text>{order.customer[0].phone}</Text>
+                        </Td>
+                        <Td>
+                          <Text>
+                            {calculatePrice(order.orderDetail, 30000)}
+                          </Text>
+                        </Td>
+
+                        <Td>
+                          <Text>
+                            <Badge
+                              p="8px"
+                              color={orderStatusColorMap[order.orderStatus]}
+                            >
+                              {orderStatusMap[order.orderStatus]}
+                            </Badge>
+                          </Text>
+                        </Td>
+
+                        <Td>
+                          <Badge
+                            colorScheme={order?.payStatus ? "green" : "blue"}
+                            p="8px"
+                          >
+                            {order?.payStatus ? "PAID" : "PENDING"}
+                          </Badge>
+                        </Td>
+
                         <Td>
                           <Flex alignItems="center" columnGap="20px">
                             <Spacer />
@@ -186,16 +172,12 @@ export default function OrderManagePage() {
                                 fontSize="16px"
                               >
                                 <MenuItem p="0">
-                                  <OrderDetailButton />
+                                  <OrderDetailButton order={order} />
                                 </MenuItem>
                                 <MenuItem p="0">
-                                  <OrderUpdateButton />
-                                </MenuItem>
-                                <MenuItem p="0">
-                                  <ConfirmationDialog
-                                    title="Hủy"
-                                    onConfirm={async () => {}}
-                                    colorScheme="red"
+                                  <OrderUpdateButton
+                                    reFetch={fetchProductOrders}
+                                    order={order}
                                   />
                                 </MenuItem>
                               </MenuList>

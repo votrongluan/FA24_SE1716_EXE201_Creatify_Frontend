@@ -85,6 +85,7 @@ export default function OwnPrintOrder() {
                       <Th>SĐT</Th>
                       <Th>Giá</Th>
                       <Th>Trạng thái</Th>
+                      <Th>Thanh toán</Th>
                       <Th textAlign="center">Thao tác</Th>
                     </Tr>
                   </Thead>
@@ -94,7 +95,7 @@ export default function OwnPrintOrder() {
                         <Td>
                           <Text>{order.printOrderId}</Text>
                         </Td>
-                        <Td>
+                        <Td overflow="hidden" maxW="100px">
                           <ChakraLink
                             color="app_blue.0"
                             target="_blank"
@@ -115,7 +116,11 @@ export default function OwnPrintOrder() {
                           <Text>{order.phone}</Text>
                         </Td>
                         <Td>
-                          <Text>{order.price.toLocaleString()} đ</Text>
+                          <Text>
+                            {order?.price
+                              ? order?.price?.toLocaleString() + " đ"
+                              : "(Đang chờ)"}{" "}
+                          </Text>
                         </Td>
                         <Td>
                           <Text>
@@ -127,6 +132,16 @@ export default function OwnPrintOrder() {
                             </Badge>
                           </Text>
                         </Td>
+
+                        <Td>
+                          <Badge
+                            colorScheme={order?.payStatus ? "green" : "blue"}
+                            p="8px"
+                          >
+                            {order?.payStatus ? "PAID" : "PENDING"}
+                          </Badge>
+                        </Td>
+
                         <Td>
                           <Flex alignItems="center" columnGap="20px">
                             <Spacer />

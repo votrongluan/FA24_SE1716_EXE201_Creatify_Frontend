@@ -42,7 +42,7 @@ export default function AdminSideBar() {
           <NavLink style={navLinkStyle} to={`product`}>
             Quản lý sản phẩm
           </NavLink>
-        </ListItem>
+        </ListItem> */}
 
         <ListItem
           transition="margin ease 0.3s"
@@ -68,7 +68,7 @@ export default function AdminSideBar() {
           </NavLink>
         </ListItem>
 
-        <ListItem
+        {/* <ListItem
           transition="margin ease 0.3s"
           _hover={{
             color: "app_blue.0",

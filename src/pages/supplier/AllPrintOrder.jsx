@@ -87,7 +87,7 @@ export default function AllPrintOrder() {
                         <Td>
                           <Text>{order.printOrderId}</Text>
                         </Td>
-                        <Td>
+                        <Td overflow="hidden" maxW="100px">
                           <Link
                             color="app_blue.0"
                             target="_blank"

@@ -109,7 +109,9 @@ export default function OrderDetailButton({ order }) {
                   <FormControl mt={4}>
                     <FormLabel>Ngày đặt</FormLabel>
                     <Input
-                      value={new Date(order.orderDate).toLocaleString("vi-VN")}
+                      value={new Date(order.orderDate).toLocaleDateString(
+                        "vi-VN"
+                      )}
                       readOnly
                       _readOnly={{ bg: "gray.100" }}
                     />
@@ -265,16 +267,16 @@ export default function OrderDetailButton({ order }) {
                         </Text>
                         <Text mt={4}>
                           Ngày tạo:{" "}
-                          {new Date(paymentDetail?.createdAt).toLocaleString(
-                            "vi-VN"
-                          )}
+                          {new Date(
+                            paymentDetail?.createdAt
+                          ).toLocaleDateString("vi-VN")}
                         </Text>
                         <Text mt={4}>
                           Ngày thanh toán:{" "}
                           {paymentDetail?.transactions.length !== 0
                             ? new Date(
                                 paymentDetail?.transactions[0].transactionDateTime
-                              ).toLocaleString("vi-VN")
+                              ).toLocaleDateString("vi-VN")
                             : "Chưa thanh toán"}
                         </Text>
                       </>
