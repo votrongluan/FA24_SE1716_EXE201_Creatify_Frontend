@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const baseURL = "https://3dcreatify.vercel.app";
-export const appURL = "https://exe-ceuo.onrender.com";
+export const appURL = "https://3dcreatify.vercel.app";
+export const baseURL = "https://exe-ceuo.onrender.com";
 
 // Default instance without Bearer token
 export const axiosNoAuth = axios.create({
