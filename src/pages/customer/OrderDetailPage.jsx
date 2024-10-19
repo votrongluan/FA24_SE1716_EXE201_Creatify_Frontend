@@ -250,7 +250,7 @@ export default function OrderDetailPage() {
                     </Text>
                     <Text mt={4}>
                       Ngày tạo:{" "}
-                      {new Date(paymentDetail?.createdAt).toLocaleString(
+                      {new Date(paymentDetail?.createdAt).toLocaleDateString(
                         "vi-VN"
                       )}
                     </Text>
@@ -259,7 +259,7 @@ export default function OrderDetailPage() {
                       {paymentDetail?.transactions.length != 0
                         ? new Date(
                             paymentDetail?.transactions[0].transactionDateTime
-                          ).toLocaleString("vi-VN")
+                          ).toLocaleDateString("vi-VN")
                         : "Chưa thanh toán"}
                     </Text>
                     {paymentDetail?.status != "PAID" && (
