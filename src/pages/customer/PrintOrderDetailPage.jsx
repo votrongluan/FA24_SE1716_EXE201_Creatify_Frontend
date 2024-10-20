@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   FormControl,
   FormLabel,
@@ -7,13 +7,6 @@ import {
   Box,
   Heading,
   Badge,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Image,
   Flex,
   Text,
   Container,
@@ -27,8 +20,6 @@ import { useContext, useEffect, useState } from "react";
 import axios, { appURL } from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import {
-  orderStatusColorMap,
-  orderStatusMap,
   printOrderStatusColorMap,
   printOrderStatusMap,
 } from "../../data/globalData";
@@ -36,8 +27,7 @@ import { GlobalContext } from "../../context/GlobalContext";
 
 export default function PrintOrderDetailPage() {
   const location = useLocation();
-
-  // Create a URLSearchParams object to work with search parameters
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
 
   const [isNewPaymentLoading, setIsNewPaymentLoading] = useState(false);
@@ -47,7 +37,6 @@ export default function PrintOrderDetailPage() {
   const [paymentDetail, setPaymentDetail] = useState(null);
   const [order, setOrder] = useState(null);
   const { orderId, incrementOrderId } = useContext(GlobalContext);
-  let payOSLink = "https://pay.payos.vn/web/";
 
   function refreshPayment() {
     if (!order?.price || order?.status == 4 || order?.status == 1) {
@@ -68,8 +57,8 @@ export default function PrintOrderDetailPage() {
       orderId: orderId.toString(),
       description: `Thanh toan ma don ${id}`,
       priceTotal: order.price,
-      returnUrl: `${appURL}/order/${id}?payStatus=true&orderId=${orderId}`,
-      cancelUrl: `${appURL}/order/${id}`,
+      returnUrl: `${appURL}/printorder/${id}?payStatus=true&orderId=${orderId}`,
+      cancelUrl: `${appURL}/printorder/${id}`,
       items: [
         {
           productName: `Ma don in ${id}`,
@@ -115,11 +104,13 @@ export default function PrintOrderDetailPage() {
             item.printOrderId == id && item.customerId == auth.EmployeeId
         );
         setOrder(tmpOrder);
+        const payOsOrderId = tmpOrder.payOsOrderId;
 
         axios
-          .get(`/Payment/GetOrder/${tmpOrder.payOsOrderId}`)
+          .get(`/Payment/GetOrder/${payOsOrderId}`)
           .then((response) => {
             const data = response.data;
+            console.log(data);
             setPaymentDetail(data);
 
             if (
@@ -130,12 +121,11 @@ export default function PrintOrderDetailPage() {
               searchParams.get("cancel") &&
               searchParams.get("status")
             ) {
-              axios.put(`/Order/UpdatePayStatus?orderId=${id}`).then(() => {
-                setOrder({
-                  ...order,
-                  payStatus: true,
+              axios
+                .put(`/PrintOrder/UpdatePayStatus?printOrderId=${id}`)
+                .then(() => {
+                  window.location.href = `${appURL}/printorder/${id}`;
                 });
-              });
             }
           })
           .catch((error) => {
@@ -145,14 +135,6 @@ export default function PrintOrderDetailPage() {
       .catch((error) => {
         console.log(error);
       });
-  }
-
-  function calculatePrice(orderDetail, additional = 0) {
-    let sum = additional;
-
-    orderDetail.forEach((item) => (sum += item.products.price * item.quantity));
-
-    return sum.toLocaleString();
   }
 
   useEffect(() => {
@@ -217,7 +199,7 @@ export default function PrintOrderDetailPage() {
                     _readOnly={{ bg: "gray.100" }}
                     value={
                       order?.price
-                        ? order.price.toLocaleString() + " đ"
+                        ? order?.price?.toLocaleString() + " đ"
                         : "Chưa cập nhật giá tiền"
                     }
                     readOnly
@@ -228,7 +210,7 @@ export default function PrintOrderDetailPage() {
                 <FormControl mt={8}>
                   <FormLabel>Ngày đặt</FormLabel>
                   <Input
-                    value={new Date(order?.date).toLocaleString("vi-VN")}
+                    value={new Date(order?.date)?.toLocaleString("vi-VN")}
                     readOnly
                     _readOnly={{ bg: "gray.100" }}
                   />
@@ -384,7 +366,7 @@ export default function PrintOrderDetailPage() {
                     </Text>
                     <Text mt={4}>
                       Số tiền thanh toán:{" "}
-                      {paymentDetail?.amount.toLocaleString() ||
+                      {paymentDetail?.amount?.toLocaleString() ||
                         "Chưa có thông tin"}{" "}
                       đ
                     </Text>
@@ -396,7 +378,7 @@ export default function PrintOrderDetailPage() {
                     </Text>
                     <Text mt={4}>
                       Ngày tạo:{" "}
-                      {new Date(paymentDetail?.createdAt).toLocaleString(
+                      {new Date(paymentDetail?.createdAt)?.toLocaleString(
                         "vi-VN"
                       )}
                     </Text>
@@ -407,7 +389,7 @@ export default function PrintOrderDetailPage() {
                           cursor={"pointer"}
                           color="teal.500"
                         >
-                          Tạo mới thanh toán
+                          Tạo link thanh toán mới
                         </Link>
                       </Text>
                     )}

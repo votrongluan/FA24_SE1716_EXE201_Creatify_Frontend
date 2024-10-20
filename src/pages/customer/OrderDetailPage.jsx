@@ -28,18 +28,15 @@ import { GlobalContext } from "../../context/GlobalContext";
 
 export default function OrderDetailPage() {
   const location = useLocation();
-
-  // Create a URLSearchParams object to work with search parameters
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
 
   const { orderId, incrementOrderId } = useContext(GlobalContext);
-  const navigate = useNavigate();
   const { id } = useParams();
   const { auth } = useAuth();
   const [order, setOrder] = useState(null);
   const [paymentDetail, setPaymentDetail] = useState(null);
   const [isNewPaymentLoading, setIsNewPaymentLoading] = useState(false);
-  let payOSLink = "https://pay.payos.vn/web/";
 
   function refreshPayment() {
     setIsNewPaymentLoading(true);
@@ -109,10 +106,7 @@ export default function OrderDetailPage() {
               searchParams.get("status")
             ) {
               axios.put(`/Order/UpdatePayStatus?orderId=${id}`).then(() => {
-                setOrder({
-                  ...order,
-                  payStatus: true,
-                });
+                window.location.href = `${appURL}/order/${id}`;
               });
             }
           })
@@ -274,7 +268,7 @@ export default function OrderDetailPage() {
                           cursor={"pointer"}
                           color="teal.500"
                         >
-                          Tạo mới thanh toán
+                          Tạo link thanh toán mới
                         </Link>
                       </Text>
                     )}
