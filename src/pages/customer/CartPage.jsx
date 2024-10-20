@@ -73,8 +73,8 @@ export default function CartPage() {
           orderId: orderId.toString(),
           description: `Thanh toan ma don ${appOrderId}`,
           priceTotal: calculateTotalPrice(employeeId) + 30000,
-          returnUrl: `${appURL}/order/${appOrderId}?paySuccess=true&orderId=${orderId}`,
-          cancelUrl: `${appURL}/order/${appOrderId}?paySuccess=false`,
+          returnUrl: `${appURL}/order/${appOrderId}?payStatus=true&orderId=${orderId}`,
+          cancelUrl: `${appURL}/order/${appOrderId}`,
           items: [
             {
               productName: `Ma don ${appOrderId}`,
@@ -94,6 +94,7 @@ export default function CartPage() {
             axios
               .put(`/Order/UpdatePayOsOrderId?orderId=${appOrderId}`, {
                 payOsOrderId: orderId,
+                url: response.data,
               })
               .then((response) => {
                 incrementOrderId();

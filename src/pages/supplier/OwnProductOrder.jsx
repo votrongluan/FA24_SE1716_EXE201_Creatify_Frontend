@@ -149,7 +149,9 @@ export default function OwnProductOrder() {
                             colorScheme={order?.payStatus ? "green" : "blue"}
                             p="8px"
                           >
-                            {order?.payStatus ? "PAID" : "PENDING"}
+                            {order?.payStatus
+                              ? "Đã thanh toán"
+                              : "Chưa thanh toán"}
                           </Badge>
                         </Td>
 

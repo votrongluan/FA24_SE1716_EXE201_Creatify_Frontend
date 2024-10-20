@@ -205,11 +205,8 @@ export default function PrintOrderDetailButton({ order }) {
                       </Text>
                       <Text mt={4}>
                         Link thanh toán:{" "}
-                        <Link
-                          href={payOSLink + paymentDetail?.id}
-                          color="teal.500"
-                        >
-                          {payOSLink + paymentDetail?.id}
+                        <Link href={paymentDetail?.id} color="teal.500">
+                          {paymentDetail?.id}
                         </Link>
                       </Text>
                       <Text mt={4}>
@@ -217,14 +214,6 @@ export default function PrintOrderDetailButton({ order }) {
                         {new Date(paymentDetail?.createdAt)?.toLocaleString(
                           "vi-VN"
                         )}
-                      </Text>
-                      <Text mt={4}>
-                        Ngày thanh toán:{" "}
-                        {paymentDetail?.transactions?.length > 0
-                          ? new Date(
-                              paymentDetail.transactions[0]?.transactionDateTime
-                            ).toLocaleDateString("vi-VN")
-                          : "Chưa thanh toán"}
                       </Text>
                     </>
                   ) : (

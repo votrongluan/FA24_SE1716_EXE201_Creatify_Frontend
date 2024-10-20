@@ -118,9 +118,7 @@ export default function OrderManagePage() {
                         </Td>
                         <Td>
                           <Text>
-                            {new Date(order.orderDate).toLocaleString(
-                              "vi-VN"
-                            )}
+                            {new Date(order.orderDate).toLocaleString("vi-VN")}
                           </Text>
                         </Td>
                         <Td>
@@ -151,7 +149,9 @@ export default function OrderManagePage() {
                             colorScheme={order?.payStatus ? "green" : "blue"}
                             p="8px"
                           >
-                            {order?.payStatus ? "PAID" : "PENDING"}
+                            {order?.payStatus
+                              ? "Đã thanh toán"
+                              : "Chưa thanh toán"}
                           </Badge>
                         </Td>
 

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   FormControl,
   FormLabel,
@@ -27,6 +27,11 @@ import { orderStatusColorMap, orderStatusMap } from "../../data/globalData";
 import { GlobalContext } from "../../context/GlobalContext";
 
 export default function OrderDetailPage() {
+  const location = useLocation();
+
+  // Create a URLSearchParams object to work with search parameters
+  const searchParams = new URLSearchParams(location.search);
+
   const { orderId, incrementOrderId } = useContext(GlobalContext);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -43,7 +48,7 @@ export default function OrderDetailPage() {
       orderId: orderId.toString(),
       description: `Thanh toan ma don ${id}`,
       priceTotal: order.totalPrice,
-      returnUrl: `${appURL}/order/${id}`,
+      returnUrl: `${appURL}/order/${id}?payStatus=true&orderId=${orderId}`,
       cancelUrl: `${appURL}/order/${id}`,
       items: [
         {
@@ -64,6 +69,7 @@ export default function OrderDetailPage() {
         axios
           .put(`/Order/UpdatePayOsOrderId?orderId=${id}`, {
             payOsOrderId: orderId,
+            url: response.data,
           })
           .then((response) => {
             incrementOrderId();
@@ -94,7 +100,14 @@ export default function OrderDetailPage() {
             const data = response.data;
             setPaymentDetail(data);
 
-            if (data.status == "PAID") {
+            if (
+              searchParams.get("payStatus") == "true" &&
+              searchParams.get("orderId") == searchParams.get("orderCode") &&
+              searchParams.get("code") &&
+              searchParams.get("id") &&
+              searchParams.get("cancel") &&
+              searchParams.get("status")
+            ) {
               axios.put(`/Order/UpdatePayStatus?orderId=${id}`);
             }
           })
@@ -239,11 +252,8 @@ export default function OrderDetailPage() {
                     </Text>
                     <Text mt={4}>
                       Link thanh toán:{" "}
-                      <Link
-                        href={payOSLink + paymentDetail?.id}
-                        color="teal.500"
-                      >
-                        {payOSLink + paymentDetail?.id}
+                      <Link href={paymentDetail?.id} color="teal.500">
+                        {paymentDetail?.id}
                       </Link>
                     </Text>
                     <Text mt={4}>
@@ -251,14 +261,6 @@ export default function OrderDetailPage() {
                       {new Date(paymentDetail?.createdAt).toLocaleString(
                         "vi-VN"
                       )}
-                    </Text>
-                    <Text mt={4}>
-                      Ngày thanh toán:{" "}
-                      {paymentDetail?.transactions?.length > 0
-                        ? new Date(
-                            paymentDetail.transactions[0]?.transactionDateTime
-                          ).toLocaleDateString("vi-VN")
-                        : "Chưa thanh toán"}
                     </Text>
                     {order?.payStatus != true && (
                       <Text mt={12}>

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   FormControl,
   FormLabel,
@@ -35,6 +35,11 @@ import {
 import { GlobalContext } from "../../context/GlobalContext";
 
 export default function PrintOrderDetailPage() {
+  const location = useLocation();
+
+  // Create a URLSearchParams object to work with search parameters
+  const searchParams = new URLSearchParams(location.search);
+
   const [isNewPaymentLoading, setIsNewPaymentLoading] = useState(false);
   const { id } = useParams();
   const toast = useToast();
@@ -63,7 +68,7 @@ export default function PrintOrderDetailPage() {
       orderId: orderId.toString(),
       description: `Thanh toan ma don ${id}`,
       priceTotal: order.price,
-      returnUrl: `${appURL}/order/${id}`,
+      returnUrl: `${appURL}/order/${id}?payStatus=true&orderId=${orderId}`,
       cancelUrl: `${appURL}/order/${id}`,
       items: [
         {
@@ -84,6 +89,7 @@ export default function PrintOrderDetailPage() {
         axios
           .put(`/PrintOrder/UpdatePayOsOrderId?printOrderId=${id}`, {
             payOsOrderId: orderId,
+            url: response.data,
           })
           .then((response) => {
             incrementOrderId();
@@ -116,7 +122,10 @@ export default function PrintOrderDetailPage() {
             const data = response.data;
             setPaymentDetail(data);
 
-            if (data.status == "PAID") {
+            if (
+              searchParams.get("payStatus") == "true" &&
+              searchParams.get("orderId") == order?.payOsOrderId
+            ) {
               axios.put(`/Order/UpdatePayStatus?orderId=${id}`);
             }
           })
@@ -372,11 +381,8 @@ export default function PrintOrderDetailPage() {
                     </Text>
                     <Text mt={4}>
                       Link thanh toán:{" "}
-                      <Link
-                        href={payOSLink + paymentDetail?.id}
-                        color="teal.500"
-                      >
-                        {payOSLink + paymentDetail?.id}
+                      <Link href={paymentDetail?.id} color="teal.500">
+                        {paymentDetail?.id}
                       </Link>
                     </Text>
                     <Text mt={4}>
@@ -384,14 +390,6 @@ export default function PrintOrderDetailPage() {
                       {new Date(paymentDetail?.createdAt).toLocaleString(
                         "vi-VN"
                       )}
-                    </Text>
-                    <Text mt={4}>
-                      Ngày thanh toán:{" "}
-                      {paymentDetail?.transactions?.length > 0
-                        ? new Date(
-                            paymentDetail.transactions[0]?.transactionDateTime
-                          ).toLocaleDateString("vi-VN")
-                        : "Chưa thanh toán"}
                     </Text>
                     {order?.payStatus != true && (
                       <Text mt={12}>
