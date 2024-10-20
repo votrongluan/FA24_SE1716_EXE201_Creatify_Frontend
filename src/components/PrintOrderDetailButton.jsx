@@ -220,10 +220,10 @@ export default function PrintOrderDetailButton({ order }) {
                       </Text>
                       <Text mt={4}>
                         Ngày thanh toán:{" "}
-                        {paymentDetail?.transactions?.length !== 0
+                        {paymentDetail?.transactions?.length > 0
                           ? new Date(
-                              paymentDetail?.transactions?.[0]?.transactionDateTime
-                            ).toLocaleString("vi-VN")
+                              paymentDetail.transactions[0]?.transactionDateTime
+                            ).toLocaleDateString("vi-VN")
                           : "Chưa thanh toán"}
                       </Text>
                     </>
