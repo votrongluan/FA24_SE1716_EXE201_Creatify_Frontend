@@ -108,7 +108,12 @@ export default function OrderDetailPage() {
               searchParams.get("cancel") &&
               searchParams.get("status")
             ) {
-              axios.put(`/Order/UpdatePayStatus?orderId=${id}`);
+              axios.put(`/Order/UpdatePayStatus?orderId=${id}`).then(() => {
+                setOrder({
+                  ...order,
+                  payStatus: true,
+                });
+              });
             }
           })
           .catch((error) => {

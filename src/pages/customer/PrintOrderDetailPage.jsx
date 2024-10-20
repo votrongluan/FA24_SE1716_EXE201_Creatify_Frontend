@@ -124,9 +124,18 @@ export default function PrintOrderDetailPage() {
 
             if (
               searchParams.get("payStatus") == "true" &&
-              searchParams.get("orderId") == order?.payOsOrderId
+              searchParams.get("orderId") == searchParams.get("orderCode") &&
+              searchParams.get("code") &&
+              searchParams.get("id") &&
+              searchParams.get("cancel") &&
+              searchParams.get("status")
             ) {
-              axios.put(`/Order/UpdatePayStatus?orderId=${id}`);
+              axios.put(`/Order/UpdatePayStatus?orderId=${id}`).then(() => {
+                setOrder({
+                  ...order,
+                  payStatus: true,
+                });
+              });
             }
           })
           .catch((error) => {
