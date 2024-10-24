@@ -6,32 +6,59 @@ import {
   HStack,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
   Text,
 } from "@chakra-ui/react";
 import useAuth from "../hooks/useAuth.js";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Cart from "./Cart.jsx";
 import { AccountCircleRounded } from "@mui/icons-material";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 export default function AccountMenu() {
   const { auth, setAuth } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear auth and redirect to login page
+    setAuth(null);
+    navigate("/auth");
+  };
 
   return (
     <>
       {auth?.token ? (
-        <Flex alignItems="center" columnGap="20px">
+        <Flex zIndex={999} alignItems="center" columnGap="20px">
           <Cart />
           <Box bgColor="app_black.0" color="app_white.0">
-            <RouterLink to="/account">
-              <Button>
+            <Menu>
+              <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                 <HStack>
                   <Avatar src={auth?.avatarLink} size="sm" />
                   <Text>{auth.EmployeeName}</Text>
                 </HStack>
-              </Button>
-            </RouterLink>
+              </MenuButton>
+              <MenuList bg="app_black.0" color="app_white.0">
+                <MenuItem
+                  bg="app_black.0"
+                  color="app_white.0"
+                  as={RouterLink}
+                  to="/account"
+                >
+                  Tài khoản
+                </MenuItem>
+                <MenuDivider />
+                <MenuItem
+                  bg="app_black.0"
+                  color="app_white.0"
+                  onClick={handleLogout}
+                >
+                  Đăng xuất
+                </MenuItem>
+              </MenuList>
+            </Menu>
           </Box>
         </Flex>
       ) : (
