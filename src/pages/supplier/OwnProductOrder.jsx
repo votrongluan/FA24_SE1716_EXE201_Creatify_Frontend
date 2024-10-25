@@ -128,7 +128,7 @@ export default function OwnProductOrder() {
                           <Text>{order.customer[0].phone}</Text>
                         </Td>
                         <Td>
-                          <Text>{calculatePrice(order.orderDetail, 1000)}</Text>
+                          <Text>{calculatePrice(order.orderDetail, 0)}</Text>
                         </Td>
 
                         <Td>

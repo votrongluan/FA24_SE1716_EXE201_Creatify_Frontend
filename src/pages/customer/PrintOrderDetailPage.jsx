@@ -55,7 +55,7 @@ export default function PrintOrderDetailPage() {
 
     const paymentData = {
       orderId: orderId.toString(),
-      description: `Thanh toan ma don ${id}`,
+      description: `3dcreatify ma giao dich ${orderId}`,
       priceTotal: order.price,
       returnUrl: `${appURL}/printorder/${id}?payStatus=true&orderId=${orderId}`,
       cancelUrl: `${appURL}/printorder/${id}`,

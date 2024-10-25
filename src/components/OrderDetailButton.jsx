@@ -150,7 +150,7 @@ export default function OrderDetailButton({ order }) {
                     <FormLabel>Thành tiền</FormLabel>
                     <Input
                       _readOnly={{ bg: "gray.100" }}
-                      value={`${calculatePrice(order.orderDetail, 1000)}`}
+                      value={`${calculatePrice(order.orderDetail, 0)}`}
                       readOnly
                     />
                   </FormControl>

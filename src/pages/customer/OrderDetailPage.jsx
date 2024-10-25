@@ -43,7 +43,7 @@ export default function OrderDetailPage() {
 
     const paymentData = {
       orderId: orderId.toString(),
-      description: `Thanh toan ma don ${id}`,
+      description: `3dcreatify ma giao dich ${orderId}`,
       priceTotal: order.totalPrice,
       returnUrl: `${appURL}/order/${id}?payStatus=true&orderId=${orderId}`,
       cancelUrl: `${appURL}/order/${id}`,

@@ -59,7 +59,7 @@ export default function CartPage() {
       paymentId: 2,
       employeeId: auth.EmployeeId,
       supplierId: employeeId, // EmployeeId acts as the supplierId in this case
-      totalPrice: calculateTotalPrice(employeeId) + 1000,
+      totalPrice: calculateTotalPrice(employeeId) + 0,
     };
 
     axios
@@ -71,8 +71,8 @@ export default function CartPage() {
 
         const paymentData = {
           orderId: orderId.toString(),
-          description: `Thanh toan ma don ${appOrderId}`,
-          priceTotal: calculateTotalPrice(employeeId) + 1000,
+          description: `3dcreatify ma giao dich ${orderId}`,
+          priceTotal: calculateTotalPrice(employeeId) + 0,
           returnUrl: `${appURL}/order/${appOrderId}?payStatus=true&orderId=${orderId}`,
           cancelUrl: `${appURL}/order/${appOrderId}`,
           items: [
@@ -204,7 +204,7 @@ export default function CartPage() {
                 <Text>Tổng</Text>
                 <Spacer />
                 <Text>
-                  {(calculateTotalPrice(employeeId) + 1000).toLocaleString()}đ
+                  {(calculateTotalPrice(employeeId) + 0).toLocaleString()}đ
                 </Text>{" "}
                 {/* Dynamic grand total */}
               </HStack>
