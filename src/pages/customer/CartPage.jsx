@@ -71,7 +71,7 @@ export default function CartPage() {
 
         const paymentData = {
           orderId: orderId.toString(),
-          description: `3dcreatify ma giao dich ${orderId}`,
+          description: `3dcreatify ma gd ${orderId}`,
           priceTotal: calculateTotalPrice(employeeId) + 0,
           returnUrl: `${appURL}/order/${appOrderId}?payStatus=true&orderId=${orderId}`,
           cancelUrl: `${appURL}/order/${appOrderId}`,
