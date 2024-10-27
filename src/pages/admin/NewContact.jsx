@@ -21,29 +21,34 @@ export default function NewContact() {
   const contactData = [
     {
       label: "Nguồn ngoại tuyến",
-      value: "1,506",
-      change: "▲ 241%",
+      value: "89",
+      change: "▲ 0%",
       changeColor: "green.500",
     },
     {
       label: "Lưu lượng truy cập trực tiếp",
       value: "21",
-      change: "▼ 25%",
-      changeColor: "red.500",
+      change: "▲ 0%",
+      changeColor: "green.500",
     },
     {
       label: "Tìm kiếm tự nhiên",
       value: "9",
-      change: "▼ 31%",
-      changeColor: "red.500",
+      change: "▲ 0%",
+      changeColor: "green.500",
     },
     {
       label: "Chiến dịch khác",
-      value: "8",
-      change: "▲ 33%",
+      value: "126",
+      change: "▲ 0%",
       changeColor: "green.500",
     },
-    { label: "Giới thiệu", value: "4", change: "0%", changeColor: "gray.400" },
+    {
+      label: "Giới thiệu",
+      value: "23",
+      change: "▲ 0%",
+      changeColor: "green.500",
+    },
   ];
 
   return (

@@ -19,19 +19,19 @@ const optionStyle = {
 
 export default function SourceContact() {
   const contactData = [
-    { id: 1, name: "Tìm kiếm tự nhiên", newContacts: 9, sessions: 8185 },
+    { id: 1, name: "Tìm kiếm tự nhiên", newContacts: 9, sessions: 131 },
     {
       id: 2,
       name: "Lưu lượng truy cập trực tiếp",
       newContacts: 21,
-      sessions: 2709,
+      sessions: 485,
     },
-    { id: 3, name: "Giới thiệu", newContacts: 4, sessions: 447 },
-    { id: 4, name: "Tìm kiếm có trả phí", newContacts: 2, sessions: 344 },
-    { id: 5, name: "Mạng xã hội có trả phí", newContacts: 0, sessions: 314 },
-    { id: 6, name: "Email Marketing", newContacts: 0, sessions: 229 },
-    { id: 7, name: "Mạng xã hội", newContacts: 0, sessions: 105 },
-    { id: 8, name: "Khác", newContacts: 0, sessions: 78 },
+    { id: 3, name: "Giới thiệu", newContacts: 4, sessions: 11 },
+    { id: 4, name: "Tìm kiếm có trả phí", newContacts: 2, sessions: 12 },
+    { id: 5, name: "Mạng xã hội có trả phí", newContacts: 0, sessions: 45 },
+    { id: 6, name: "Email Marketing", newContacts: 0, sessions: 16 },
+    { id: 7, name: "Mạng xã hội", newContacts: 0, sessions: 27 },
+    { id: 8, name: "Khác", newContacts: 0, sessions: 12 },
   ];
 
   return (
