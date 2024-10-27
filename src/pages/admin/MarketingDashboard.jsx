@@ -43,38 +43,38 @@ const contactsData = {
 const statsData = {
   visits: {
     label: "LƯỢT TRUY CẬP",
-    value: 12411,
-    change: -9, // Negative for decrease, positive for increase
-    comparison: 13564,
-    direction: "down", // Use 'up' or 'down' to determine arrow direction
+    value: 232,
+    change: 0, // Negative for decrease, positive for increase
+    comparison: 0,
+    direction: "up", // Use 'up' or 'down' to determine arrow direction
   },
   newContacts: {
     label: "LIÊN HỆ MỚI (KHÔNG TÍNH NGUỒN NGOẠI TUYẾN)",
-    value: 44,
-    change: -17,
-    comparison: 53,
-    direction: "down",
+    value: 20,
+    change: 0,
+    comparison: 0,
+    direction: "up",
   },
   customerAttractionGoal: {
     label: "Mục tiêu thu hút khách hàng",
-    value: 44,
-    change: 47,
-    comparison: 32,
+    value: 100,
+    change: 0,
+    comparison: 0,
     direction: "up",
   },
   newUsers: {
     label: "Người dùng mới",
-    value: 1360,
-    change: -47,
-    comparison: 2587,
-    direction: "down",
+    value: 20,
+    change: 0,
+    comparison: 0,
+    direction: "up",
   },
   emailsOpened: {
     label: "Email đã mở",
-    value: 4171,
-    change: -38,
-    comparison: 6775,
-    direction: "down",
+    value: 12,
+    change: 0,
+    comparison: 0,
+    direction: "up",
   },
 };
 
