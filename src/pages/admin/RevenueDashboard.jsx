@@ -1,14 +1,11 @@
 import {
-  Flex,
   Stat,
-  StatLabel,
   StatNumber,
   StatHelpText,
   Heading,
   Text,
   SimpleGrid,
   GridItem,
-  Select,
   Spinner,
   Box,
 } from "@chakra-ui/react";
@@ -46,34 +43,17 @@ function renderStat(stat, period) {
   );
 }
 
-const optionStyle = {
-  backgroundColor: "#00060F",
-  color: "white",
-};
-
 export default function RevenueDashboard() {
   const [statsData, setData] = useState(null);
 
   const revenueData = {
-    labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5"],
+    labels: ["25/10", "26/10", "27/10", "28/10", "29/10", "30/10", "31/10"],
     datasets: [
       {
         label: "Doanh thu",
-        data: [300, 500, 250, 400, 200],
+        data: [3750000, 1500000, 0, 3000000, 0, 3750000, 3000000],
         borderColor: "blue",
         backgroundColor: "rgba(0, 0, 255, 0.2)",
-      },
-    ],
-  };
-
-  const profitData = {
-    labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5"],
-    datasets: [
-      {
-        label: "Lợi nhuận",
-        data: [100, 200, 150, 180, 130],
-        borderColor: "green",
-        backgroundColor: "rgba(0, 255, 0, 0.2)",
       },
     ],
   };
@@ -153,15 +133,10 @@ export default function RevenueDashboard() {
 
       <Box height="50px"></Box>
 
-      <SimpleGrid mt="20px" columns={2} gap="20px">
+      <SimpleGrid mt="20px" columns={1} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.totalRevenueAllTime)}
           <Line data={revenueData} />
-        </GridItem>
-
-        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          {renderStat(statsData.totalRevenueAllTime)}
-          <Line data={profitData} />
         </GridItem>
       </SimpleGrid>
     </>
