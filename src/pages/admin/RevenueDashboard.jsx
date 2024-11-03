@@ -58,6 +58,26 @@ export default function RevenueDashboard() {
     ],
   };
 
+  const profitData = {
+    labels: ["25/10", "26/10", "27/10", "28/10", "29/10", "30/10", "31/10"],
+    datasets: [
+      {
+        label: "Doanh thu",
+        data: [
+          3750000 * 0.3,
+          1500000 * 0.3,
+          0,
+          3000000 * 0.3,
+          0,
+          3750000 * 0.3,
+          3000000 * 0.3,
+        ],
+        borderColor: "blue",
+        backgroundColor: "rgba(0, 0, 255, 0.2)",
+      },
+    ],
+  };
+
   function fetchAll() {
     axios.get("/statistic/admin").then((response) => {
       setData(response.data);
@@ -73,7 +93,7 @@ export default function RevenueDashboard() {
 
   return (
     <>
-      <SimpleGrid mt="20px" columns={3} gap="20px">
+      <SimpleGrid mt="20px" columns={4} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.allCustomer)}
         </GridItem>
@@ -89,7 +109,7 @@ export default function RevenueDashboard() {
 
       <Box height="50px"></Box>
 
-      <SimpleGrid mt="20px" columns={3} gap="20px">
+      <SimpleGrid mt="20px" columns={4} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.todayOrders)}
         </GridItem>
@@ -101,9 +121,13 @@ export default function RevenueDashboard() {
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.totalRevenueToday)}
         </GridItem>
+
+        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
+          {renderStat(statsData.totalProfitToday)}
+        </GridItem>
       </SimpleGrid>
 
-      <SimpleGrid mt="20px" columns={3} gap="20px">
+      <SimpleGrid mt="20px" columns={4} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.last30DaysOrders, statsData.monthPeriod)}
         </GridItem>
@@ -115,9 +139,13 @@ export default function RevenueDashboard() {
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.totalRevenueLast30Days, statsData.monthPeriod)}
         </GridItem>
+
+        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
+          {renderStat(statsData.totalProfitLast30Days, statsData.monthPeriod)}
+        </GridItem>
       </SimpleGrid>
 
-      <SimpleGrid mt="20px" columns={3} gap="20px">
+      <SimpleGrid mt="20px" columns={4} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.allOrders)}
         </GridItem>
@@ -129,14 +157,23 @@ export default function RevenueDashboard() {
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.totalRevenueAllTime)}
         </GridItem>
+
+        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
+          {renderStat(statsData.totalProfitAllTime)}
+        </GridItem>
       </SimpleGrid>
 
       <Box height="50px"></Box>
 
-      <SimpleGrid mt="20px" columns={1} gap="20px">
+      <SimpleGrid mt="20px" columns={2} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.totalRevenueAllTime)}
           <Line data={revenueData} />
+        </GridItem>
+
+        <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
+          {renderStat(statsData.totalProfitAllTime)}
+          <Line data={profitData} />
         </GridItem>
       </SimpleGrid>
     </>

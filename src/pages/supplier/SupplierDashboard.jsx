@@ -97,6 +97,10 @@ export default function SupplierDashboard() {
 
   return (
     <>
+      <Heading height={"100px"} as="h2" size="lg" textAlign="center">
+        Bảng điều khiển
+      </Heading>
+
       <SimpleGrid mt="8px" columns={3} gap="8px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.todayOrders)}
