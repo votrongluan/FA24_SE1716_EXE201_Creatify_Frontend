@@ -43,16 +43,16 @@ const DashboardPage = () => {
 
       <Tabs colorScheme="black">
         <TabList>
-          <Tab>Marketing</Tab>
           <Tab>Doanh thu</Tab>
+          <Tab>Marketing</Tab>
         </TabList>
 
         <TabPanels>
           <TabPanel>
-            <MarketingDashboard />
+            <RevenueDashboard />
           </TabPanel>
           <TabPanel>
-            <RevenueDashboard />
+            <MarketingDashboard />
           </TabPanel>
         </TabPanels>
       </Tabs>
