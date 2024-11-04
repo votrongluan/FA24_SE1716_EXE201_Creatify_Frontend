@@ -93,7 +93,7 @@ export default function RevenueDashboard() {
 
   return (
     <>
-      <SimpleGrid mt="20px" columns={4} gap="20px">
+      <SimpleGrid mt="20px" columns={3} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
           {renderStat(statsData.allCustomer)}
         </GridItem>
