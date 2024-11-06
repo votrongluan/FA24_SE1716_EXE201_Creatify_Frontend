@@ -167,12 +167,24 @@ export default function RevenueDashboard() {
 
       <SimpleGrid mt="20px" columns={2} gap="20px">
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          {renderStat(statsData.totalRevenueAllTime)}
+          {renderStat({
+            label: "Tổng doanh thu (25/10 - 31/10)",
+            value: "15000000",
+            change: 0,
+            comparison: "0%",
+            direction: "up",
+          })}
           <Line data={revenueData} />
         </GridItem>
 
         <GridItem bgColor="app_white.0" border="1px solid black" p="12px">
-          {renderStat(statsData.totalProfitAllTime)}
+          {renderStat({
+            label: "Tổng hoa hồng (25/10 -31/10)",
+            value: "4500000",
+            change: 0,
+            comparison: "0%",
+            direction: "up",
+          })}
           <Line data={profitData} />
         </GridItem>
       </SimpleGrid>
