@@ -30,21 +30,23 @@ const Pagination = ({ data, DisplayData }) => {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
+  console.log(startIndex, endIndex);
+
   const currentData = data.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    window.scrollTo(0, 0); // Scroll to the top of the page
+    window.scrollTo(0, 0);
   };
 
   const handleFirstPage = () => {
     setCurrentPage(1);
-    window.scrollTo(0, 0); // Scroll to the top of the page
+    window.scrollTo(0, 0);
   };
 
   const handleLastPage = () => {
     setCurrentPage(totalPages);
-    window.scrollTo(0, 0); // Scroll to the top of the page
+    window.scrollTo(0, 0);
   };
 
   const handleCustomPageChange = (e) => {
@@ -56,7 +58,7 @@ const Pagination = ({ data, DisplayData }) => {
       setItemsPerPage(1);
       setCustomPage(1);
     } else {
-      setItemsPerPage(e.target.value);
+      setItemsPerPage(+e.target.value);
       setCustomPage(1);
     }
   };
@@ -65,8 +67,8 @@ const Pagination = ({ data, DisplayData }) => {
     const parsedPage = parseInt(customPage, 10);
     if (!isNaN(parsedPage) && parsedPage >= 1 && parsedPage <= totalPages) {
       setCurrentPage(parsedPage);
-      setCustomPage(""); // Clear the input field
-      window.scrollTo(0, 0); // Scroll to the top of the page
+      setCustomPage("");
+      window.scrollTo(0, 0);
     }
   };
 
@@ -91,7 +93,6 @@ const Pagination = ({ data, DisplayData }) => {
     <>
       <DisplayData currentData={currentData} />
 
-      {/* Pagination buttons */}
       <Flex
         alignItems="center"
         direction="row"
